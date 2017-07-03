@@ -1,0 +1,9 @@
+<form [formGroup]="nodeForm" (submit)="confirm($event)" class="add-comment-dialog">
+  <md-input formControlName="name" type="text" placeholder="name" maxLength="100"></md-input>
+  <md-textarea formControlName="description" type="text" placeholder="description (optional)" maxLength="500"></md-textarea>
+
+  <div class="action-buttons">
+    <button md-raised-button color="primary" type="button" (click)="cancel($event)">Cancel</button>
+    <button md-raised-button color="primary" type="submit" class="add-button">Add</button>
+  </div>
+</form>

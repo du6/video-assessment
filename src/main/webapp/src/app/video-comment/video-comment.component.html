@@ -1,0 +1,41 @@
+<div class="video-comment">
+  <md-card>
+    <div class="video-display">
+      <video width="480" controls>
+        <source src="https://video-assessment.appspot.com/serve?blobkey={{blobkey}}" type="video/mp4">
+      </video>
+    </div>
+  </md-card>
+
+  <md-card>
+    <md-card-title>Comments</md-card-title>
+    <md-divider></md-divider>
+    <md-card-content>
+      <md-spinner *ngIf="loading"></md-spinner>
+      <md-list *ngIf="!loading" class="comment-list">
+        <md-list-item *ngFor="let question of questions; let i = index" [ngClass]="{'dark-background': i % 2 == 1}">
+          <div class="question-comment">
+            <div class="question">{{i + 1}}. {{question}}</div>
+            <md-textarea class="comment" [(ngModel)]="comments[i]"></md-textarea>
+            <span>Score:</span>
+            <md-slider class="score-slider" 
+                       [min]="0" 
+                       [max]="10" 
+                       tickInterval="1" 
+                       #score 
+                       aria-label="set a score"
+                       [(ngModel)]="scores[i]">
+            </md-slider>
+            {{score.value}}
+          </div>
+        </md-list-item>
+      </md-list>
+      <button md-raised-button 
+              class="submit" 
+              color="primary" 
+              [disabled]="submitting"
+              (click)="submit()" 
+              md-button>Submit</button>
+    </md-card-content>
+  </md-card>
+</div>

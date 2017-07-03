@@ -1,0 +1,26 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  background-color: #F5F5F5;
+  margin: 0;
+}
+
+md-card {
+  margin: 20px;
+}
+
+md-textarea {
+  width: 100%;
+}
+
+md-sidenav {
+  min-height: 200px;
+}
+
+md-list.video-list {
+  padding-top: 0;
+}
+
+md-list.comment-list md-list-item .md-list-item {
+  height: 100%;
+}

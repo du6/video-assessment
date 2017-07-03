@@ -1,0 +1,36 @@
+@import '../common/color';
+
+.video-comment {
+  md-list.comment-list {
+    md-list-item {
+      display: block;
+
+      &.dark-background {
+        background-color: $hover-background-color;
+      }
+
+      .question-comment {
+        display: block;
+        height: 100%;
+        padding-top: 16px;
+        width: 100%;
+      }
+
+      .question {
+        width: 100%;
+      }
+
+      .comment {
+        display: block;
+      }
+
+      .submit {
+        float: right;
+      }
+
+      .score-slider {
+        width: 70%;
+      }
+    }
+  }
+}

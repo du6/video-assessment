@@ -1,0 +1,21 @@
+@import '../common/color';
+
+md-list.video-list {
+  md-list-item {
+    display: block;
+    
+    .md-list-item {
+      align-items: flex-start;
+      border-bottom: 1px solid gray;
+      height: 100%;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: $hover-background-color;
+      cursor: pointer;
+    }
+  }
+}

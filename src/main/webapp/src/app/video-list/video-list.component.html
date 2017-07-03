@@ -1,0 +1,8 @@
+<md-list class="video-list">
+  <md-list-item *ngFor="let video of videos" [@fadeInOut]="'in'" (click)="goToVideoComment(video.id)">
+    <video-assessment-video-detail 
+        [video]="video"
+        (videoDeleted)="deletevideo($event)">
+    </video-assessment-video-detail>
+  </md-list-item>
+</md-list>

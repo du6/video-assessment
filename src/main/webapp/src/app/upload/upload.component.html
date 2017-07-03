@@ -1,0 +1,6 @@
+<form enctype="multipart/form-data" class="video-assessment-upload">
+  <input name="title" type="text" (input)="title = $event.target.value" placeholder="video title" maxLength="100">
+  <input name="file" type="file" (change)="onFileChange($event)">
+  <input type="submit" value="Upload" (click)="submit($event)" [disabled]="disable">
+  <span *ngIf="disable">Uploading Progress: {{progress}}%</span>
+</form>

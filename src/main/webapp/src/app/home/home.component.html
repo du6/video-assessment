@@ -1,0 +1,15 @@
+<md-card>
+  <md-card-title>Upload a Video</md-card-title>
+  <md-card-content>
+    <video-assessment-upload (videoUploaded)="onVideoUploaded($event)"></video-assessment-upload>
+  </md-card-content>
+</md-card>
+
+<md-card>
+  <md-card-title>My Videos</md-card-title>
+  <md-divider></md-divider>
+  <md-card-content>
+    <md-spinner *ngIf="loading"></md-spinner>
+    <video-assessment-video-list *ngIf="!loading" [videos]="videos"></video-assessment-video-list>
+  </md-card-content>
+</md-card>

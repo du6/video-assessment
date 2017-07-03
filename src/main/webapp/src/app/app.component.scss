@@ -1,0 +1,16 @@
+.video-assessment-app {
+  overflow: visible;
+  
+  .fill-in-space {
+    flex: 1 1 auto;
+  }
+
+  .md-tab-header {
+    display: none;
+  }
+
+  .app-sidenav {
+	  padding: 10px;
+	  min-width: 60px;
+	}
+}

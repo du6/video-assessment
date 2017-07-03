@@ -1,0 +1,37 @@
+0000000000000000000000000000000000000000 033dc9444660922fac62d4a2606880620180abb7 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1479876196 -0800	branch: Created from HEAD
+033dc9444660922fac62d4a2606880620180abb7 3d2cb8a1e0415917d0a059f19df02a677c7abd9b Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1479878602 -0800	commit: add question entity and api
+3d2cb8a1e0415917d0a059f19df02a677c7abd9b e6e61e68129af57d08f228cb0b802d45b7c82b75 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1479878649 -0800	commit: add question entity and api
+e6e61e68129af57d08f228cb0b802d45b7c82b75 b789fc7001ef9fbae7864010045c93865458419f Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1479885181 -0800	commit: add question interface
+b789fc7001ef9fbae7864010045c93865458419f 9a85b771951222f2e3e48fc00da21b36293b192c Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1479886128 -0800	commit: .
+9a85b771951222f2e3e48fc00da21b36293b192c 0d3a31260c95bfeadd4e837d0662a136ba6171ea Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1479968308 -0800	commit: load and add questions
+0d3a31260c95bfeadd4e837d0662a136ba6171ea 7dbe09242e15ef5e58384b6e6d268e01ab2ed2c4 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480055411 -0800	commit: add/delete question ui
+7dbe09242e15ef5e58384b6e6d268e01ab2ed2c4 ca0634e22d70f72f2ebb3f62cd113f885d3e9ec7 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480138658 -0800	commit: edit question
+ca0634e22d70f72f2ebb3f62cd113f885d3e9ec7 d6340556f7abb534510292ad144ae8f9c63abfd5 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480579779 -0800	commit: add tag
+d6340556f7abb534510292ad144ae8f9c63abfd5 e688f304080afcfd091453ba2265de0770c47c03 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480579801 -0800	commit: exculde node pipe
+e688f304080afcfd091453ba2265de0770c47c03 5b67870363333e756522788bf2b82c096b052c7d Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480580832 -0800	commit: .
+5b67870363333e756522788bf2b82c096b052c7d e3463cccb1cb8ea924930e0a8b6ffd7372df8d59 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480830922 -0800	commit: add question tag anre remove tag from list
+e3463cccb1cb8ea924930e0a8b6ffd7372df8d59 3cbb98e9c764ab0bb20f6cad517148c96936e3d7 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480834940 -0800	commit: delete tag
+3cbb98e9c764ab0bb20f6cad517148c96936e3d7 61ba422627f494495c11367501d62d9613f07a56 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480837492 -0800	commit: delete tag update view
+61ba422627f494495c11367501d62d9613f07a56 444fb5a63326a4888593a5d451c43e962a618bdd Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480838777 -0800	commit: only display tags for existing node
+444fb5a63326a4888593a5d451c43e962a618bdd fc2eb04b6129588b0d7830baf295515942251913 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480839395 -0800	commit: clean button cursur
+fc2eb04b6129588b0d7830baf295515942251913 259b680d35e6c3c544f7557e2c8097a67892f2bd Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480921090 -0800	commit: display knowledge graph hierachically
+259b680d35e6c3c544f7557e2c8097a67892f2bd 4360c775679e7a23e9afb31d651e3b58dda94e17 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1480921394 -0800	commit: .
+4360c775679e7a23e9afb31d651e3b58dda94e17 fb25af60992068c24df393c0fef6b415c372eec4 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1481001627 -0800	commit: create and get releated questions
+fb25af60992068c24df393c0fef6b415c372eec4 46fb405fa384203f629924f050ca5fd128ec53d5 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1481006133 -0800	commit: edit released questions
+46fb405fa384203f629924f050ca5fd128ec53d5 fe2d961e04566867fc9cb0d7432e5441a2b93d95 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1481091120 -0800	commit: student view to see the quiz
+fe2d961e04566867fc9cb0d7432e5441a2b93d95 b23d895b5a0979217525b640a375e595d07f0e60 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1481098107 -0800	commit: view follow up questions
+b23d895b5a0979217525b640a375e595d07f0e60 9e98b0360449f789bb3940ed03950459900a3e1a Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1481098695 -0800	commit: .
+9e98b0360449f789bb3940ed03950459900a3e1a c335e3666257ec9aa9cfb4625b8bd7602fac2893 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1497251657 -0700	commit: backend works
+c335e3666257ec9aa9cfb4625b8bd7602fac2893 597f446bfcde53239b5e49ac7f7893c258495e74 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1497251701 -0700	commit: backend works
+597f446bfcde53239b5e49ac7f7893c258495e74 1033c3103cb92d9796ebd1e008250aba9cd3e9ee Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1497505597 -0700	commit: update backend.
+1033c3103cb92d9796ebd1e008250aba9cd3e9ee 95e7366e1a7f1171e7f95c42cb1202418b95717e Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1497674469 -0700	commit: add files.
+95e7366e1a7f1171e7f95c42cb1202418b95717e 655b5e66083fcf1b3cd72830200111a10298e13d Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1497832899 -0700	commit: get upload url
+655b5e66083fcf1b3cd72830200111a10298e13d d9708b223b7c84d1c7eea703029abed76d362736 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1498026169 -0700	commit: create video entity
+d9708b223b7c84d1c7eea703029abed76d362736 6655e0b0b4a5649d76cbf9094f08dd5d687e7df9 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1498452466 -0700	commit: split upload component
+6655e0b0b4a5649d76cbf9094f08dd5d687e7df9 86cfd544ad2cc35a6b95a6fc2338592d9d1b8e14 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1498456340 -0700	commit: add video key to list
+86cfd544ad2cc35a6b95a6fc2338592d9d1b8e14 97b02ebf693d4bd3edda954abcc73f28292826f9 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1498546750 -0700	commit: show video list.
+97b02ebf693d4bd3edda954abcc73f28292826f9 36ee1e194adb84fda83cbaa7fa167bc0b74aee5b Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1498714117 -0700	commit: display video
+36ee1e194adb84fda83cbaa7fa167bc0b74aee5b 80dab214a6f9bc25efdd9e6b20db9e37ec18598c Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1498714123 -0700	commit: display video
+80dab214a6f9bc25efdd9e6b20db9e37ec18598c 690238489b278496aa6ce6b21b4bf1d8769efa33 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1498883829 -0700	commit: load template
+690238489b278496aa6ce6b21b4bf1d8769efa33 9b4a602c83588f14ce83f0588a29ed597ea11d1c Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1498888676 -0700	commit: display comment
+9b4a602c83588f14ce83f0588a29ed597ea11d1c 7e64a6182b77b472bb6e4d4b72f755f0d7b57cd7 Yuelin Du <yuelindu@Yuelins-MacBook-Air.local> 1498889790 -0700	commit: display score

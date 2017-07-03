@@ -1,0 +1,20 @@
+<md-sidenav-layout class="video-assessment-app">
+  <md-sidenav #sidenav mode="side" class="app-sidenav">
+    <video-assessment-sidenav></video-assessment-sidenav>
+  </md-sidenav>
+  <md-toolbar color="primary">
+    <button md-button (click)="sidenav.open()" *ngIf="!sidenav.opened">
+      <i class="material-icons app-toolbar-menu">menu</i>
+    </button>
+    <button md-button (click)="sidenav.close()" *ngIf="sidenav.opened">
+      <i class="material-icons">keyboard_arrow_left</i>
+    </button>
+    <span>Presentation Assessment</span>
+    <span class="fill-in-space"></span>
+    <button md-button *ngIf="!isSignedIn()" (click)="signIn()">Sign In with Google</button>
+    <button md-button *ngIf="isSignedIn()" (click)="signOut()">Sign Out</button>
+  </md-toolbar>
+  <router-outlet></router-outlet>
+</md-sidenav-layout>
+
+<div id="snackbar"></div>
