@@ -41,7 +41,7 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
     this.gapi_.loadTemplate()
         .then((template: Template) => {
           this.templateId = template.id; 
-          this.questions = template.questions
+          this.questions = List(template.questions);
           this.comments = new Array(this.questions.size);
           this.scores = new Array(this.questions.size);
           this.clearResponse();

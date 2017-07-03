@@ -59,9 +59,9 @@ export class GapiService {
       videoKey: string, 
       templateId: number, 
       comments: string[], 
-      scores: number[]): Promise<Template> {
+      scores: number[]): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.gapi_.client.videoAssessmentApi.createResponses({
+      this.gapi_.client.videoAssessmentApi.createBulkResponse({
           videoId: videoKey,
           templateId: templateId, 
           comments: comments,
@@ -69,8 +69,8 @@ export class GapiService {
       }).execute((resp) => {
         if (resp.error) {
             reject(resp.error);
-          } else if (resp.result) {
-            resolve(<Template> resp.result);
+          } else {
+            resolve("OK");
           }
       })
     });
