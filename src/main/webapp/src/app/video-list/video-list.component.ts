@@ -53,13 +53,13 @@ import { Video } from '../common/video';
 })
 export class VideoListComponent {
   @Input() videos: List<Video>;
-  @Output() videoDeleted: EventEmitter<Video> = new EventEmitter<Video>();
+  @Output() videoDeleted: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private _router: Router) {
   }
 
   deleteVideo(video: Video) {
-    this.videoDeleted.emit(video);
+    this.videoDeleted.emit(video.id);
   }
 
   goToVideoComment(blobkey: string) {

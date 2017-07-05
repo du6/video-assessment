@@ -16,6 +16,15 @@ import { GapiService } from '../services/gapi.service';
 })
 export class VideoDetailComponent {
   @Input() video: Video;
+  @Output() videoDeleted: EventEmitter<Video> = new EventEmitter<Video>();
 
-  constructor(){}
+  constructor(private gapi_: GapiService){}
+
+  deleteVideo(event: any) {
+    event.stopPropagation();
+    this.gapi_.deleteVideoByKey(this.video.id)
+        .then(() => {
+          this.videoDeleted.emit(this.video);
+        });
+  }
 }

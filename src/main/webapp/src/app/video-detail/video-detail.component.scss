@@ -1,6 +1,16 @@
+@import '../common/color';
+
 .video-detail {
+  width: 100%;
+  
   a {
     color: blue;
+    line-height: 40px;
     text-decoration: underline;
+  }
+
+  .delete-button {
+    background-color: $button-background-color;
+    float: right;
   }
 }

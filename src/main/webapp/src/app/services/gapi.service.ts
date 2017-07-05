@@ -52,7 +52,7 @@ export class GapiService {
               } else if (resp.result) {
                 resolve(<Template> resp.result);
               }
-          })
+          });
     });
   }
 
@@ -73,7 +73,7 @@ export class GapiService {
           } else {
             resolve("OK");
           }
-      })
+      });
     });
   }
 
@@ -87,7 +87,20 @@ export class GapiService {
           } else {
             resolve(<Assessment[]> resp.result.items);
           }
-      })
+      });
+    });
+  }
+
+  deleteVideoByKey(videoKey: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.deleteVideo({video: videoKey})
+          .execute((resp) => {
+            if (resp.error) {
+                reject(resp.error);
+              } else {
+                resolve("OK");
+              }
+          });
     });
   }
 }

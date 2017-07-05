@@ -10,6 +10,10 @@
   <md-divider></md-divider>
   <md-card-content>
     <md-spinner *ngIf="loading"></md-spinner>
-    <video-assessment-video-list *ngIf="!loading" [videos]="videos"></video-assessment-video-list>
+    <video-assessment-video-list 
+        *ngIf="!loading" 
+        [videos]="videos" 
+        (videoDeleted)="onVideoDeleted($event)">
+    </video-assessment-video-list>
   </md-card-content>
 </md-card>

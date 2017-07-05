@@ -4,6 +4,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.DefaultValue;
+import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
@@ -55,15 +56,32 @@ public class VideoAssessmentApi {
   }
 
   @ApiMethod(
+      name = "deleteVideo",
+      path = "deleteVideo",
+      httpMethod = HttpMethod.POST)
+  public void deleteVideo(
+      final User user,
+      @Named("video") final String videoId) throws UnauthorizedException {
+    Video video = ofy().load().type(Video.class).id(videoId).now();
+    if (video.getCreatedBy().equals(user.getEmail().toLowerCase())) {
+      video.delete();
+      ofy().save().entity(video);
+    } else {
+      throw new UnauthorizedException("User is not video owner.");
+    }
+  }
+
+  @ApiMethod(
       name = "getMyVideos",
       path = "getMyVideos",
       httpMethod = HttpMethod.POST)
   public List<Video> getMyVideos(
       final User user,
       @Named("limit") @DefaultValue(DEFAULT_QUERY_LIMIT) final int limit) {
+    final Filter deleteFilter = new FilterPredicate("isDeleted", FilterOperator.EQUAL, false);
     final Filter ownerFilter =
         new FilterPredicate("createdBy", FilterOperator.EQUAL, user.getEmail().toLowerCase());
-    return ofy().load().type(Video.class).filter(ownerFilter).limit(limit)
+    return ofy().load().type(Video.class).filter(deleteFilter).filter(ownerFilter).limit(limit)
         .list();
   }
 

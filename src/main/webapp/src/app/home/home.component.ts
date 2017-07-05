@@ -32,9 +32,21 @@ export class HomeComponent {
     this.addVideo_(video);
   }
 
+  onVideoDeleted(videoKey: string) {
+    this.deleteVideo_(videoKey);
+  }
+
   private addVideo_(video: Video) {
     this.videos = this.videos.unshift(video);
     //TODO(du6): update view automatically
     this.changeDetectorRef_.detectChanges();
+  }
+
+  private deleteVideo_(videoKey: string) {
+    const index = this.videos.findIndex((video) => video.id === videoKey);
+    if (index >= 0) {
+      this.videos = this.videos.delete(index);
+      this.changeDetectorRef_.detectChanges();
+    }
   }
 }

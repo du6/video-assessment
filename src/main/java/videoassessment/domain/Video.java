@@ -25,6 +25,9 @@ public class Video extends VideoAssessmentEntity {
   @Index
   private DateTime uploadedOn;
 
+  @Index
+  private boolean isDeleted = false;
+
   private String title;
 
   private List<String> supporters = new ArrayList();;
@@ -47,6 +50,10 @@ public class Video extends VideoAssessmentEntity {
     this.id = videoForm.getBlobKey();
     this.title = videoForm.getTitle();
     this.supporters = videoForm.getSupporters();
+  }
+
+  public void delete() {
+    this.isDeleted = true;
   }
 
   public String getCreatedBy() {
