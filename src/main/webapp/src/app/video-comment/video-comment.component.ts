@@ -4,6 +4,7 @@ import { List } from 'immutable';
 
 import { GapiService } from '../services/gapi.service';
 import { Template } from '../common/template';
+import { Assessment } from '../common/assessment';
 
 @Component({
   selector: 'video-assessment-video-comment',
@@ -15,9 +16,11 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
   sub: any
   templateId: number;
   questions: List<string> = List<string>();
+  assessments: Map<number, List<Assessment>> = new Map();
   comments: string[] = [];
   scores: number[] = [];
-  loading: boolean = false;
+  loadingTemplate: boolean = false;
+  loadingAssessments: boolean = false;
   submitting: boolean = false;
 
   constructor(
@@ -30,6 +33,7 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
        this.blobkey = params['blobkey'];
     });
     this.loadTemplate();
+    this.loadAssessments();
   }
 
   ngOnDestroy() {
@@ -37,7 +41,7 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
   }
 
   private loadTemplate() {
-    this.loading = true;
+    this.loadingTemplate = true;
     this.gapi_.loadTemplate()
         .then((template: Template) => {
           this.templateId = template.id; 
@@ -45,8 +49,28 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
           this.comments = new Array(this.questions.size);
           this.scores = new Array(this.questions.size);
           this.clearResponse();
-        }, () => this.loading = false)
-        .then(() => this.loading = false)
+        }, () => this.loadingTemplate = false)
+        .then(() => this.loadingTemplate = false)
+        .then(() => this.changeDetectorRef_.detectChanges());
+  }
+
+  private loadAssessments() {
+    this.assessments.clear();
+    this.loadingAssessments = true;
+    this.gapi_.loadAssessments(this.blobkey)
+        .then((assessments: Assessment[]) => {
+          assessments = assessments || [];
+          assessments.forEach((assessment: Assessment) => {
+            const questionId = assessment.questionId;
+            if (this.assessments && this.assessments.has(questionId)) {
+              this.assessments.set(questionId, this.assessments.get(questionId).push(assessment));
+            } else {
+              this.assessments.set(questionId, List([assessment]));
+            }
+          })
+          this.loadingAssessments = false;
+        }, () => this.loadingAssessments = false)
+        .then(() => this.loadingAssessments = false)
         .then(() => this.changeDetectorRef_.detectChanges());
   }
 
@@ -59,6 +83,7 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
     this.submitting = true;
     this.gapi_.submitResponses(this.blobkey, this.templateId, this.comments, this.scores)
         .then(() => {
+          this.loadAssessments();
           this.clearResponse();
           this.submitting = false;
         }, () => this.submitting = false)

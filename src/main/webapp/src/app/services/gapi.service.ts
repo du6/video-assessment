@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 
 import { Video } from '../common/video';
 import { Template } from '../common/template';
+import { Assessment } from '../common/assessment';
 
 // Google's login API namespace
 declare var gapi: { client: { videoAssessmentApi: any } };
@@ -71,6 +72,20 @@ export class GapiService {
             reject(resp.error);
           } else {
             resolve("OK");
+          }
+      })
+    });
+  }
+
+  loadAssessments(videoKey: string): Promise<Assessment[]> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.getResponses({
+          video: videoKey
+      }).execute((resp) => {
+        if (resp.error) {
+            reject(resp.error);
+          } else {
+            resolve(<Assessment[]> resp.result.items);
           }
       })
     });

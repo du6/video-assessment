@@ -11,11 +11,16 @@
     <md-card-title>Comments</md-card-title>
     <md-divider></md-divider>
     <md-card-content>
-      <md-spinner *ngIf="loading"></md-spinner>
-      <md-list *ngIf="!loading" class="comment-list">
+      <md-spinner *ngIf="loadingTemplate || loadingAssessments"></md-spinner>
+      <md-list *ngIf="!(loadingTemplate || loadingAssessments)" class="comment-list">
         <md-list-item *ngFor="let question of questions; let i = index" [ngClass]="{'dark-background': i % 2 == 1}">
           <div class="question-comment">
             <div class="question">{{i + 1}}. {{question}}</div>
+            <ul *ngIf="assessments.has(i)">
+              <li *ngFor="let assessment of assessments.get(i)">
+                {{assessment.comment}} (score:{{assessment.score}})
+              </li>
+            </ul>
             <md-textarea class="comment" [(ngModel)]="comments[i]"></md-textarea>
             <span>Score:</span>
             <md-slider class="score-slider" 

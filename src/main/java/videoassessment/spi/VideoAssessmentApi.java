@@ -40,7 +40,7 @@ import static main.java.videoassessment.spi.ApiUtils.TEMPLATE_ID;
     description = "API for the Video Assessment application.")
 public class VideoAssessmentApi {
 
-  private static final String DEFAULT_QUERY_LIMIT = "100";
+  private static final String DEFAULT_QUERY_LIMIT = "1000";
   private static final Logger LOG = Logger.getLogger(VideoAssessmentApi.class.getName());
 
   @ApiMethod(
@@ -88,6 +88,9 @@ public class VideoAssessmentApi {
       final BulkResponseForm form) {
     assert form.getComments().size() == form.getScores().size();
     for (int i = 0; i < form.getScores().size(); ++i) {
+      if (form.getScores().get(i) == 0 && form.getComments().get(i).isEmpty()) {
+        continue;
+      }
       Key<Response> key = factory().allocateId(Response.class);
       Response response = new Response(key.getId(),
           user.getEmail().toLowerCase(),
@@ -108,20 +111,16 @@ public class VideoAssessmentApi {
   public List<Response> getResponses(
       final User user,
       @Named("video") final String videoId,
-      @Named("question") final int questionId,
       @Named("limit") @DefaultValue(DEFAULT_QUERY_LIMIT) final int limit) {
     final Filter templateFilter =
         new FilterPredicate("templateId", FilterOperator.EQUAL, TEMPLATE_ID);
     final Filter videoFilter =
         new FilterPredicate("videoId", FilterOperator.EQUAL, videoId);
-    final Filter questionFilter =
-        new FilterPredicate("questionId", FilterOperator.EQUAL, questionId);
 
     Query<Response> query = ofy().load().type(Response.class)
         .limit(limit)
         .filter(templateFilter)
-        .filter(videoFilter)
-        .filter(questionFilter);
+        .filter(videoFilter);
 
     Video video = ofy().load().type(Video.class).id(videoId).now();
     if (video == null) {
