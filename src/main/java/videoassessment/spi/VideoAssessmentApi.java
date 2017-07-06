@@ -4,6 +4,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.DefaultValue;
+import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -14,6 +15,7 @@ import com.googlecode.objectify.cmd.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.inject.Named;
@@ -59,16 +61,46 @@ public class VideoAssessmentApi {
       name = "deleteVideo",
       path = "deleteVideo",
       httpMethod = HttpMethod.POST)
-  public void deleteVideo(
+  public Video deleteVideo(
       final User user,
       @Named("video") final String videoId) throws UnauthorizedException {
+    Video video = getVideoForOwnerById(videoId, user);
+    video.delete();
+    ofy().save().entity(video);
+    return video;
+  }
+
+  @ApiMethod(
+      name = "getVideoByKey",
+      path = "getVideoByKey",
+      httpMethod = HttpMethod.POST)
+  public Video getVideoByKey(
+      final User user,
+      @Named("video") final String videoId) throws UnauthorizedException {
+    Video video = getVideoForOwnerById(videoId, user);
+    return video;
+  }
+
+  @ApiMethod(
+      name = "updateSupporterForVideo",
+      path = "updateSupporterForVideo",
+      httpMethod = HttpMethod.POST)
+  public Video updateSupporterForVideo(
+      final User user,
+      @Named("supporters") @Nullable final List<String> supporters,
+      @Named("video") final String videoId) throws UnauthorizedException {
+    Video video = getVideoForOwnerById(videoId, user);
+    video.updateSupporter(supporters == null ? new ArrayList<String>() : supporters);
+    ofy().save().entity(video);
+    return video;
+  }
+
+  private Video getVideoForOwnerById(String videoId, User owner) throws UnauthorizedException {
     Video video = ofy().load().type(Video.class).id(videoId).now();
-    if (video.getCreatedBy().equals(user.getEmail().toLowerCase())) {
-      video.delete();
-      ofy().save().entity(video);
-    } else {
+    if (!video.getCreatedBy().equals(owner.getEmail().toLowerCase())) {
       throw new UnauthorizedException("User is not video owner.");
     }
+    return video;
   }
 
   @ApiMethod(

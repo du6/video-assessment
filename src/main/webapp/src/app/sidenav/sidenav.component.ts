@@ -14,7 +14,7 @@ export class SidenavComponent {
     this._router.navigate(['/home']);
   }
 
-  gotoComments() {
-    this._router.navigate(['/comments']);
+  gotoSupported() {
+    this._router.navigate(['/supported']);
   }
 }

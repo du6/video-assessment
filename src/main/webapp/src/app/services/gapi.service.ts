@@ -103,4 +103,31 @@ export class GapiService {
           });
     });
   }
+
+  getVideoByKey(videoKey: string): Promise<Video> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.getVideoByKey({video: videoKey})
+          .execute((resp) => {
+            if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Video> resp.result);
+              }
+          });
+    });
+  }
+
+  updateSupporters(videoKey: string, supporters: string[]): Promise<Video> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.updateSupporterForVideo(
+          {video: videoKey, supporters: supporters || []})
+          .execute((resp) => {
+            if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Video> resp.result);
+              }
+          });
+    });
+  }
 }

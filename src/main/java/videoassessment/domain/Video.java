@@ -56,6 +56,10 @@ public class Video extends VideoAssessmentEntity {
     this.isDeleted = true;
   }
 
+  public void updateSupporter(List<String> supporters) {
+    this.supporters = new ArrayList<>(supporters);
+  }
+
   public String getCreatedBy() {
     return createdBy;
   }
