@@ -1,17 +1,18 @@
 <div class="update-supporters-dialog">  
-  <md-input type="email" placeholder="Supporter Email" #supporter></md-input>
-  <button md-raised-button color="primary" class="add-button" (click)="addSupporter(supporter.value)">Add</button>
+  <md-input type="email" placeholder="Supporter Email" [(ngModel)]="supporterEmail"></md-input>
+  <button md-raised-button color="primary" class="add-button" (click)="addSupporter()" [disabled]="adding">
+    Add
+  </button>
   <md-spinner *ngIf="loading"></md-spinner>
   <md-list *ngIf="!loading">
-    <md-list-item *ngFor="let supporter of supporters; let i = index">
-      {{supporter}}
-      <button md-icon-button class="delete-button" (click)=deleteSupporter(i)>
+    <md-list-item *ngFor="let invitation of invitations; let i = index">
+      {{invitation.supporter}}
+      <button md-icon-button class="delete-button" (click)="deleteSupporter(i)" [disabled]="deleting">
         <md-icon class="md-24">delete</md-icon>
       </button>
     </md-list-item>
   </md-list>
   <div class="action-buttons">
-    <button md-button (click)="cancel($event)">Cancel</button>
-    <button md-raised-button color="primary" (click)="confirm($event)" class="submit-button" [disabled]="submitting">Submit</button>
+    <button md-button (click)="close($event)" class="close-button">Close</button>
   </div>
 </div>

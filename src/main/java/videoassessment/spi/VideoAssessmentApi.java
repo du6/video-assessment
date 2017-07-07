@@ -4,7 +4,6 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.DefaultValue;
-import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -14,6 +13,7 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.inject.Named;
 
 import main.java.videoassessment.Constants;
+import main.java.videoassessment.domain.Invitation;
 import main.java.videoassessment.domain.Response;
 import main.java.videoassessment.domain.Template;
 import main.java.videoassessment.domain.UploadUrl;
@@ -81,20 +82,6 @@ public class VideoAssessmentApi {
     return video;
   }
 
-  @ApiMethod(
-      name = "updateSupporterForVideo",
-      path = "updateSupporterForVideo",
-      httpMethod = HttpMethod.POST)
-  public Video updateSupporterForVideo(
-      final User user,
-      @Named("supporters") @Nullable final List<String> supporters,
-      @Named("video") final String videoId) throws UnauthorizedException {
-    Video video = getVideoForOwnerById(videoId, user);
-    video.updateSupporter(supporters == null ? new ArrayList<String>() : supporters);
-    ofy().save().entity(video);
-    return video;
-  }
-
   private Video getVideoForOwnerById(String videoId, User owner) throws UnauthorizedException {
     Video video = ofy().load().type(Video.class).id(videoId).now();
     if (!video.getCreatedBy().equals(owner.getEmail().toLowerCase())) {
@@ -118,6 +105,28 @@ public class VideoAssessmentApi {
   }
 
   @ApiMethod(
+      name = "getMySupportedVideos",
+      path = "getMySupportedVideos",
+      httpMethod = HttpMethod.POST)
+  public List<Video> getMySupportedVideos(
+      final User user,
+      @Named("limit") @DefaultValue(DEFAULT_QUERY_LIMIT) final int limit) {
+    final Filter supporterFilter =
+        new FilterPredicate("supporter", FilterOperator.EQUAL, user.getEmail().toLowerCase());
+    List<Invitation> invitations =
+        ofy().load().type(Invitation.class).filter(supporterFilter).limit(limit).list();
+    Set<String> videoIds = new HashSet<>();
+    for (Invitation invitation : invitations) {
+      videoIds.add(invitation.getVideoId());
+    }
+    final Filter deleteFilter = new FilterPredicate("isDeleted", FilterOperator.EQUAL, false);
+    final Filter videoIdFilter =
+        new FilterPredicate("id", FilterOperator.IN, videoIds);
+    return ofy().load().type(Video.class).filter(deleteFilter).filter(videoIdFilter).limit(limit)
+        .list();
+  }
+
+  @ApiMethod(
       name = "createResponse",
       path = "createResponse",
       httpMethod = HttpMethod.POST)
@@ -127,6 +136,47 @@ public class VideoAssessmentApi {
     Key<Response> key = factory().allocateId(Response.class);
     Response response = new Response(key.getId(), user.getEmail().toLowerCase(), form);
     return (Response) ApiUtils.createEntity(response, Response.class);
+  }
+
+  @ApiMethod(
+      name = "getInvitationsForVideo",
+      path = "getInvitationsForVideo",
+      httpMethod = HttpMethod.POST)
+  public List<Invitation> getInvitationsForVideo(
+      final User user,
+      @Named("video") final String videoId,
+      @Named("limit") @DefaultValue(DEFAULT_QUERY_LIMIT) final int limit)
+      throws UnauthorizedException {
+    getVideoForOwnerById(videoId, user);
+    final Filter videoFilter = new FilterPredicate("videoId", FilterOperator.EQUAL, videoId);
+    return ofy().load().type(Invitation.class).filter(videoFilter).limit(limit).list();
+  }
+
+  @ApiMethod(
+      name = "inviteSupporter",
+      path = "inviteSupporter",
+      httpMethod = HttpMethod.POST)
+  public Invitation inviteSupporter(
+      final User user,
+      @Named("video") final String videoId,
+      @Named("supporter") final String supporterEmail) throws UnauthorizedException {
+    getVideoForOwnerById(videoId, user);
+    Key<Invitation> key = factory().allocateId(Invitation.class);
+    Invitation invitation = new Invitation(key.getId(), videoId, supporterEmail);
+    return (Invitation) ApiUtils.createEntity(invitation, Invitation.class);
+  }
+
+  @ApiMethod(
+      name = "deleteSupporter",
+      path = "deleteSupporter",
+      httpMethod = HttpMethod.DELETE)
+  public void deleteSupporter(
+      final User user,
+      @Named("id") final Long id) throws UnauthorizedException {
+    Invitation invitation = ofy().load().type(Invitation.class).id(id).now();
+    String videoId = invitation.getVideoId();
+    getVideoForOwnerById(videoId, user);
+    ofy().delete().entity(invitation);
   }
 
   @ApiMethod(

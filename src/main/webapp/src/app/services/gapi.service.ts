@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { Video } from '../common/video';
 import { Template } from '../common/template';
 import { Assessment } from '../common/assessment';
+import { Invitation } from '../common/invitation';
 
 // Google's login API namespace
 declare var gapi: { client: { videoAssessmentApi: any } };
@@ -117,15 +118,42 @@ export class GapiService {
     });
   }
 
-  updateSupporters(videoKey: string, supporters: string[]): Promise<Video> {
+  loadInvitations(videoKey: string): Promise<Invitation[]> {
     return new Promise((resolve, reject) => {
-      this.gapi_.client.videoAssessmentApi.updateSupporterForVideo(
-          {video: videoKey, supporters: supporters || []})
+      this.gapi_.client.videoAssessmentApi.getInvitationsForVideo({
+          video: videoKey
+      }).execute((resp) => {
+        if (resp.error) {
+            reject(resp.error);
+          } else {
+            resolve(<Invitation[]> resp.result.items);
+          }
+      });
+    });
+  }
+
+  inviteSupporter(videoKey: string, supporter: string): Promise<Invitation> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.inviteSupporter(
+          {video: videoKey, supporter: supporter})
           .execute((resp) => {
             if (resp.error) {
                 reject(resp.error);
               } else if (resp.result) {
-                resolve(<Video> resp.result);
+                resolve(<Invitation> resp.result);
+              }
+          });
+    });
+  }
+
+  deleteSupporter(invitationId: number): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.deleteSupporter({id: invitationId})
+          .execute((resp) => {
+            if (resp.error) {
+                reject(resp.error);
+              } else {
+                resolve("OK");
               }
           });
     });
