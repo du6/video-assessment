@@ -15,6 +15,7 @@ import com.googlecode.objectify.cmd.Query;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -119,11 +120,14 @@ public class VideoAssessmentApi {
     for (Invitation invitation : invitations) {
       videoIds.add(invitation.getVideoId());
     }
-    final Filter deleteFilter = new FilterPredicate("isDeleted", FilterOperator.EQUAL, false);
-    final Filter videoIdFilter =
-        new FilterPredicate("id", FilterOperator.IN, videoIds);
-    return ofy().load().type(Video.class).filter(deleteFilter).filter(videoIdFilter).limit(limit)
-        .list();
+    Map<String, Video> supportedVideoMap = ofy().load().type(Video.class).ids(videoIds);
+    List<Video> supportedVideos = new ArrayList<>();
+    for (String id : supportedVideoMap.keySet()) {
+      if (!supportedVideoMap.get(id).isDeleted()) {
+        supportedVideos.add(supportedVideoMap.get(id));
+      }
+    }
+    return supportedVideos;
   }
 
   @ApiMethod(

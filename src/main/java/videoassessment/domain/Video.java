@@ -66,4 +66,8 @@ public class Video extends VideoAssessmentEntity {
   }
 
   private Video() {}
+
+  public boolean isDeleted() {
+    return isDeleted;
+  }
 }

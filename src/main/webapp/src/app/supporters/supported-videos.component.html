@@ -1,3 +1,13 @@
 <md-card class="video-assessement-supported-videos">
   <md-card-title>My supported videos:</md-card-title>
+  <md-divider></md-divider>
+  <md-card-content>
+    <md-spinner *ngIf="loading"></md-spinner>
+    <video-assessment-video-list 
+        *ngIf="!loading" 
+        [videos]="videos"
+        [canManageSupporters]="false"
+        [canDeleteVideo]="false">
+    </video-assessment-video-list>
+  </md-card-content>
 </md-card>

@@ -1,8 +1,8 @@
 <div class="video-detail">
   <a>{{video.title}}</a>
   <div class="action-buttons">
-    <button md-raised-button color="primary" class="supporter-button" (click)="openUpdateSupportersDialog($event)">Update Supporters</button>
-    <button md-icon-button class="delete-button" (click)=deleteVideo($event)>
+    <button *ngIf="canManageSupporters" md-raised-button color="primary" class="supporter-button" (click)="openUpdateSupportersDialog($event)">Update Supporters</button>
+    <button *ngIf="canDeleteVideo" md-icon-button class="delete-button" (click)=deleteVideo($event)>
       <md-icon class="md-24">delete</md-icon>
     </button>
   </div>

@@ -53,6 +53,8 @@ import { Video } from '../common/video';
 })
 export class VideoListComponent {
   @Input() videos: List<Video>;
+  @Input() canManageSupporters: boolean;
+  @Input() canDeleteVideo: boolean;
   @Output() videoDeleted: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private _router: Router) {

@@ -13,7 +13,9 @@
     <video-assessment-video-list 
         *ngIf="!loading" 
         [videos]="videos" 
-        (videoDeleted)="onVideoDeleted($event)">
+        (videoDeleted)="onVideoDeleted($event)"
+        [canManageSupporters]="true"
+        [canDeleteVideo]="true">
     </video-assessment-video-list>
   </md-card-content>
 </md-card>

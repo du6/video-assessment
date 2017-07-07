@@ -44,6 +44,18 @@ export class GapiService {
             }));
   }
 
+  loadMySupportedVideos(limit: number = 1000): Promise<Video[]> {
+    return new Promise((resolve,reject) => 
+        this.gapi_.client.videoAssessmentApi.getMySupportedVideos(limit)
+            .execute((resp) => {
+              if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Video[]> resp.result.items);
+              }
+            }));
+  }
+
   loadTemplate(): Promise<Template> {
     return new Promise((resolve, reject) => {
       this.gapi_.client.videoAssessmentApi.getTemplate()

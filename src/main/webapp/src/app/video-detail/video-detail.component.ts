@@ -18,6 +18,8 @@ import { UpdateSupportersDialog } from '../supporters/update-supporters-dialog.c
 })
 export class VideoDetailComponent {
   @Input() video: Video;
+  @Input() canManageSupporters: boolean;
+  @Input() canDeleteVideo: boolean;
   @Output() videoDeleted: EventEmitter<Video> = new EventEmitter<Video>();
   private _dialogRef: MdDialogRef<any>;
 
