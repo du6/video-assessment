@@ -11,7 +11,6 @@
     </button>
     <span>Presentation Assessment</span>
     <span class="fill-in-space"></span>
-    <button md-button *ngIf="!isSignedIn()" (click)="signIn()">Sign In with Google</button>
     <button md-button *ngIf="isSignedIn()" (click)="signOut()">Sign Out</button>
   </md-toolbar>
   <router-outlet></router-outlet>

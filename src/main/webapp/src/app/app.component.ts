@@ -16,11 +16,7 @@ export class VideoAssessmentAppComponent {
     return this.auth_.isSignedIn();
   }
 
-  signIn() {
-    this.auth_.signIn();
-  }
-
   signOut() {
-    this.auth_.signOut();
+    this.auth_.signOut().then(() => this.router_.navigate(['/login']));;
   }
 }

@@ -35,12 +35,14 @@
           </div>
         </md-list-item>
       </md-list>
-      <button md-raised-button 
-              class="submit" 
-              color="primary" 
-              [disabled]="submitting"
-              (click)="submit()" 
-              md-button>Submit</button>
+      <div class="action-buttons">
+        <button md-raised-button
+                class="submit"
+                color="primary"
+                [disabled]="submitting"
+                (click)="submit()"
+                md-button>Submit</button>
+      </div>
     </md-card-content>
   </md-card>
 </div>

@@ -7,6 +7,7 @@ import { HttpModule } from '@angular/http';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 import { VideoAssessmentAppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { UploadComponent } from './upload/upload.component';
 import { VideoDetailComponent } from './video-detail/video-detail.component';
@@ -16,14 +17,16 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { UpdateSupportersDialog } from './supporters/update-supporters-dialog.component';
 import { SupportedVideosComponent } from './supporters/supported-videos.component';
 import { AuthService } from './services/auth.service';
+import { AuthGuard } from './services/auth-guard.service';
 import { GapiService } from './services/gapi.service';
 import { UploadService } from './services/upload.service';
 
 const routes: Routes = [
-  { path: 'supported', component: SupportedVideosComponent },
-  { path: 'video-comment/:blobkey', component: VideoCommentComponent },
-  { path: 'home', component: HomeComponent },
-  { path: '', component: HomeComponent },
+  { path: 'supported', component: SupportedVideosComponent, canActivate: [AuthGuard] },
+  { path: 'video-comment/:blobkey', component: VideoCommentComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent },
+  { path: '', component: LoginComponent },
 ];
 
 @NgModule({
@@ -35,9 +38,10 @@ const routes: Routes = [
     ReactiveFormsModule,
     HttpModule,
   ],
-  providers: [AuthService, GapiService, UploadService, CookieService],
+  providers: [AuthService, AuthGuard, GapiService, UploadService, CookieService],
   declarations: [
     VideoAssessmentAppComponent, 
+    LoginComponent,
     HomeComponent,
     UploadComponent,
     VideoDetailComponent,
