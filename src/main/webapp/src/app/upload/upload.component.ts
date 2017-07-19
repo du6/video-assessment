@@ -37,6 +37,9 @@ export class UploadComponent {
     // Prevent page reloading
     event.preventDefault();
     this.disable = true;
+    if (!this.title) {
+      this.title = this.file.name;
+    }
     let uploadFormData = new FormData();
     uploadFormData.append('file', this.file, this.file.name);
     uploadFormData.append('title', this.title);
