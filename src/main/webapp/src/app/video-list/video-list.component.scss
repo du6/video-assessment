@@ -4,7 +4,7 @@ md-list.video-list {
   md-list-item {
     display: block;
     
-    .md-list-item {
+    &.mat-list-item {
       align-items: flex-start;
       border-bottom: 1px solid gray;
       height: 100%;

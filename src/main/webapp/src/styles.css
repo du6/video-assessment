@@ -21,6 +21,6 @@ md-list.video-list {
   padding-top: 0;
 }
 
-md-list.comment-list md-list-item .md-list-item {
+.mat-list.comment-list .mat-list-item .mat-list-item-content {
   height: 100%;
 }
