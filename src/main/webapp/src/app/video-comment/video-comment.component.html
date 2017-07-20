@@ -21,7 +21,9 @@
                 {{assessment.comment}} (score:{{assessment.score}})
               </li>
             </ul>
-            <md-textarea class="comment" [(ngModel)]="comments[i]"></md-textarea>
+            <md-input-container class="comment">
+              <textarea mdInput [(ngModel)]="comments[i]"></textarea>
+            </md-input-container>
             <span>Score:</span>
             <md-slider class="score-slider" 
                        [min]="0" 

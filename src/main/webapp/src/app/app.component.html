@@ -1,4 +1,4 @@
-<md-sidenav-layout class="video-assessment-app">
+<md-sidenav-container class="video-assessment-app">
   <md-sidenav #sidenav mode="side" class="app-sidenav">
     <video-assessment-sidenav></video-assessment-sidenav>
   </md-sidenav>
@@ -14,6 +14,4 @@
     <button md-button *ngIf="isSignedIn()" (click)="signOut()">Sign Out</button>
   </md-toolbar>
   <router-outlet></router-outlet>
-</md-sidenav-layout>
-
-<div id="snackbar"></div>
+</md-sidenav-container>

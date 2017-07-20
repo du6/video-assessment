@@ -5,12 +5,14 @@ import {
   EventEmitter,
   ViewEncapsulation,
   ChangeDetectionStrategy,
+} from '@angular/core';
+import {
   trigger,
   state,
   style,
   transition,
   animate,
-} from '@angular/core';
+} from '@angular/animations';
 import { List } from 'immutable';
 import { Router } from '@angular/router';
 

@@ -1,5 +1,7 @@
-<div class="update-supporters-dialog">  
-  <md-input type="email" placeholder="Supporter Email" [(ngModel)]="supporterEmail"></md-input>
+<div class="update-supporters-dialog">
+  <md-input-container>
+    <input mdInput type="email" placeholder="Supporter Email" [(ngModel)]="supporterEmail">
+  </md-input-container>
   <button md-raised-button color="primary" class="add-button" (click)="addSupporter()" [disabled]="adding">
     Add
   </button>

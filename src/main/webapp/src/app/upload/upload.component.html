@@ -1,5 +1,7 @@
 <form enctype="multipart/form-data" class="video-assessment-upload">
-  <md-input name="title" placeholder="video name" [(ngModel)]="title"></md-input>
+  <md-input-container>
+    <input mdInput name="title" placeholder="video name" [(ngModel)]="title">
+  </md-input-container>
   <input name="file" type="file" accept="video/*" (change)="onFileChange($event)">
   <div>
     <button type="submit"
