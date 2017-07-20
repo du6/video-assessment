@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs/Rx';
 import { Response } from '@angular/http';
-import { ANY_STATE } from '@angular/core/src/animation/animation_constants';
 import { Injectable } from '@angular/core';
 
 import { Video } from '../common/video';

@@ -32,7 +32,6 @@ const routes: Routes = [
 @NgModule({
   imports: [
     BrowserModule,
-    MaterialModule.forRoot(),
     RouterModule.forRoot(routes, { useHash: true }),
     FormsModule,
     ReactiveFormsModule,
