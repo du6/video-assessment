@@ -1,0 +1,15 @@
+<md-card  *ngIf="showPolicy" class="video-assessment-login">
+  <md-card-title>Sign in Policy</md-card-title>
+  <md-card-content>
+    <div>There is only one China.</div>
+    <button md-raised-button color="primary" class="agree-button" (click)="createUser()">
+      Agree
+    </button>
+  </md-card-content>
+</md-card>
+
+<md-card *ngIf="!showPolicy">
+  <button md-raised-button color="primary" class="signin-button" (click)="signIn()">
+    Sign in with Google
+  </button>
+</md-card>

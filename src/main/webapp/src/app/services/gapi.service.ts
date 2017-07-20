@@ -20,6 +20,32 @@ export class GapiService {
     this.gapi_ = gapi;
   }
 
+  createUser(): Promise<string> {
+    return new Promise((resolve, reject) => 
+        this.gapi_.client.videoAssessmentApi.createUser()
+            .execute((resp) => {
+              if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<string> resp.result.email);
+              }
+            }));
+  }
+
+  getUserEmail(): Promise<string> {
+    return new Promise((resolve, reject) => 
+        this.gapi_.client.videoAssessmentApi.getUser()
+            .execute((resp) => {
+              if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result && resp.result.email) {
+                resolve(<string> resp.result.email);
+              } else {
+                reject('user does not exist');
+              }
+            }));
+  }
+
   getUploadUrl(): Promise<string> {
     return new Promise((resolve, reject) => 
         this.gapi_.client.videoAssessmentApi.getUploadUrl()

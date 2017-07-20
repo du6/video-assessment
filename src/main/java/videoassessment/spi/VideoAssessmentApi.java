@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 import javax.inject.Named;
 
 import main.java.videoassessment.Constants;
+import main.java.videoassessment.domain.AppEngineUser;
 import main.java.videoassessment.domain.Invitation;
 import main.java.videoassessment.domain.Response;
 import main.java.videoassessment.domain.Template;
@@ -47,6 +48,25 @@ public class VideoAssessmentApi {
 
   private static final String DEFAULT_QUERY_LIMIT = "1000";
   private static final Logger LOG = Logger.getLogger(VideoAssessmentApi.class.getName());
+
+  @ApiMethod(
+      name = "createUser",
+      path = "createUser",
+      httpMethod = HttpMethod.POST)
+  public AppEngineUser createUser(
+      final User user) {
+    AppEngineUser appEngineUser = new AppEngineUser(user);
+    return (AppEngineUser) ApiUtils.createEntity(appEngineUser, AppEngineUser.class);
+  }
+
+  @ApiMethod(
+      name = "getUser",
+      path = "getUser",
+      httpMethod = HttpMethod.POST)
+  public AppEngineUser getUser(
+      final User user) {
+    return ofy().load().type(AppEngineUser.class).id(user.getEmail().toLowerCase()).now();
+  }
 
   @ApiMethod(
       name = "createVideo",

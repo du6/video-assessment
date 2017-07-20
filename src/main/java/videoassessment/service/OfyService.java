@@ -5,6 +5,7 @@ import com.googlecode.objectify.ObjectifyFactory;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.impl.translate.opt.joda.JodaTimeTranslators;
 
+import main.java.videoassessment.domain.AppEngineUser;
 import main.java.videoassessment.domain.Invitation;
 import main.java.videoassessment.domain.Response;
 import main.java.videoassessment.domain.Template;
@@ -20,6 +21,7 @@ public class OfyService {
     static {
         JodaTimeTranslators.add(factory());
 
+        factory().register(AppEngineUser.class);
         factory().register(Response.class);
         factory().register(Template.class);
         factory().register(Video.class);

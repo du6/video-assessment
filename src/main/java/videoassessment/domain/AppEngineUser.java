@@ -1,12 +1,11 @@
 package main.java.videoassessment.domain;
 
 import com.google.appengine.api.users.User;
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
 @Entity
-public class AppEngineUser {
+public class AppEngineUser extends VideoAssessmentEntity {
   @Id
   private String email;
 
@@ -14,7 +13,7 @@ public class AppEngineUser {
 
   public AppEngineUser(User user) {
     this.user = user;
-    this.email = user.getEmail();
+    this.email = user.getEmail().toLowerCase();
   }
 
   public User getUser() {
@@ -23,10 +22,6 @@ public class AppEngineUser {
 
   public String getEmail() {
     return email;
-  }
-
-  public Key<AppEngineUser> getKey() {
-    return Key.create(AppEngineUser.class, email);
   }
 
   private AppEngineUser() {}
