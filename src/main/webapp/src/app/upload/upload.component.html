@@ -2,7 +2,7 @@
   <md-input-container>
     <input mdInput name="title" placeholder="video name" [(ngModel)]="title">
   </md-input-container>
-  <input name="file" type="file" accept="video/*,.mts" (change)="onFileChange($event)">
+  <input name="file" type="file" (change)="onFileChange($event)">
   <div>
     <button type="submit"
             class="upload-button"

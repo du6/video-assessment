@@ -22,7 +22,7 @@ export class LoginComponent {
   signIn() {
     this.auth_.signIn().then(() => {
       this.gapi_.getUserEmail()
-          .then(() => this.router_.navigate(['/home']))
+          .then(() => this.router_.navigate(['/home',]))
           .catch(() => {
             //TODO(du6): display policy when we have it.
             //this.showPolicy = true;
