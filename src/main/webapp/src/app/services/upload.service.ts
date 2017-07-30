@@ -38,7 +38,7 @@ export class UploadService {
       };
 
       xhr.open('POST', uploadUrl, true);
-      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.setRequestHeader('Accept', 'text/plain');
       xhr.setRequestHeader('X-XSRF-TOKEN', this._cookie.get('XSRF-TOKEN'));
       xhr.send(uploadForm);
     });

@@ -42,6 +42,8 @@ public class Upload extends HttpServlet {
       res.setStatus(HttpServletResponse.SC_ACCEPTED);
       res.setHeader("Content-Type", "text/plain");
       res.setHeader("success", "yes");
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Access-Control-Allow-Headers", "X-Requested-With");
       PrintWriter writer = res.getWriter();
       writer.write(blobKeys.get(0).getKeyString());
       writer.close();

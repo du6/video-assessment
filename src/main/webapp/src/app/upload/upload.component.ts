@@ -51,6 +51,7 @@ export class UploadComponent {
         video.title = this.title;
         video.id = blobKey;
         this.videoUploaded.emit(video);
+        this.title = '';
       }
     );
 
