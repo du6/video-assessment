@@ -24,8 +24,10 @@ export class LoginComponent {
       this.gapi_.getUserEmail()
           .then(() => this.router_.navigate(['/home']))
           .catch(() => {
-            this.showPolicy = true;
-            this.changeDetectorRef_.detectChanges();
+            //TODO(du6): display policy when we have it.
+            //this.showPolicy = true;
+            //this.changeDetectorRef_.detectChanges();
+            this.createUser();
           });
     });
   }
