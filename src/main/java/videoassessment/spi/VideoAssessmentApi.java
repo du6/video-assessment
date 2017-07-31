@@ -55,7 +55,11 @@ public class VideoAssessmentApi {
       httpMethod = HttpMethod.POST)
   public AppEngineUser createUser(
       final User user) {
-    AppEngineUser appEngineUser = new AppEngineUser(user);
+    AppEngineUser appEngineUser = getUser(user);
+    if (appEngineUser != null) {
+      return appEngineUser;
+    }
+    appEngineUser = new AppEngineUser(user);
     return (AppEngineUser) ApiUtils.createEntity(appEngineUser, AppEngineUser.class);
   }
 

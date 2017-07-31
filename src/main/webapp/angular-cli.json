@@ -12,17 +12,14 @@
       ],
       "index": "index.html",
       "main": "main.ts",
+      "polyfills": "polyfills.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.json",
       "prefix": "app",
       "mobile": false,
       "styles": [
         "styles.css",
-        "material2-app-theme.scss",
-        "../node_modules/vis/dist/vis.css"
-      ],
-      "scripts": [
-        "../node_modules/vis/dist/vis.js"
+        "material2-app-theme.scss"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
