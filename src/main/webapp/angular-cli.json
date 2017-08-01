@@ -19,7 +19,11 @@
       "mobile": false,
       "styles": [
         "styles.css",
-        "material2-app-theme.scss"
+        "material2-app-theme.scss",
+        "../node_modules/video.js/dist/video-js.css"
+      ],
+      "scripts": [
+        "../node_modules/video.js/dist/video.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

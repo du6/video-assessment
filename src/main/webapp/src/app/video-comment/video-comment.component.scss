@@ -1,6 +1,13 @@
 @import '../common/color';
 
 .video-comment {
+  .video-display {
+    video {
+      height: auto;
+      width: 100%;
+    }
+  }
+  
   md-list.comment-list {
     md-list-item {
       display: block;
