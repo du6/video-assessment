@@ -25,6 +25,9 @@ public class Video extends VideoAssessmentEntity {
   @Index
   private boolean isDeleted = false;
 
+  @Index
+  private Long topicId;
+
   private String title;
 
   public Video(String id, String createdBy, String title) {
