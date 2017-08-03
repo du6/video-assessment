@@ -17,12 +17,14 @@ import { VideoCommentComponent } from './video-comment/video-comment.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { UpdateSupportersDialog } from './supporters/update-supporters-dialog.component';
 import { SupportedVideosComponent } from './supporters/supported-videos.component';
+import { GroupListComponent } from './groups/group-list.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { GapiService } from './services/gapi.service';
 import { UploadService } from './services/upload.service';
 
 const routes: Routes = [
+  { path: 'groups', component: GroupListComponent, canActivate: [AuthGuard] },
   { path: 'supported', component: SupportedVideosComponent, canActivate: [AuthGuard] },
   { path: 'video-comment/:blobkey', component: VideoCommentComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
@@ -52,6 +54,7 @@ const routes: Routes = [
     SidenavComponent, 
     UpdateSupportersDialog,
     SupportedVideosComponent,
+    GroupListComponent,
   ],
   entryComponents: [UpdateSupportersDialog],
   bootstrap: [VideoAssessmentAppComponent],

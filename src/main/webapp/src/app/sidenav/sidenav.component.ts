@@ -17,4 +17,8 @@ export class SidenavComponent {
   gotoSupported() {
     this._router.navigate(['/supported']);
   }
+
+  gotoGroups() {
+    this._router.navigate(['/groups']);
+  }
 }
