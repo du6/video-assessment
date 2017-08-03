@@ -8,6 +8,7 @@ import com.googlecode.objectify.impl.translate.opt.joda.JodaTimeTranslators;
 import main.java.videoassessment.domain.AppEngineUser;
 import main.java.videoassessment.domain.Group;
 import main.java.videoassessment.domain.Invitation;
+import main.java.videoassessment.domain.Membership;
 import main.java.videoassessment.domain.Response;
 import main.java.videoassessment.domain.Template;
 import main.java.videoassessment.domain.Topic;
@@ -30,6 +31,7 @@ public class OfyService {
         factory().register(Invitation.class);
         factory().register(Group.class);
         factory().register(Topic.class);
+        factory().register(Membership.class);
     }
 
     /**
