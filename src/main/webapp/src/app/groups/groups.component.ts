@@ -82,6 +82,9 @@ export class GroupsComponent {
   openCreateGroupDialog(event: any) {
     event.stopPropagation();
     this.dialogRef_ = this._dialog.open(CreateGroupDialog);
-    this.dialogRef_.afterClosed().subscribe((group: Group) => this.addGroup_(group));
+    this.dialogRef_.afterClosed().subscribe((group: Group) => {
+      if (group != null) {
+        this.addGroup_(group);
+      }});
   }
 }
