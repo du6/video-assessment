@@ -1,3 +1,25 @@
-.video-assessment-group-list {
-  
+@import '../common/color';
+
+md-list.group-list {
+  md-list-item {
+    display: block;
+    
+    &.mat-list-item {
+      align-items: flex-start;
+      border-bottom: 1px solid gray;
+      height: 100%;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: $hover-background-color;
+      cursor: pointer;
+    }
+
+    video-assessment-group-detail {
+      width: 100%;
+    }
+  }
 }

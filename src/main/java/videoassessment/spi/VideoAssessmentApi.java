@@ -4,6 +4,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 import com.google.api.server.spi.config.DefaultValue;
+import com.google.api.server.spi.config.Nullable;
 import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -411,10 +412,21 @@ public class VideoAssessmentApi {
       httpMethod = HttpMethod.DELETE)
   public void deleteMember(
       final User user,
-      @Named("id") final Long id) throws UnauthorizedException {
-    Membership membership = ofy().load().type(Membership.class).id(id).now();
-    Long groupId = membership.getGroupId();
-    getOwnedGroupById(groupId, user);
-    ofy().delete().entity(membership);
+      @Named("groupId") final Long groupId,
+      @Named("member") @Nullable String member) throws UnauthorizedException {
+    if (member == null) {
+      member = user.getEmail();
+    }
+    final Filter groupFilter =
+        new FilterPredicate("groupId", FilterOperator.EQUAL, groupId);
+    final Filter membershipFilter =
+        new FilterPredicate("user", FilterOperator.EQUAL, member.toLowerCase());
+    List<Membership> memberships =
+        ofy().load().type(Membership.class).filter(groupFilter).filter(membershipFilter).list();
+
+    Group group = ofy().load().type(Group.class).id(groupId).now();
+    if (member.equals(user.getEmail()) || group.getOwner().equals(user.getEmail().toLowerCase())) {
+      ofy().delete().entities(memberships);
+    }
   }
 }

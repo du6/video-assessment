@@ -17,7 +17,8 @@ md-sidenav {
   min-height: 200px;
 }
 
-md-list.video-list {
+md-list.video-list,
+md-list.group-list {
   padding-top: 0;
 }
 

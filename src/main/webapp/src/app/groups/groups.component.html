@@ -1,0 +1,28 @@
+<div class="video-assessment-groups">
+  <md-card>
+    <md-card-title>My Owned Groups</md-card-title>
+    <md-divider></md-divider>
+    <md-card-content>
+      <md-spinner *ngIf="loadingOwnedGroups"></md-spinner>
+      <video-assessment-group-list 
+          *ngIf="!loadingOwnedGroups"
+          [canManageGroup]="true"
+          [groups]="myOwnedGroups" 
+          (groupDeleted)="onOwnedGroupDeleted($event)">
+      </video-assessment-group-list>
+    </md-card-content>
+  </md-card>
+
+  <md-card>
+    <md-card-title>Groups that I am a member of</md-card-title>
+    <md-divider></md-divider>
+    <md-card-content>
+      <md-spinner *ngIf="loadingJoinedGroups"></md-spinner>
+      <video-assessment-group-list 
+          *ngIf="!loadingJoinedGroups" 
+          [groups]="myJoinedGroups" 
+          (groupDeleted)="onJoinedGroupDeleted($event)">
+      </video-assessment-group-list>
+    </md-card-content>
+  </md-card>
+</div>

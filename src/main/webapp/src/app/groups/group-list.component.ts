@@ -1,4 +1,6 @@
 import {
+  Input,
+  Output,
   Component,
   EventEmitter,
   ViewEncapsulation,
@@ -13,6 +15,8 @@ import {
 } from '@angular/animations';
 import { List } from 'immutable';
 import { Router } from '@angular/router';
+
+import { Group } from '../common/group';
 
 @Component({
   selector: 'video-assessment-group-list',
@@ -50,13 +54,18 @@ import { Router } from '@angular/router';
   ]
 })
 export class GroupListComponent {
+  @Input() groups: List<Group>;
+  @Input() canManageGroup: boolean;
+  @Output() groupDeleted: EventEmitter<number> = new EventEmitter<number>();
+
   constructor(private _router: Router) {
   }
 
-  deleteGroup(id: String) {
+  deleteGroup(group: Group) {
+    this.groupDeleted.emit(group.id);
   }
 
-  goToVideoComment(blobkey: string) {
-    this._router.navigate(['/video-comment', blobkey]);
+  goToGroup(groupId: number) {
+    this._router.navigate(['/group', groupId]);
   }
 }

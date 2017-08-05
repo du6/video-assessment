@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Rx';
 import { Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 
+import { Group } from '../common/group';
 import { Video } from '../common/video';
 import { Template } from '../common/template';
 import { Assessment } from '../common/assessment';
@@ -186,6 +187,56 @@ export class GapiService {
   deleteSupporter(invitationId: number): Promise<string> {
     return new Promise((resolve, reject) => {
       this.gapi_.client.videoAssessmentApi.deleteSupporter({id: invitationId})
+          .execute((resp) => {
+            if (resp.error) {
+                reject(resp.error);
+              } else {
+                resolve("OK");
+              }
+          });
+    });
+  }
+
+  loadMyOwnedGroups(limit: number = 1000): Promise<Group[]> {
+    return new Promise((resolve,reject) => 
+        this.gapi_.client.videoAssessmentApi.getMyOwnedGroups(limit)
+            .execute((resp) => {
+              if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Group[]> resp.result.items);
+              }
+            }));
+  }
+
+  loadMyJoinedGroups(limit: number = 1000): Promise<Group[]> {
+    return new Promise((resolve,reject) => 
+        this.gapi_.client.videoAssessmentApi.getMyJoinedGroups(limit)
+            .execute((resp) => {
+              if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Group[]> resp.result.items);
+              }
+            }));
+  }
+
+  deleteGroup(groupId: number): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.deleteGroup({id: groupId})
+          .execute((resp) => {
+            if (resp.error) {
+                reject(resp.error);
+              } else {
+                resolve("OK");
+              }
+          });
+    });
+  }
+
+  deleteMember(groupId: number, member: string = null): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.deleteMember({groupId: groupId, member: member})
           .execute((resp) => {
             if (resp.error) {
                 reject(resp.error);

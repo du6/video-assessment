@@ -1,0 +1,25 @@
+@import '../common/color';
+
+.group-detail {
+  width: 100%;
+
+  a {
+    color: blue;
+    line-height: 40px;
+    text-decoration: underline;
+  }
+
+  .action-buttons {
+    float: right;
+    height: 40px;
+  }
+
+  .manage-button {
+    margin-right: 20px;
+    vertical-align: bottom;
+  }
+
+  .delete-button {
+    background-color: $button-background-color;
+  }
+}
