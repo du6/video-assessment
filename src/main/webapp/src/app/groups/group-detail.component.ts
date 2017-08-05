@@ -39,7 +39,7 @@ export class GroupDetailComponent {
     }
   }
 
-  openMangeGroupDialog(event: any) {
+  openManageGroupDialog(event: any) {
     event.stopPropagation();
   }
 }

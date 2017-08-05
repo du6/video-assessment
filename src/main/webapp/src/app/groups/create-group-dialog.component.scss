@@ -1,0 +1,19 @@
+.create-group-dialog {
+  md-input {
+    font-size: 16px;
+    padding-top: 10px;
+    margin-top: 20px;
+  }
+  
+  .group-name {
+    display: block;
+  }
+
+  .submit-button {
+    float: right;
+  }
+
+  .action-buttons {
+    margin-top: 20px;
+  }
+}

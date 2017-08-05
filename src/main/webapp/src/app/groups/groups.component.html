@@ -1,6 +1,7 @@
 <div class="video-assessment-groups">
   <md-card>
-    <md-card-title>My Owned Groups</md-card-title>
+    <md-card-title class="owned-group-title">My owned groups</md-card-title>
+    <button md-raised-button color="primary" class="create-button" (click)="openCreateGroupDialog($event)">Create Group</button>
     <md-divider></md-divider>
     <md-card-content>
       <md-spinner *ngIf="loadingOwnedGroups"></md-spinner>
@@ -14,7 +15,7 @@
   </md-card>
 
   <md-card>
-    <md-card-title>Groups that I am a member of</md-card-title>
+    <md-card-title>Groups I am a member of</md-card-title>
     <md-divider></md-divider>
     <md-card-content>
       <md-spinner *ngIf="loadingJoinedGroups"></md-spinner>

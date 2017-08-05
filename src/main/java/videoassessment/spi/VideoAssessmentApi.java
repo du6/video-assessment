@@ -301,6 +301,26 @@ public class VideoAssessmentApi {
   }
 
   @ApiMethod(
+      name = "createGroupWithMembers",
+      path = "createGroupWithMembers",
+      httpMethod = HttpMethod.POST)
+  public Group createGroupWithMembers(
+      final User user,
+      @Named("name") final String name,
+      @Named("members") final List<String> members) {
+    Key<Group> key = factory().allocateId(Group.class);
+    Group group = new Group(key.getId(), user.getEmail().toLowerCase(), name);
+    ApiUtils.createEntity(group, Group.class);
+    List<Membership> membershipList = new ArrayList<>();
+    for (String member : members) {
+      Key<Membership> membershipKey = factory().allocateId(Membership.class);
+      membershipList.add(new Membership(membershipKey.getId(), group.getId(), member.toLowerCase()));
+    }
+    ofy().save().entities(membershipList);
+    return group;
+  }
+
+  @ApiMethod(
       name = "deleteGroup",
       path = "deleteGroup",
       httpMethod = HttpMethod.DELETE)

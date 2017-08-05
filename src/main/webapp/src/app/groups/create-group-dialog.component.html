@@ -1,0 +1,21 @@
+<div class="create-group-dialog">
+  <md-input-container class="group-name"> 
+    <input mdInput placeholder="Group Name" [(ngModel)]="name">
+  </md-input-container>
+  <md-input-container>
+    <input mdInput type="email" placeholder="Member Email" #member [(ngModel)]="memberEmail">
+  </md-input-container>
+  <button md-raised-button color="primary" class="add-button" (click)="addMember(member.value)">Add</button>
+  <md-list>
+    <md-list-item *ngFor="let member of members; let i = index">
+      {{member}}
+      <button md-icon-button class="delete-button" (click)=deleteMember(i)>
+        <md-icon class="md-24">delete</md-icon>
+      </button>
+    </md-list-item>
+  </md-list>
+  <div class="action-buttons">
+    <button md-button (click)="cancel($event)">Cancel</button>
+    <button md-raised-button color="primary" (click)="confirm($event)" class="submit-button" [disabled]="submitting">Create</button>
+  </div>
+</div>

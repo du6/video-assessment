@@ -1,8 +1,10 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { List } from 'immutable';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { GapiService } from '../services/gapi.service';
 import { Group } from '../common/group';
+import { CreateGroupDialog } from '../groups/create-group-dialog.component';
 
 @Component({
   selector: 'video-assessment-groups',
@@ -14,8 +16,12 @@ export class GroupsComponent {
   loadingJoinedGroups: boolean;
   myOwnedGroups: List<Group> = List<Group>();
   myJoinedGroups: List<Group> = List<Group>();
+  
+  private dialogRef_: MdDialogRef<CreateGroupDialog> | null;
 
-  constructor(private changeDetectorRef_: ChangeDetectorRef, private gapi_: GapiService) {
+  constructor(private changeDetectorRef_: ChangeDetectorRef, 
+    private gapi_: GapiService, 
+    private _dialog: MdDialog) {
   }
 
   ngOnInit() {
@@ -71,5 +77,11 @@ export class GroupsComponent {
       this.myJoinedGroups = this.myJoinedGroups.delete(index);
       this.changeDetectorRef_.detectChanges();
     }
+  }
+
+  openCreateGroupDialog(event: any) {
+    event.stopPropagation();
+    this.dialogRef_ = this._dialog.open(CreateGroupDialog);
+    this.dialogRef_.afterClosed().subscribe((group: Group) => this.addGroup_(group));
   }
 }
