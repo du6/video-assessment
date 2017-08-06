@@ -1,25 +1,26 @@
 @import '../common/color';
 
-.group-detail {
-  width: 100%;
+md-list.group-topics,
+md-list.group-members {
+  md-list-item {
+    display: block;
+    
+    &.mat-list-item {
+      align-items: flex-start;
+      border-bottom: 1px solid gray;
+      height: 100%;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
 
-  a {
-    color: blue;
-    line-height: 40px;
-    text-decoration: underline;
-  }
+    &:hover,
+    &:focus {
+      background-color: $hover-background-color;
+      cursor: pointer;
+    }
 
-  .action-buttons {
-    float: right;
-    height: 40px;
-  }
-
-  .manage-button {
-    margin-right: 20px;
-    vertical-align: bottom;
-  }
-
-  .delete-button {
-    background-color: $button-background-color;
+    video-assessment-group-item {
+      width: 100%;
+    }
   }
 }

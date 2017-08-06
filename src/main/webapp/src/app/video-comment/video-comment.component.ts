@@ -13,7 +13,7 @@ import { Assessment } from '../common/assessment';
 })
 export class VideoCommentComponent implements OnInit, OnDestroy {
   blobkey: string;
-  sub: any
+  sub: any;
   templateId: number;
   questions: List<string> = List<string>();
   assessments: Map<number, List<Assessment>> = new Map();

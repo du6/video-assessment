@@ -113,7 +113,7 @@ public class VideoAssessmentApi {
 
   private Video getVideoForOwnerById(String videoId, User owner) throws UnauthorizedException {
     Video video = ofy().load().type(Video.class).id(videoId).now();
-    if (!video.getCreatedBy().equals(owner.getEmail().toLowerCase())) {
+    if (!video.getCreatedBy().equalsIgnoreCase(owner.getEmail())) {
       throw new UnauthorizedException("User is not video owner.");
     }
     return video;
@@ -261,7 +261,7 @@ public class VideoAssessmentApi {
     }
 
     String videoOwner = video.getCreatedBy();
-    if (videoOwner.equals(user.getEmail().toLowerCase())) {
+    if (videoOwner.equalsIgnoreCase(user.getEmail())) {
       return query.list();
     }
 
@@ -321,6 +321,23 @@ public class VideoAssessmentApi {
   }
 
   @ApiMethod(
+      name = "getGroupById",
+      path = "getGroupById",
+      httpMethod = HttpMethod.POST)
+  public Group getGroupById(final User user, @Named("id") final Long id) {
+    return ofy().load().type(Group.class).id(id).now();
+  }
+
+  @ApiMethod(
+      name = "checkOwnership",
+      path = "checkOwnership",
+      httpMethod = HttpMethod.POST)
+  public Group checkOwnership(final User user, @Named("id") final Long id)
+      throws UnauthorizedException {
+    return getOwnedGroupById(id, user);
+  }
+
+  @ApiMethod(
       name = "deleteGroup",
       path = "deleteGroup",
       httpMethod = HttpMethod.DELETE)
@@ -340,7 +357,7 @@ public class VideoAssessmentApi {
 
   private Group getOwnedGroupById(final long id, final User owner) throws UnauthorizedException {
     Group group = ofy().load().type(Group.class).id(id).now();
-    if (!group.getOwner().equals(owner.getEmail().toLowerCase())) {
+    if (!group.getOwner().equalsIgnoreCase(owner.getEmail())) {
       throw new UnauthorizedException("User is not group owner.");
     }
     return group;
@@ -445,8 +462,38 @@ public class VideoAssessmentApi {
         ofy().load().type(Membership.class).filter(groupFilter).filter(membershipFilter).list();
 
     Group group = ofy().load().type(Group.class).id(groupId).now();
-    if (member.equals(user.getEmail()) || group.getOwner().equals(user.getEmail().toLowerCase())) {
+    if (member.equalsIgnoreCase(user.getEmail())
+        || group.getOwner().equalsIgnoreCase(user.getEmail())) {
       ofy().delete().entities(memberships);
     }
+  }
+
+  @ApiMethod(
+      name = "getTopicsForGroup",
+      path = "getTopicsForGroup",
+      httpMethod = HttpMethod.POST)
+  public List<Topic> getTopicsForGroup(
+      final User user,
+      @Named("id") final Long groupId,
+      @Named("limit") @DefaultValue(DEFAULT_QUERY_LIMIT) final int limit)
+      throws UnauthorizedException {
+    final Filter groupFilter =
+        new FilterPredicate("groupId", FilterOperator.EQUAL, groupId);
+    return ofy().load().type(Topic.class).filter(groupFilter).limit(limit)
+        .list();
+  }
+
+  @ApiMethod(
+      name = "createTopic",
+      path = "createTopic",
+      httpMethod = HttpMethod.POST)
+  public Topic createTopic(
+      final User user,
+      @Named("id") final Long groupId,
+      @Named("topic") final String name) throws UnauthorizedException {
+    getOwnedGroupById(groupId, user);
+    Key<Topic> key = factory().allocateId(Topic.class);
+    Topic topic = new Topic(key.getId(), groupId, name);
+    return (Topic) ApiUtils.createEntity(topic, Topic.class);
   }
 }

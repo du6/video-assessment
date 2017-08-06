@@ -18,7 +18,9 @@ md-sidenav {
 }
 
 md-list.video-list,
-md-list.group-list {
+md-list.group-list,
+md-list.group-members,
+md-list.group-topics {
   padding-top: 0;
 }
 

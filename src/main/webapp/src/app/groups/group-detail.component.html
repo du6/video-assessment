@@ -1,9 +1,25 @@
-<div class="group-detail">
-  <a>{{group.name}}</a>
-  <div class="action-buttons">
-    <button *ngIf="canManageGroup" md-raised-button color="primary" class="manage-button" (click)="openMangeGroupDialog($event)">Update Members</button>
-    <button md-icon-button class="delete-button" (click)=deleteGroup($event)>
-      <md-icon class="md-24">delete</md-icon>
-    </button>
-  </div>
-</div>
+<md-card>
+    <md-card-title>Topics</md-card-title>
+    <md-divider></md-divider>
+    <md-card-content>
+      <md-spinner *ngIf="loadingTopics"></md-spinner>
+      <md-list class="group-topics" *ngIf="!loadingTopics">
+        <md-list-item *ngFor="let topic of topics" [@fadeInOut]="'in'" (click)="goToTopic(topic.id)">
+          {{topic.topic}}
+        </md-list-item>
+      </md-list>
+    </md-card-content>
+</md-card>
+
+<md-card>
+    <md-card-title>Members</md-card-title>
+    <md-divider></md-divider>
+    <md-card-content>
+      <md-spinner *ngIf="loadingMembers"></md-spinner>
+      <md-list class="group-members" *ngIf="!loadingMembers">
+        <md-list-item *ngFor="let member of members" [@fadeInOut]="'in'">
+          {{member}}
+        </md-list-item>
+      </md-list>
+    </md-card-content>
+</md-card>

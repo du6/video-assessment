@@ -2,8 +2,10 @@ import { Observable } from 'rxjs/Rx';
 import { Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 
+import { Membership } from '../common/membership';
 import { Group } from '../common/group';
 import { Video } from '../common/video';
+import { Topic } from '../common/topic';
 import { Template } from '../common/template';
 import { Assessment } from '../common/assessment';
 import { Invitation } from '../common/invitation';
@@ -258,6 +260,63 @@ export class GapiService {
                 resolve(<Group> resp.result);
               }
           });
+    });
+  }
+
+  loadGroup(id: number): Promise<Group> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.getGroupById({id: id})
+          .execute((resp) => {
+            if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Group> resp.result);
+              }
+          });
+    });
+  }
+
+  checkGroupOwnership(id: number): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.checkOwnership({id: id})
+          .execute((resp) => {
+            if (resp.error) {
+                resolve(false);
+              } else {
+                resolve(true);
+              }
+          });
+    });
+  }
+
+  loadTopics(groupId: number, limit: number = 1000): Promise<Topic[]> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.getTopicsForGroup({
+          id: groupId,
+          limit: limit
+      }).execute((resp) => {
+        if (resp.error) {
+            reject(resp.error);
+          } else {
+            resolve(<Topic[]> resp.result.items);
+          }
+      });
+    });
+  }
+
+  loadMembers(groupId: number, limit: number = 1000): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.getMembershipsForGroup({
+          id: groupId,
+          limit: limit
+      }).execute((resp) => {
+        if (resp.error) {
+            reject(resp.error);
+          } else {
+            const memberships : Membership[] = <Membership[]> resp.result.items;
+            resolve(memberships.map(membership => membership.user));
+          }
+      });
     });
   }
 }

@@ -1,9 +1,9 @@
 <md-list class="group-list">
   <md-list-item *ngFor="let group of groups" [@fadeInOut]="'in'" (click)="goToGroup(group.id)">
-    <video-assessment-group-detail 
+    <video-assessment-group-item 
         [group]="group"
         [canManageGroup]="canManageGroup"
         (groupDeleted)="deleteGroup($event)">
-    </video-assessment-group-detail>
+    </video-assessment-group-item>
   </md-list-item>
 </md-list>

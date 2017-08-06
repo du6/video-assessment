@@ -20,6 +20,7 @@ import { CreateGroupDialog } from './groups/create-group-dialog.component';
 import { SupportedVideosComponent } from './supporters/supported-videos.component';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupListComponent } from './groups/group-list.component';
+import { GroupItemComponent } from './groups/group-item.component';
 import { GroupDetailComponent } from './groups/group-detail.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
@@ -29,6 +30,7 @@ import { UploadService } from './services/upload.service';
 const routes: Routes = [
   { path: 'groups', component: GroupsComponent, canActivate: [AuthGuard] },
   { path: 'supported', component: SupportedVideosComponent, canActivate: [AuthGuard] },
+  { path: 'group/:groupId', component: GroupDetailComponent, canActivate: [AuthGuard] },
   { path: 'video-comment/:blobkey', component: VideoCommentComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
@@ -60,6 +62,7 @@ const routes: Routes = [
     SupportedVideosComponent,
     GroupsComponent,
     GroupListComponent,
+    GroupItemComponent,
     GroupDetailComponent,
   ],
   entryComponents: [UpdateSupportersDialog, CreateGroupDialog],
