@@ -65,6 +65,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
   topics: List<Topic> = List<Topic>();
   loadingMembers: boolean = false;
   loadingTopics: boolean = false;
+  checkingOwnership: boolean = false;
 
   constructor(
       private _route: ActivatedRoute, 
@@ -76,13 +77,15 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
       this.groupId = params['groupId'];
       this.gapi_.loadGroup(this.groupId).then((group: Group) => {
         this.group = group;
+        this.checkingOwnership = true;
         this.loadTopics(this.groupId);
+        this.loadMembers(this.groupId);
         this.gapi_.checkGroupOwnership(this.groupId).then((isOwner: boolean) => {
+          this.checkingOwnership = false;
           this.isOwner = isOwner;
-          if (isOwner) {
-            this.loadMembers(this.groupId);
-          }
-        });
+        }, () => this.checkingOwnership = false)
+        .then(() => this.checkingOwnership = false)
+        .then(() => this.changeDetectorRef_.detectChanges());
       }).catch((error) => {
         this.isValidGroup = false;
         this.loadGroupError = error;
@@ -94,10 +97,52 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  goToTopic(id: number) {
-
+  createTopic(name: string) {
+    name = name.trim();
+    if (name.length == 0) {
+      return;
+    }
+    this.gapi_.createTopic(this.groupId, name)
+        .then((topic: Topic) => {
+          this.topics = this.topics.unshift(topic);
+          this.changeDetectorRef_.detectChanges();
+        })
   }
-  
+
+  addMember(member: string) {
+    member = member.trim();
+    if (member.length == 0) {
+      return;
+    }
+    this.gapi_.addMember(this.groupId, member)
+        .then(() => {
+          this.members = this.members.unshift(member);
+          this.changeDetectorRef_.detectChanges();
+        })
+  }
+
+  deleteTopic(id: number) {
+    this.gapi_.deleteTopic(id)
+        .then(() => {
+          const index = this.topics.findIndex((topic) => topic.id === id);
+          if (index >= 0) {
+            this.topics = this.topics.delete(index);
+            this.changeDetectorRef_.detectChanges();
+          }
+        });
+  }
+
+  deleteMember(member: string) {
+    this.gapi_.deleteMember(this.groupId, member)
+        .then(() => {
+          const index = this.members.findIndex((existingMember) => existingMember === member);
+          if (index >= 0) {
+            this.members = this.members.delete(index);
+            this.changeDetectorRef_.detectChanges();
+          }
+        });
+  }
+
   private loadTopics(groupId: number) {
     this.loadingTopics = true;
     this.gapi_.loadTopics(groupId)

@@ -424,8 +424,7 @@ public class VideoAssessmentApi {
   public List<Membership> getMembershipsForGroup(
       final User user,
       @Named("id") final Long groupId,
-      @Named("limit") @DefaultValue(DEFAULT_QUERY_LIMIT) final int limit)
-      throws UnauthorizedException {
+      @Named("limit") @DefaultValue(DEFAULT_QUERY_LIMIT) final int limit) {
     return new ArrayList<>(getMembershipsByGroupId(groupId));
   }
 
@@ -495,5 +494,17 @@ public class VideoAssessmentApi {
     Key<Topic> key = factory().allocateId(Topic.class);
     Topic topic = new Topic(key.getId(), groupId, name);
     return (Topic) ApiUtils.createEntity(topic, Topic.class);
+  }
+
+  @ApiMethod(
+      name = "deleteTopic",
+      path = "deleteTopic",
+      httpMethod = HttpMethod.DELETE)
+  public void deleteTopic(
+      final User user,
+      @Named("id") final Long id) throws UnauthorizedException {
+    Topic topic = ofy().load().type(Topic.class).id(id).now();
+    getOwnedGroupById(topic.getGroupId(), user);
+    ofy().delete().entity(topic);
   }
 }

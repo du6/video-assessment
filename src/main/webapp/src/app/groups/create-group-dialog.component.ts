@@ -34,6 +34,7 @@ export class CreateGroupDialog {
   }
 
   addMember(member: string) {
+    member = member.trim();
     if (member.length == 0) {
       return;
     }

@@ -19,8 +19,22 @@ md-list.group-members {
       cursor: pointer;
     }
 
-    video-assessment-group-item {
+    .item-content {
       width: 100%;
+
+      .text-content {
+        display: inline-block;
+        line-height: 40px;
+      }
     }
+  }
+
+  .action-buttons {
+    float: right;
+    height: 40px;
+  }
+
+  .delete-button {
+    background-color: $button-background-color;
   }
 }

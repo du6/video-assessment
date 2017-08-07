@@ -1,11 +1,24 @@
 <md-card>
     <md-card-title>Topics</md-card-title>
+    <div *ngIf="isOwner">
+      <md-input-container>
+        <input mdInput placeholder="New Topic" #newTopic>
+      </md-input-container>
+      <button md-raised-button color="primary" class="add-button" (click)="createTopic(newTopic.value); newTopic.value = '';">Create Topic</button>
+    </div>
     <md-divider></md-divider>
     <md-card-content>
-      <md-spinner *ngIf="loadingTopics"></md-spinner>
-      <md-list class="group-topics" *ngIf="!loadingTopics">
-        <md-list-item *ngFor="let topic of topics" [@fadeInOut]="'in'" (click)="goToTopic(topic.id)">
-          {{topic.topic}}
+      <md-spinner *ngIf="loadingTopics || checkingOwnership"></md-spinner>
+      <md-list class="group-topics" *ngIf="!loadingTopics && !checkingOwnership">
+        <md-list-item *ngFor="let topic of topics" [@fadeInOut]="'in'">
+          <div class="item-content">
+            <div class="text-content">{{topic.topic}}</div>
+            <div class="action-buttons" *ngIf="isOwner">
+              <button md-icon-button class="delete-button" (click)=deleteTopic(topic.id)>
+                <md-icon class="md-24">delete</md-icon>
+              </button>
+            </div>
+          </div>
         </md-list-item>
       </md-list>
     </md-card-content>
@@ -13,12 +26,25 @@
 
 <md-card>
     <md-card-title>Members</md-card-title>
+    <div *ngIf="isOwner">
+      <md-input-container>
+        <input mdInput type="email" placeholder="Member Email" #newMember>
+      </md-input-container>
+      <button md-raised-button color="primary" class="add-button" (click)="addMember(newMember.value); newMember.value = '';">Add Member</button>
+    </div>
     <md-divider></md-divider>
     <md-card-content>
-      <md-spinner *ngIf="loadingMembers"></md-spinner>
-      <md-list class="group-members" *ngIf="!loadingMembers">
+      <md-spinner *ngIf="loadingMembers || checkingOwnership"></md-spinner>
+      <md-list class="group-members" *ngIf="!loadingMembers && !checkingOwnership">
         <md-list-item *ngFor="let member of members" [@fadeInOut]="'in'">
-          {{member}}
+          <div class="item-content">
+            <div class="text-content">{{member}}</div>
+            <div class="action-buttons" *ngIf="isOwner">
+              <button md-icon-button class="delete-button" (click)=deleteMember(member)>
+                <md-icon class="md-24">delete</md-icon>
+              </button>
+            </div>
+          </div>
         </md-list-item>
       </md-list>
     </md-card-content>

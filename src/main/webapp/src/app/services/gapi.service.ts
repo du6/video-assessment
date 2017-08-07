@@ -319,4 +319,43 @@ export class GapiService {
       });
     });
   }
+
+  createTopic(groupId: number, name: string): Promise<Topic> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.createTopic({id: groupId, topic: name})
+          .execute((resp) => {
+            if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Topic> resp.result);
+              }
+          });
+    });
+  }
+
+  addMember(groupId: number, member: string): Promise<Membership> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.addMember({id: groupId, member: member})
+          .execute((resp) => {
+            if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Membership> resp.result);
+              }
+          });
+    });
+  }
+
+  deleteTopic(id: number): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.deleteTopic({id: id})
+          .execute((resp) => {
+            if (resp.error) {
+                reject(resp.error);
+              } else {
+                resolve("OK");
+              }
+          });
+    });
+  }
 }
