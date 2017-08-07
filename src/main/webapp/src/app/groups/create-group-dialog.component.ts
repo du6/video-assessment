@@ -26,15 +26,19 @@ export class CreateGroupDialog {
   }
 
   confirm(event: any) {
-    this.submitting = true;
     // Prevent page reloading
     event.preventDefault();
-    this.gapi_.createGroupWithMembers(this.name, this.members.toArray())
+    this.name = this.name ? this.name.trim() : '';
+    if (this.name.length == 0) {
+      return;
+    }
+    this.submitting = true;
+    this.gapi_.createGroupWithMembers(this.name, this.members.toArray() || [])
         .then((group: Group) => this._dialogRef.close(group));
   }
 
   addMember(member: string) {
-    member = member.trim();
+    member = member ? member.trim() : '';
     if (member.length == 0) {
       return;
     }

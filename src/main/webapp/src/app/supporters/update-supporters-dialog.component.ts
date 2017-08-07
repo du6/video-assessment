@@ -43,6 +43,7 @@ export class UpdateSupportersDialog {
   }
 
   addSupporter() {
+    this.supporterEmail = this.supporterEmail ? this.supporterEmail.trim() : '';
     if (this.supporterEmail.length == 0) {
       return;
     }

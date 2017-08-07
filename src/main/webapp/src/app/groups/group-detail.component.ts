@@ -98,7 +98,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
   }
 
   createTopic(name: string) {
-    name = name.trim();
+    name = name ? name.trim() : '';
     if (name.length == 0) {
       return;
     }
@@ -110,7 +110,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
   }
 
   addMember(member: string) {
-    member = member.trim();
+    member = member ? member.trim() : '';
     if (member.length == 0) {
       return;
     }

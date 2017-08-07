@@ -250,9 +250,25 @@ export class GapiService {
   }
 
   createGroupWithMembers(name: string, members: string[]): Promise<Group> {
+    if (members == null || members.length == 0) {
+      return this.createGroup(name);
+    }
     return new Promise((resolve, reject) => {
       this.gapi_.client.videoAssessmentApi.createGroupWithMembers(
-          {name: name, members: members || []})
+          {name: name, members: members})
+          .execute((resp) => {
+            if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Group> resp.result);
+              }
+          });
+    });
+  }
+
+  createGroup(name: string): Promise<Group> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.createGroup({name: name})
           .execute((resp) => {
             if (resp.error) {
                 reject(resp.error);
@@ -314,7 +330,7 @@ export class GapiService {
             reject(resp.error);
           } else {
             const memberships : Membership[] = <Membership[]> resp.result.items;
-            resolve(memberships.map(membership => membership.user));
+            resolve((memberships || []).map(membership => membership.user));
           }
       });
     });
