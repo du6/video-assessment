@@ -228,7 +228,10 @@ public class VideoAssessmentApi {
         long topicId = form.getTopicId();
         final Filter groupFilter = new FilterPredicate("groupId", FilterOperator.EQUAL, groupId);
         final Filter topicFilter = new FilterPredicate("topicId", FilterOperator.EQUAL, topicId);
+        final Filter userFilter = new FilterPredicate("createdBy", FilterOperator.EQUAL,
+            form.getForUser().toLowerCase());
         List<Video> videoList = ofy().load().type(Video.class)
+            .filter(userFilter)
             .filter(groupFilter)
             .filter(topicFilter)
             .list();
@@ -245,6 +248,7 @@ public class VideoAssessmentApi {
               user.getEmail().toLowerCase(),
               groupId,
               topicId,
+              form.getForUser().toLowerCase(),
               form.getTemplateId(),
               i,
               form.getScores().get(i),

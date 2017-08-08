@@ -45,12 +45,12 @@ public class Upload extends HttpServlet {
       long topicId = Strings.isNullOrEmpty(topicIdStr) ? -1 : Long.parseLong(topicIdStr);
       Video video = new Video(
           blobKeys.get(0).getKeyString(),
-          req.getParameter("email"),
+          req.getParameter("email").toLowerCase(),
           req.getParameter("title"),
           groupId,
           topicId);
       ApiUtils.createEntity(video, Video.class);
-      updateResponses(groupId, topicId, video.getId());
+      updateResponses(groupId, topicId, video.getId(), req.getParameter("email").toLowerCase());
       res.setStatus(HttpServletResponse.SC_ACCEPTED);
       res.setHeader("Content-Type", "text/plain");
       res.setHeader("success", "yes");
@@ -62,12 +62,15 @@ public class Upload extends HttpServlet {
     }
   }
 
-  private void updateResponses(long groupId, long topicId, String videoId) {
+  private void updateResponses(long groupId, long topicId, String videoId, String user) {
     final Query.Filter groupFilter =
         new Query.FilterPredicate("groupId", Query.FilterOperator.EQUAL, groupId);
     final Query.Filter topicFilter =
         new Query.FilterPredicate("topicId", Query.FilterOperator.EQUAL, topicId);
+    final Query.Filter userFilter =
+        new Query.FilterPredicate("forUser", Query.FilterOperator.EQUAL, user);
     List<Response> responseList = ofy().load().type(Response.class)
+        .filter(userFilter)
         .filter(groupFilter)
         .filter(topicFilter)
         .list();

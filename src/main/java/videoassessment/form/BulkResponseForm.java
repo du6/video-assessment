@@ -11,6 +11,7 @@ public class BulkResponseForm {
   private long templateId;
   private Long groupId;
   private Long topicId;
+  private String forUser;
   private List<Float> scores = new ArrayList<>();
   private List<String> comments = new ArrayList<>();
 
@@ -24,6 +25,10 @@ public class BulkResponseForm {
 
   public Long getTopicId() {
     return topicId;
+  }
+
+  public String getForUser() {
+    return forUser;
   }
 
   public long getTemplateId() {

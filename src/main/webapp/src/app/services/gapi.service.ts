@@ -121,6 +121,7 @@ export class GapiService {
   submitTempResponses(
       groupId: number,
       topicId: number,
+      forUser: string,
       templateId: number, 
       comments: string[], 
       scores: number[]): Promise<string> {
@@ -128,6 +129,7 @@ export class GapiService {
       this.gapi_.client.videoAssessmentApi.createBulkResponse({
           groupId: groupId,
           topicId: topicId,
+          forUser: forUser,
           templateId: templateId, 
           comments: comments,
           scores: scores
