@@ -98,13 +98,36 @@ export class GapiService {
   }
 
   submitResponses(
-      videoKey: string, 
+      videoKey: string,
       templateId: number, 
       comments: string[], 
       scores: number[]): Promise<string> {
     return new Promise((resolve, reject) => {
       this.gapi_.client.videoAssessmentApi.createBulkResponse({
           videoId: videoKey,
+          templateId: templateId, 
+          comments: comments,
+          scores: scores
+      }).execute((resp) => {
+        if (resp.error) {
+            reject(resp.error);
+          } else {
+            resolve("OK");
+          }
+      });
+    });
+  }
+
+  submitTempResponses(
+      groupId: number,
+      topicId: number,
+      templateId: number, 
+      comments: string[], 
+      scores: number[]): Promise<string> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.createBulkResponse({
+          groupId: groupId,
+          topicId: topicId,
           templateId: templateId, 
           comments: comments,
           scores: scores

@@ -26,6 +26,12 @@ public class Response extends VideoAssessmentEntity {
   private String videoId;
 
   @Index
+  private Long groupId;
+
+  @Index
+  private Long topicId;
+
+  @Index
   private long templateId;
 
   @Index
@@ -64,12 +70,30 @@ public class Response extends VideoAssessmentEntity {
     this.comment = comment;
   }
 
+  public Response(long id, String createdBy, long groupId, long topicId, long templateId,
+                  int questionId, float score, String comment) {
+    this.id = id;
+    this.createdBy = createdBy;
+    this.createdOn = DateTime.now();
+    this.groupId = groupId;
+    this.topicId = topicId;
+    this.templateId = templateId;
+    this.questionId = questionId;
+    this.score = score;
+    this.comment = comment;
+  }
+
   public void updateWithResponseForm(ResponseForm reponseForm) {
     videoId = reponseForm.getVideoId();
     templateId = reponseForm.getTemplateId();
     questionId = reponseForm.getQuestionId();
     score = reponseForm.getScore();
     comment = reponseForm.getComment();
+  }
+
+  public Response updateVideoId(String videoId) {
+    this.videoId = videoId;
+    return this;
   }
 
   public Long getId() {
@@ -94,6 +118,14 @@ public class Response extends VideoAssessmentEntity {
 
   public String getComment() {
     return comment;
+  }
+
+  public long getGroupId() {
+    return groupId;
+  }
+
+  public long getTopicId() {
+    return topicId;
   }
 
   public String getCreatedBy() {

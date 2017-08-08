@@ -14,10 +14,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
+import com.google.appengine.api.datastore.Query;
+import com.google.common.base.Strings;
 
+import main.java.videoassessment.domain.Response;
 import main.java.videoassessment.domain.Video;
 import main.java.videoassessment.spi.ApiUtils;
 import main.java.videoassessment.spi.VideoAssessmentApi;
+
+import static main.java.videoassessment.service.OfyService.ofy;
 
 public class Upload extends HttpServlet {
   private static final Logger LOG = Logger.getLogger(VideoAssessmentApi.class.getName());
@@ -34,11 +39,18 @@ public class Upload extends HttpServlet {
       res.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
     } else {
       LOG.warning("key: " + blobKeys.get(0).getKeyString() + " email: " + req.getParameter("email") + " title: " + req.getParameter("title"));
+      String groupIdStr = req.getParameter("groupId");
+      String topicIdStr = req.getParameter("topicId");
+      long groupId = Strings.isNullOrEmpty(groupIdStr) ? -1 : Long.parseLong(groupIdStr);
+      long topicId = Strings.isNullOrEmpty(topicIdStr) ? -1 : Long.parseLong(topicIdStr);
       Video video = new Video(
           blobKeys.get(0).getKeyString(),
           req.getParameter("email"),
-          req.getParameter("title"));
+          req.getParameter("title"),
+          groupId,
+          topicId);
       ApiUtils.createEntity(video, Video.class);
+      updateResponses(groupId, topicId, video.getId());
       res.setStatus(HttpServletResponse.SC_ACCEPTED);
       res.setHeader("Content-Type", "text/plain");
       res.setHeader("success", "yes");
@@ -48,5 +60,20 @@ public class Upload extends HttpServlet {
       writer.write(blobKeys.get(0).getKeyString());
       writer.close();
     }
+  }
+
+  private void updateResponses(long groupId, long topicId, String videoId) {
+    final Query.Filter groupFilter =
+        new Query.FilterPredicate("groupId", Query.FilterOperator.EQUAL, groupId);
+    final Query.Filter topicFilter =
+        new Query.FilterPredicate("topicId", Query.FilterOperator.EQUAL, topicId);
+    List<Response> responseList = ofy().load().type(Response.class)
+        .filter(groupFilter)
+        .filter(topicFilter)
+        .list();
+    for (Response response : responseList) {
+      response.updateVideoId(videoId);
+    }
+    ofy().save().entities(responseList);
   }
 }

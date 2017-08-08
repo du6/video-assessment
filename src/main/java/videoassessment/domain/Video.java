@@ -8,8 +8,6 @@ import com.googlecode.objectify.annotation.Index;
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
 
-import main.java.videoassessment.form.VideoForm;
-
 @Entity
 @Cache
 public class Video extends VideoAssessmentEntity {
@@ -26,26 +24,20 @@ public class Video extends VideoAssessmentEntity {
   private boolean isDeleted = false;
 
   @Index
+  private Long groupId;
+
+  @Index
   private Long topicId;
 
   private String title;
 
-  public Video(String id, String createdBy, String title) {
+  public Video(String id, String createdBy, String title, Long groupId, Long topicId) {
     this.id = id;
     this.createdBy = createdBy;
     this.title = title;
+    this.groupId = groupId;
+    this.topicId = topicId;
     this.uploadedOn = DateTime.now();
-  }
-
-  public Video(String createdBy, VideoForm videoForm) {
-    this.createdBy = createdBy;
-    this.uploadedOn = DateTime.now();
-    updateWithVideoForm(videoForm);
-  }
-
-  public void updateWithVideoForm(VideoForm videoForm) {
-    this.id = videoForm.getBlobKey();
-    this.title = videoForm.getTitle();
   }
 
   public void delete() {
@@ -58,6 +50,14 @@ public class Video extends VideoAssessmentEntity {
 
   public String getId() {
     return id;
+  }
+
+  public Long getGroupId() {
+    return groupId;
+  }
+
+  public Long getTopicId() {
+    return topicId;
   }
 
   public String getUploadedOn() {

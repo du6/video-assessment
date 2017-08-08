@@ -10,6 +10,7 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.users.User;
+import com.google.common.collect.Iterables;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
 
@@ -34,7 +35,6 @@ import main.java.videoassessment.domain.UploadUrl;
 import main.java.videoassessment.domain.Video;
 import main.java.videoassessment.form.BulkResponseForm;
 import main.java.videoassessment.form.ResponseForm;
-import main.java.videoassessment.form.VideoForm;
 
 import static main.java.videoassessment.service.OfyService.factory;
 import static main.java.videoassessment.service.OfyService.ofy;
@@ -74,17 +74,6 @@ public class VideoAssessmentApi {
   public AppEngineUser getUser(
       final User user) {
     return ofy().load().type(AppEngineUser.class).id(user.getEmail().toLowerCase()).now();
-  }
-
-  @ApiMethod(
-      name = "createVideo",
-      path = "createVideo",
-      httpMethod = HttpMethod.POST)
-  public Video createVideo(
-      final User user,
-      final VideoForm form) {
-    Video video = new Video(user.getEmail().toLowerCase(), form);
-    return (Video) ApiUtils.createEntity(video, Video.class);
   }
 
   @ApiMethod(
@@ -219,20 +208,52 @@ public class VideoAssessmentApi {
       final User user,
       final BulkResponseForm form) {
     assert form.getComments().size() == form.getScores().size();
+    List<Response> responseList = new ArrayList<>(form.getComments().size());
     for (int i = 0; i < form.getScores().size(); ++i) {
       if (form.getScores().get(i) == 0 && form.getComments().get(i).isEmpty()) {
         continue;
       }
       Key<Response> key = factory().allocateId(Response.class);
-      Response response = new Response(key.getId(),
-          user.getEmail().toLowerCase(),
-          form.getVideoId(),
-          form.getTemplateId(),
-          i,
-          form.getScores().get(i),
-          form.getComments().get(i));
-      ApiUtils.createEntity(response, Response.class);
+      Response response;
+      if (form.getVideoId() != null) {
+        response = new Response(key.getId(),
+            user.getEmail().toLowerCase(),
+            form.getVideoId(),
+            form.getTemplateId(),
+            i,
+            form.getScores().get(i),
+            form.getComments().get(i));
+      } else {
+        long groupId = form.getGroupId();
+        long topicId = form.getTopicId();
+        final Filter groupFilter = new FilterPredicate("groupId", FilterOperator.EQUAL, groupId);
+        final Filter topicFilter = new FilterPredicate("topicId", FilterOperator.EQUAL, topicId);
+        List<Video> videoList = ofy().load().type(Video.class)
+            .filter(groupFilter)
+            .filter(topicFilter)
+            .list();
+        if (!videoList.isEmpty()) {
+          response = new Response(key.getId(),
+              user.getEmail().toLowerCase(),
+              Iterables.getOnlyElement(videoList).getId(),
+              form.getTemplateId(),
+              i,
+              form.getScores().get(i),
+              form.getComments().get(i));
+        } else {
+          response = new Response(key.getId(),
+              user.getEmail().toLowerCase(),
+              groupId,
+              topicId,
+              form.getTemplateId(),
+              i,
+              form.getScores().get(i),
+              form.getComments().get(i));
+        }
+      }
+      responseList.add(response);
     }
+    ofy().save().entities(responseList);
   }
 
   @ApiMethod(
