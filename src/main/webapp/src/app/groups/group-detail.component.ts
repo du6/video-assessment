@@ -66,6 +66,8 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
   loadingMembers: boolean = false;
   loadingTopics: boolean = false;
   checkingOwnership: boolean = false;
+  selectedTopic: Topic;
+  selectedMember: string;
 
   constructor(
       private _route: ActivatedRoute, 
@@ -161,5 +163,13 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
         }, () => this.loadingMembers = false)
         .then(() => this.loadingMembers = false)
         .then(() => this.changeDetectorRef_.detectChanges());
+  }
+
+  selectTopic(topic: Topic) {
+    this.selectedTopic = topic;
+  }
+
+  selectMember(member: string) {
+    this.selectedMember = member;
   }
 }

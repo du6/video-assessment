@@ -12,7 +12,7 @@
       <md-list class="group-topics" *ngIf="!loadingTopics && !checkingOwnership">
         <md-list-item *ngFor="let topic of topics" [@fadeInOut]="'in'">
           <div class="item-content">
-            <div class="text-content">{{topic.topic}}</div>
+            <md-radio-button class="option" name="topicGroup" value="topic" (click)="selectTopic(topic)">{{topic.topic}}</md-radio-button>
             <div class="action-buttons" *ngIf="isOwner">
               <button md-icon-button class="delete-button" (click)=deleteTopic(topic.id)>
                 <md-icon class="md-24">delete</md-icon>
@@ -38,7 +38,7 @@
       <md-list class="group-members" *ngIf="!loadingMembers && !checkingOwnership">
         <md-list-item *ngFor="let member of members" [@fadeInOut]="'in'">
           <div class="item-content">
-            <div class="text-content">{{member}}</div>
+            <md-radio-button class="option" name="memberGroup" value="member" (click)="selectMember(member)">{{member}}</md-radio-button>
             <div class="action-buttons" *ngIf="isOwner">
               <button md-icon-button class="delete-button" (click)=deleteMember(member)>
                 <md-icon class="md-24">delete</md-icon>
