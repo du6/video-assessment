@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 import { AuthService } from './services/auth.service';
 
@@ -9,7 +9,23 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['app.component.scss'],
 })
 export class VideoAssessmentAppComponent {
-  constructor(private router_: Router, private auth_: AuthService, private zone_: NgZone) {
+  title: string = "Talk Me Up";
+
+  constructor(private router_: Router, 
+    private auth_: AuthService, 
+    private zone_: NgZone) {
+      router_.events
+          .filter(event => event instanceof NavigationEnd)
+          .subscribe((event: any) => {
+            const url = event.url;
+            if (url == '/home') {
+              this.title = "My Vidoes"
+            } else if (url == '/supported') {
+              this.title = "For My Review";
+            } else if (url == '/groups') {
+              this.title = "My Groups";
+            }
+          });
   }
   
   isSignedIn(): boolean {
