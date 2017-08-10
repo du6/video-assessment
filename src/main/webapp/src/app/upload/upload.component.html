@@ -9,10 +9,10 @@
             md-raised-button
             color="primary"
             (click)="submit($event)"
-            [disabled]="disable || !isFileValid">Upload</button>
+            [disabled]="uploading || !isFileValid">Upload</button>
     <span class="warning" *ngIf="isLargeFile"> Please upload only mp4 file with size less than 50M </span>
-    <md-progress-bar *ngIf="disable" class="upload-progress-bar" mode="determinate" [value]="progress">
+    <md-progress-bar *ngIf="uploading" class="upload-progress-bar" mode="determinate" [value]="progress">
     </md-progress-bar>
-    <div *ngIf="disable" class="upload-progress-text">Uploading Progress: {{progress}}%</div>
+    <div *ngIf="uploading" class="upload-progress-text">Uploading Progress: {{progress}}%</div>
   </div>
 </form>
