@@ -58,6 +58,9 @@ public class Response extends VideoAssessmentEntity {
     this.id = id;
     this.createdBy = createdBy;
     this.createdOn = DateTime.now();
+    this.groupId = -1L;
+    this.topicId = -1L;
+    this.forUser = "";
     updateWithResponseForm(responseForm);
   }
 
@@ -66,6 +69,9 @@ public class Response extends VideoAssessmentEntity {
     this.id = id;
     this.createdBy = createdBy;
     this.createdOn = DateTime.now();
+    this.groupId = -1L;
+    this.topicId = -1L;
+    this.forUser = "";
     this.videoId = videoId;
     this.templateId = templateId;
     this.questionId = questionId;
@@ -78,6 +84,7 @@ public class Response extends VideoAssessmentEntity {
     this.id = id;
     this.createdBy = createdBy;
     this.createdOn = DateTime.now();
+    this.videoId = "";
     this.groupId = groupId;
     this.topicId = topicId;
     this.forUser = forUser;

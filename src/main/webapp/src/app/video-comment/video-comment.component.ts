@@ -81,7 +81,8 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
 
   submit() {
     this.submitting = true;
-    this.gapi_.submitResponses(this.blobkey, this.templateId, this.comments, this.scores)
+    const reversedScores = this.scores.map(score => 10 - score);
+    this.gapi_.submitResponses(this.blobkey, this.templateId, this.comments, reversedScores)
         .then(() => {
           this.loadAssessments();
           this.clearResponse();

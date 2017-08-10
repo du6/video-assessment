@@ -7,8 +7,12 @@
       width: 100%;
     }
   }
-  
+
   md-list.comment-list {
+    .dark-background {
+      background-color: $hover-background-color;
+    }
+
     md-list-item {
       display: block;
 
@@ -24,6 +28,8 @@
       }
 
       .question {
+        margin-left: 26px;
+        margin-top: -18px;
         width: 100%;
       }
 
