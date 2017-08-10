@@ -2,14 +2,15 @@
   <md-input-container>
     <input mdInput name="title" placeholder="video name" [(ngModel)]="title">
   </md-input-container>
-  <input name="file" type="file" (change)="onFileChange($event)">
+  <input name="file" type="file" accept=".mp4" (change)="onFileChange($event)">
   <div>
     <button type="submit"
             class="upload-button"
             md-raised-button
             color="primary"
             (click)="submit($event)"
-            [disabled]="disable">Upload</button>
+            [disabled]="disable || !isFileValid">Upload</button>
+    <span class="warning" *ngIf="isLargeFile"> Please upload only mp4 file with size less than 50M </span>
     <md-progress-bar *ngIf="disable" class="upload-progress-bar" mode="determinate" [value]="progress">
     </md-progress-bar>
     <div *ngIf="disable" class="upload-progress-text">Uploading Progress: {{progress}}%</div>

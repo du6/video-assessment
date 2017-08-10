@@ -13,9 +13,11 @@ import { Video } from '../common/video';
 export class UploadComponent {
   @Output() videoUploaded: EventEmitter<Video> = new EventEmitter<Video>();
 
+  isFileValid: boolean = false;
+  isLargeFile: boolean = false;
   title: string;
   file: File;
-  disable: boolean = false;
+  uploading: boolean = false;
   progress: number = 0;
   private _uploadUrl: string;
 
@@ -31,12 +33,17 @@ export class UploadComponent {
       let target: HTMLInputElement = <HTMLInputElement> eventObj.target;
       let files: FileList = target.files;
       this.file = files[0];
+      if (this.file && this.file.size <= 50000000) {
+        this.isFileValid = true;
+      } else if (this.file && this.file.size > 50000000) {
+        this.isLargeFile = true;
+      }
   }
 
   submit(event: any) {
     // Prevent page reloading
     event.preventDefault();
-    this.disable = true;
+    this.uploading = true;
     if (!this.title) {
       this.title = this.file.name;
     }
@@ -46,7 +53,7 @@ export class UploadComponent {
     uploadFormData.append('email', this._auth.getUserEmail());
     this._upload.uploadVideo(this._uploadUrl, uploadFormData).then(
       (blobKey) => {
-        this.disable = false;
+        this.uploading = false;
         let video = new Video();
         video.title = this.title;
         video.id = blobKey;
