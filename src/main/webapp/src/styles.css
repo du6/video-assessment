@@ -27,3 +27,8 @@ md-list.group-topics {
 .mat-list.comment-list .mat-list-item .mat-list-item-content {
   height: 100%;
 }
+
+.video-comment .mat-input-underline {
+  background-color: purple;
+  height: 2px;
+}

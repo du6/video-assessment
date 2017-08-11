@@ -76,18 +76,25 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
 
   private clearResponse() {
     this.comments.fill('');
-    this.scores.fill(0);    
+    this.scores.fill(10);    
   }
 
   submit() {
     this.submitting = true;
-    const reversedScores = this.scores.map(score => 10 - score);
-    this.gapi_.submitResponses(this.blobkey, this.templateId, this.comments, reversedScores)
+    this.gapi_.submitResponses(this.blobkey, this.templateId, this.comments, this.scores)
         .then(() => {
           this.loadAssessments();
           this.clearResponse();
           this.submitting = false;
         }, () => this.submitting = false)
         .then(() => this.changeDetectorRef_.detectChanges());
+  }
+
+  getPositive(critique: string) {
+    return critique.split('<->')[0];
+  }
+
+  getNegative(critique: string) {
+    return critique.split('<->')[1];
   }
 }

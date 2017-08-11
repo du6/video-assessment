@@ -8,6 +8,10 @@
     }
   }
 
+  .comment {
+    display: block;
+  }
+
   md-list.comment-list {
     .dark-background {
       background-color: $hover-background-color;
@@ -27,17 +31,22 @@
         width: 100%;
       }
 
-      .question {
-        margin-left: 26px;
-        margin-top: -18px;
-        width: 100%;
-      }
+      .critique-container {
+        display: flex;
+        justify-content: space-between;
+        max-width: 500px;
+        width: 70%;
 
-      .comment {
-        display: block;
+        .critique {
+          border: 1px solid gray;
+          font-size: 13px;
+          max-width: 200px;
+          padding: 4px;
+        }
       }
 
       .score-slider {
+        max-width: 400px;
         width: 70%;
       }
     }

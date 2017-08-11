@@ -24,66 +24,78 @@
         <h3>1. Rational</h3>
         <md-list-item *ngFor="let question of questions.slice(0, 5); let i = index">
           <div class="question-comment">
-            <b>({{i + 1}})</b><div class="question" [innerHtml]="question"></div>
-            <ul *ngIf="assessments.has(i)">
-              <li *ngFor="let assessment of assessments.get(i)">
-                Received score: {{assessment.score}}
-              </li>
-            </ul>
-            <span>Score:</span>
+            <b>({{i + 1}})</b>
             <md-slider class="score-slider" 
                        [min]="0" 
                        [max]="10" 
                        tickInterval="1" 
                        #score 
                        aria-label="set a score"
+                       invert
                        [(ngModel)]="scores[i]">
             </md-slider>
-            {{10 - score.value}}
+            {{score.value}}
+            <div class="critique-container">
+              <span class="critique">{{getPositive(question)}}</span>
+              <span class="critique">{{getNegative(question)}}</span>
+            </div>
+            <ul *ngIf="assessments.has(i)">
+              <li *ngFor="let assessment of assessments.get(i)">
+                Received score: {{assessment.score}}
+              </li>
+            </ul>
           </div>
         </md-list-item>
         <md-divider></md-divider>
         <h3>2. Intuitive</h3>
         <md-list-item *ngFor="let question of questions.slice(5, 10); let i = index">
           <div class="question-comment">
-            <b>({{i + 1}})</b><div class="question" [innerHtml]="question"></div>
-            <ul *ngIf="assessments.has(i + 5)">
-              <li *ngFor="let assessment of assessments.get(i + 5)">
-                Received score: {{assessment.score}}
-              </li>
-            </ul>
-            <span>Score:</span>
+            <b>({{i + 1}})</b>
             <md-slider class="score-slider" 
                        [min]="0" 
                        [max]="10" 
                        tickInterval="1" 
                        #score 
                        aria-label="set a score"
+                       invert
                        [(ngModel)]="scores[i + 5]">
             </md-slider>
-            {{10 - score.value}}
+            {{score.value}}
+            <div class="critique-container">
+              <span class="critique">{{getPositive(question)}}</span>
+              <span class="critique">{{getNegative(question)}}</span>
+            </div>
+            <ul *ngIf="assessments.has(i + 5)">
+              <li *ngFor="let assessment of assessments.get(i + 5)">
+                Received score: {{assessment.score}}
+              </li>
+            </ul>
           </div>
         </md-list-item>
         <md-divider></md-divider>
         <h3>3. Personal</h3>
         <md-list-item *ngFor="let question of questions.slice(10, 15); let i = index">
           <div class="question-comment">
-            <b>({{i + 1}})</b><div class="question" [innerHtml]="question"></div>
-            <ul *ngIf="assessments.has(i + 10)">
-              <li *ngFor="let assessment of assessments.get(i + 10)">
-                Received score: {{assessment.score}}
-              </li>
-            </ul>
-            <span>Score:</span>
+            <b>({{i + 1}})</b>
             <md-slider class="score-slider" 
                        [min]="0" 
                        [max]="10" 
                        tickInterval="1" 
                        #score 
                        aria-label="set a score"
+                       invert
                        [(ngModel)]="scores[i + 10]">
             </md-slider>
-            {{10 - score.value}}
+            {{score.value}}
+            <div class="critique-container">
+              <span class="critique">{{getPositive(question)}}</span>
+              <span class="critique">{{getNegative(question)}}</span>
+            </div>
+            <ul *ngIf="assessments.has(i + 10)">
+              <li *ngFor="let assessment of assessments.get(i + 10)">
+                Received score: {{assessment.score}}
+              </li>
+            </ul>
           </div>
         </md-list-item>
       </md-list>
