@@ -1,7 +1,10 @@
 <md-card>
   <md-card-title>Upload a Video</md-card-title>
   <md-card-content>
-    <video-assessment-upload (videoUploaded)="onVideoUploaded($event)"></video-assessment-upload>
+    <video-assessment-upload 
+        [shouldDisableUpload]="false"
+        (videoUploaded)="onVideoUploaded($event)">
+    </video-assessment-upload>
   </md-card-content>
 </md-card>
 

@@ -14,10 +14,12 @@ import {
   transition,
   animate,
 } from '@angular/animations';
+import { MdSnackBar } from '@angular/material';
 
 import { GapiService } from '../services/gapi.service';
 import { Group } from '../common/group';
 import { Topic } from '../common/topic';
+import { Video } from '../common/video';
 
 @Component({
   selector: 'video-assessment-group-detail',
@@ -72,7 +74,8 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
   constructor(
       private _route: ActivatedRoute, 
       private gapi_: GapiService, 
-      private changeDetectorRef_: ChangeDetectorRef,) {}
+      private changeDetectorRef_: ChangeDetectorRef,
+      private snackBar_: MdSnackBar) {}
 
   ngOnInit() {
     this.sub = this._route.params.subscribe(params => {
@@ -171,5 +174,15 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
 
   selectMember(member: string) {
     this.selectedMember = member;
+  }
+
+  onVideoUploaded(video: Video) {
+    this.snackBar_.open(video.title + ' has been uploaded!', 'Dismiss', {duration: 2000});
+  }
+
+  getConfirmation() : string {
+    return 'Please confirm to upload video for:' 
+        + '<br><ul><li>Topic: <b>' + (this.selectedTopic ? this.selectedTopic.topic : '') 
+        + '</b></li><li>Member: <b>' + this.selectedMember + '</b></li></ul>';
   }
 }

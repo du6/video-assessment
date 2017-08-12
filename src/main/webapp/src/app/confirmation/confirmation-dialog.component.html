@@ -1,0 +1,7 @@
+<div class="confirmation-dialog">
+  <div [innerHtml]="content"></div>
+  <div class="action-buttons">
+    <button md-button (click)="cancel($event)">Cancel</button>
+    <button md-raised-button color="primary" (click)="confirm($event)" class="confirm-button">Confirm</button>
+  </div>
+</div>

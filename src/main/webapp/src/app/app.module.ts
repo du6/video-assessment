@@ -17,6 +17,7 @@ import { VideoCommentComponent } from './video-comment/video-comment.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { UpdateSupportersDialog } from './supporters/update-supporters-dialog.component';
 import { CreateGroupDialog } from './groups/create-group-dialog.component';
+import { ConfirmationDialog } from './confirmation/confirmation-dialog.component';
 import { SupportedVideosComponent } from './supporters/supported-videos.component';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupListComponent } from './groups/group-list.component';
@@ -59,13 +60,14 @@ const routes: Routes = [
     SidenavComponent, 
     UpdateSupportersDialog,
     CreateGroupDialog,
+    ConfirmationDialog,
     SupportedVideosComponent,
     GroupsComponent,
     GroupListComponent,
     GroupItemComponent,
     GroupDetailComponent,
   ],
-  entryComponents: [UpdateSupportersDialog, CreateGroupDialog],
+  entryComponents: [UpdateSupportersDialog, CreateGroupDialog, ConfirmationDialog],
   bootstrap: [VideoAssessmentAppComponent],
 })
 export class VideoAssessmentAppModule { }

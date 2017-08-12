@@ -49,3 +49,17 @@
       </md-list>
     </md-card-content>
 </md-card>
+
+<md-card *ngIf="isOwner">
+  <md-card-title>Upload Video for Selected Topic and Member</md-card-title>
+  <md-card-content>
+    <video-assessment-upload 
+        [groupId]="groupId"
+        [topicId]="selectedTopic ? selectedTopic.Id : -1"
+        [member]="selectedMember"
+        [confirmation]="getConfirmation()"
+        [shouldDisableUpload]="!(selectedTopic && selectedMember)"
+        (videoUploaded)="onVideoUploaded($event)">
+    </video-assessment-upload>
+  </md-card-content>
+</md-card>
