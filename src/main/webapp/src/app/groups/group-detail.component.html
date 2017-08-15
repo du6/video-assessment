@@ -55,11 +55,20 @@
   <md-card-content>
     <video-assessment-upload 
         [groupId]="groupId"
-        [topicId]="selectedTopic ? selectedTopic.Id : -1"
+        [topicId]="selectedTopic ? selectedTopic.id : -1"
         [member]="selectedMember"
-        [confirmation]="getConfirmation()"
+        [confirmation]="getUploadVideoConfirmation()"
         [shouldDisableUpload]="!(selectedTopic && selectedMember)"
         (videoUploaded)="onVideoUploaded($event)">
     </video-assessment-upload>
   </md-card-content>
 </md-card>
+
+<video-assessment-video-comment
+    [groupId]="groupId"
+    [topicId]="selectedTopic ? selectedTopic.id : -1"
+    [member]="selectedMember"
+    [confirmation]="getSubmitResponsesConfirmation()"
+    [disableSubmit]="!(selectedTopic && selectedMember)"
+    (responsesSubmitted)="onResponsesSubmitted($event)">
+</video-assessment-video-comment>

@@ -238,7 +238,7 @@ public class VideoAssessmentApi {
         if (!videoList.isEmpty()) {
           response = new Response(key.getId(),
               user.getEmail().toLowerCase(),
-              Iterables.getOnlyElement(videoList).getId(),
+              videoList.get(0).getId(),
               form.getTemplateId(),
               i,
               form.getScores().get(i),

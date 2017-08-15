@@ -180,8 +180,18 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     this.snackBar_.open(video.title + ' has been uploaded!', 'Dismiss', {duration: 2000});
   }
 
-  getConfirmation() : string {
+  onResponsesSubmitted() {
+    this.snackBar_.open('Response submitted!', 'Dismiss', {duration: 2000});
+  }
+
+  getUploadVideoConfirmation() : string {
     return 'Please confirm to upload video for:' 
+        + '<br><ul><li>Topic: <b>' + (this.selectedTopic ? this.selectedTopic.topic : '') 
+        + '</b></li><li>Member: <b>' + this.selectedMember + '</b></li></ul>';
+  }
+
+  getSubmitResponsesConfirmation() : string {
+    return 'Please confirm to submit response for:' 
         + '<br><ul><li>Topic: <b>' + (this.selectedTopic ? this.selectedTopic.topic : '') 
         + '</b></li><li>Member: <b>' + this.selectedMember + '</b></li></ul>';
   }

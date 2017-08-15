@@ -1,5 +1,5 @@
 <div class="video-comment">
-  <md-card>
+  <md-card *ngIf="blobkey">
     <div class="video-display">
       <video class="video-js" controls preload="auto" data-setup='{}'>
         <source src="https://video-assessment.appspot.com/serve?blobkey={{blobkey}}" type="video/mp4">
@@ -103,7 +103,7 @@
         <button md-raised-button
                 class="submit"
                 color="primary"
-                [disabled]="submitting"
+                [disabled]="submitting || disableSubmit"
                 (click)="submit()"
                 md-button>Submit</button>
       </div>

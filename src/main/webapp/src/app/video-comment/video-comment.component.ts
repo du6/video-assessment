@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, Optional, Input, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { List } from 'immutable';
 
 import { GapiService } from '../services/gapi.service';
 import { Template } from '../common/template';
 import { Assessment } from '../common/assessment';
+import { ConfirmationDialog } from '../confirmation/confirmation-dialog.component';
 
 @Component({
   selector: 'video-assessment-video-comment',
@@ -12,6 +14,13 @@ import { Assessment } from '../common/assessment';
   styleUrls: ['video-comment.component.scss'],
 })
 export class VideoCommentComponent implements OnInit, OnDestroy {
+  @Input() groupId: number;
+  @Input() topicId: number;
+  @Input() member: string;
+  @Input() confirmation: string;
+  @Input() disableSubmit: boolean = false;
+  @Output() responsesSubmitted: EventEmitter<string> = new EventEmitter<string>();
+
   blobkey: string;
   sub: any;
   templateId: number;
@@ -26,14 +35,18 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
   constructor(
       private _route: ActivatedRoute, 
       private gapi_: GapiService, 
-      private changeDetectorRef_: ChangeDetectorRef,) {}
+      private changeDetectorRef_: ChangeDetectorRef,
+      private _dialog: MdDialog,
+      @Optional() private dialogRef_: MdDialogRef<ConfirmationDialog>) {}
 
   ngOnInit() {
     this.sub = this._route.params.subscribe(params => {
        this.blobkey = params['blobkey'];
     });
     this.loadTemplate();
-    this.loadAssessments();
+    if (!!this.blobkey) {
+      this.loadAssessments();      
+    }
   }
 
   ngOnDestroy() {
@@ -80,12 +93,35 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
   }
 
   submit() {
+    if (!!this.confirmation) {
+      this.dialogRef_ = this._dialog.open(ConfirmationDialog, {data: this.confirmation});
+      this.dialogRef_.afterClosed().subscribe((confirmed: boolean) => {
+        if (confirmed) {
+          this.submitResponses_();
+        }});
+    } else {
+      this.submitResponses_();
+    }
+  }
+
+  submitResponses_() {
     this.submitting = true;
-    this.gapi_.submitResponses(this.blobkey, this.templateId, this.comments, this.scores)
+    let submitResponsesPromise;
+    if (!!this.blobkey) {
+      submitResponsesPromise = 
+          this.gapi_.submitResponses(this.blobkey, this.templateId, this.comments, this.scores);
+    } else {
+      submitResponsesPromise = this.gapi_.submitTempResponses(
+          this.groupId, this.topicId, this.member, this.templateId, this.comments, this.scores);
+    }
+    submitResponsesPromise
         .then(() => {
-          this.loadAssessments();
+          if (!!this.blobkey) {
+            this.loadAssessments();
+          }
           this.clearResponse();
           this.submitting = false;
+          this.responsesSubmitted.emit("OK");
         }, () => this.submitting = false)
         .then(() => this.changeDetectorRef_.detectChanges());
   }
