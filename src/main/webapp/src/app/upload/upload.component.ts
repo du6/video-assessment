@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, Optional, ChangeDetectorRef } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 
 import { AuthService } from '../services/auth.service';
 import { UploadService } from '../services/upload.service';
@@ -33,6 +33,7 @@ export class UploadComponent {
     private _auth: AuthService,
     private changeDetectorRef_: ChangeDetectorRef,
     private _dialog: MdDialog,
+    private snackBar_: MdSnackBar,
     @Optional() private dialogRef_: MdDialogRef<ConfirmationDialog>) {
   }
 
@@ -82,16 +83,21 @@ export class UploadComponent {
     if (!!this.topicId) {
       uploadFormData.append('topicId', this.topicId.toString());
     }
-    this._upload.uploadVideo(this._uploadUrl, uploadFormData).then(
-      (blobKey) => {
-        this.uploading = false;
-        let video = new Video();
-        video.title = this.title;
-        video.id = blobKey;
-        this.videoUploaded.emit(video);
-        this.title = '';
-      }
-    );
+    this._upload.uploadVideo(this._uploadUrl, uploadFormData)
+        .then(
+          (blobKey) => {
+            this.uploading = false;
+            let video = new Video();
+            video.title = this.title;
+            video.id = blobKey;
+            this.videoUploaded.emit(video);
+            this.title = '';
+          }
+        )
+        .catch(error => {
+          this.uploading = false;
+          this.snackBar_.open('Error uploading video!', 'Dismiss', {duration: 2000})
+        });
 
     this._upload.progressObservable.subscribe(progress => {
       this.progress = progress;

@@ -38,14 +38,29 @@ public class Upload extends HttpServlet {
     if (blobKeys == null || blobKeys.isEmpty()) {
       res.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
     } else {
-      LOG.warning("key: " + blobKeys.get(0).getKeyString() + " email: " + req.getParameter("email") + " title: " + req.getParameter("title"));
+      LOG.warning("key: " + blobKeys.get(0).getKeyString() + " email: "
+          + req.getParameter("email") + " title: " + req.getParameter("title"));
       String groupIdStr = req.getParameter("groupId");
       String topicIdStr = req.getParameter("topicId");
       long groupId = Strings.isNullOrEmpty(groupIdStr) ? -1 : Long.parseLong(groupIdStr);
       long topicId = Strings.isNullOrEmpty(topicIdStr) ? -1 : Long.parseLong(topicIdStr);
+      String email = req.getParameter("email").toLowerCase();
+      if (topicId > 0) {
+        final Query.Filter topicIdFilter =
+            new Query.FilterPredicate("topicId", Query.FilterOperator.EQUAL, topicId);
+        final Query.Filter ownerFilter =
+            new Query.FilterPredicate("createdBy", Query.FilterOperator.EQUAL, email);
+        List<Video> existingVideos = ofy().load().type(Video.class)
+            .filter(ownerFilter)
+            .filter(topicIdFilter)
+            .list();
+        if (!existingVideos.isEmpty()) {
+          throw new RuntimeException("Can only upload one video per user per topic!");
+        }
+      }
       Video video = new Video(
           blobKeys.get(0).getKeyString(),
-          req.getParameter("email").toLowerCase(),
+          email,
           req.getParameter("title"),
           groupId,
           topicId);
