@@ -9,18 +9,29 @@
     <md-divider></md-divider>
     <md-card-content>
       <md-spinner *ngIf="loadingTopics || checkingOwnership"></md-spinner>
-      <md-list class="group-topics" *ngIf="!loadingTopics && !checkingOwnership">
-        <md-list-item *ngFor="let topic of topics" [@fadeInOut]="'in'">
-          <div class="item-content">
-            <md-radio-button class="option" name="topicGroup" value="topic" (click)="selectTopic(topic)">{{topic.topic}}</md-radio-button>
+      <div class="group-topics" *ngIf="!loadingTopics && !checkingOwnership">
+        <md-expansion-panel *ngFor="let topic of topics" [@fadeInOut]="'in'">
+          <md-expansion-panel-header class="item-content">
             <div class="action-buttons" *ngIf="isOwner">
-              <button md-icon-button class="delete-button" (click)=deleteTopic(topic.id)>
+              <button md-icon-button class="delete-button" (click)="deleteTopic($event, topic.id)">
                 <md-icon class="md-24">delete</md-icon>
               </button>
             </div>
-          </div>
-        </md-list-item>
-      </md-list>
+            <md-radio-button 
+                class="option" 
+                name="topicGroup" 
+                value="topic" 
+                (click)="selectTopic($event, topic)">
+              {{topic.topic}}
+            </md-radio-button>
+          </md-expansion-panel-header>
+          <ul>
+            <li *ngFor="let video of videosByTopicId.get(topic.id)"  class="video-item">
+              <a (click)="goToVideoComment(video.id)" class="video-title">{{video.title}}</a>
+            </li>
+          </ul>
+        </md-expansion-panel>
+      </div>
     </md-card-content>
 </md-card>
 
@@ -35,18 +46,29 @@
     <md-divider></md-divider>
     <md-card-content>
       <md-spinner *ngIf="loadingMembers || checkingOwnership"></md-spinner>
-      <md-list class="group-members" *ngIf="!loadingMembers && !checkingOwnership">
-        <md-list-item *ngFor="let member of members" [@fadeInOut]="'in'">
-          <div class="item-content">
-            <md-radio-button class="option" name="memberGroup" value="member" (click)="selectMember(member)">{{member}}</md-radio-button>
+      <div class="group-members" *ngIf="!loadingMembers && !checkingOwnership">
+        <md-expansion-panel *ngFor="let member of members" [@fadeInOut]="'in'">
+          <md-expansion-panel-header class="item-content">
             <div class="action-buttons" *ngIf="isOwner">
-              <button md-icon-button class="delete-button" (click)=deleteMember(member)>
+              <button md-icon-button class="delete-button" (click)="deleteMember($event, member)">
                 <md-icon class="md-24">delete</md-icon>
               </button>
             </div>
-          </div>
-        </md-list-item>
-      </md-list>
+            <md-radio-button 
+                class="option" 
+                name="memberGroup" 
+                value="member" 
+                (click)="selectMember($event, member)">
+              {{member}}
+            </md-radio-button>
+          </md-expansion-panel-header>
+          <ul>
+            <li *ngFor="let video of videosByMember.get(member)" class="video-item">
+              <a (click)="goToVideoComment(video.id)"  class="video-title">{{video.title}}</a>
+            </li>
+          </ul>
+        </md-expansion-panel>
+      </div>
     </md-card-content>
 </md-card>
 

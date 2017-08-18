@@ -62,7 +62,19 @@ export class GapiService {
 
   loadMyVideos(limit: number = 1000): Promise<Video[]> {
     return new Promise((resolve,reject) => 
-        this.gapi_.client.videoAssessmentApi.getMyVideos(limit)
+        this.gapi_.client.videoAssessmentApi.getMyVideos({limit: limit})
+            .execute((resp) => {
+              if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Video[]> resp.result.items);
+              }
+            }));
+  }
+
+  loadGroupVideos(groupId: number, limit: number = 1000): Promise<Video[]> {
+    return new Promise((resolve,reject) => 
+        this.gapi_.client.videoAssessmentApi.getVideosByGroupId({limit: limit, groupId: groupId})
             .execute((resp) => {
               if (resp.error) {
                 reject(resp.error);
@@ -74,7 +86,7 @@ export class GapiService {
 
   loadMySupportedVideos(limit: number = 1000): Promise<Video[]> {
     return new Promise((resolve,reject) => 
-        this.gapi_.client.videoAssessmentApi.getMySupportedVideos(limit)
+        this.gapi_.client.videoAssessmentApi.getMySupportedVideos({limit: limit})
             .execute((resp) => {
               if (resp.error) {
                 reject(resp.error);
@@ -226,7 +238,7 @@ export class GapiService {
 
   loadMyOwnedGroups(limit: number = 1000): Promise<Group[]> {
     return new Promise((resolve,reject) => 
-        this.gapi_.client.videoAssessmentApi.getMyOwnedGroups(limit)
+        this.gapi_.client.videoAssessmentApi.getMyOwnedGroups({limit: limit})
             .execute((resp) => {
               if (resp.error) {
                 reject(resp.error);
@@ -238,7 +250,7 @@ export class GapiService {
 
   loadMyJoinedGroups(limit: number = 1000): Promise<Group[]> {
     return new Promise((resolve,reject) => 
-        this.gapi_.client.videoAssessmentApi.getMyJoinedGroups(limit)
+        this.gapi_.client.videoAssessmentApi.getMyJoinedGroups({limit: limit})
             .execute((resp) => {
               if (resp.error) {
                 reject(resp.error);

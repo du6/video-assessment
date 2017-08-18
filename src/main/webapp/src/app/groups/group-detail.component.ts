@@ -15,6 +15,7 @@ import {
   animate,
 } from '@angular/animations';
 import { MdSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
 
 import { GapiService } from '../services/gapi.service';
 import { Group } from '../common/group';
@@ -65,6 +66,8 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
   groupId: number;
   members: List<string> = List<string>();
   topics: List<Topic> = List<Topic>();
+  videosByTopicId: Map<number, List<Video>> = new Map();
+  videosByMember: Map<string, List<Video>> = new Map();
   loadingMembers: boolean = false;
   loadingTopics: boolean = false;
   checkingOwnership: boolean = false;
@@ -75,7 +78,8 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
       private _route: ActivatedRoute, 
       private gapi_: GapiService, 
       private changeDetectorRef_: ChangeDetectorRef,
-      private snackBar_: MdSnackBar) {}
+      private snackBar_: MdSnackBar,
+      private _router: Router) {}
 
   ngOnInit() {
     this.sub = this._route.params.subscribe(params => {
@@ -95,6 +99,24 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
         this.isValidGroup = false;
         this.loadGroupError = error;
       });
+      this.gapi_.loadGroupVideos(this.groupId)
+          .then((videos: Video[]) => {
+            videos = videos || [];
+            videos.forEach((video: Video) => {
+              const topicId = video.topicId;
+              const owner = video.createdBy;
+              if (this.videosByTopicId && this.videosByTopicId.has(topicId)) {
+                this.videosByTopicId.set(topicId, this.videosByTopicId.get(topicId).push(video));
+              } else {
+                this.videosByTopicId.set(topicId, List([video]));
+              }
+              if (this.videosByMember && this.videosByMember.has(owner)) {
+                this.videosByMember.set(owner, this.videosByMember.get(owner).push(video));
+              } else {
+                this.videosByMember.set(owner, List([video]));
+              }
+            });
+          });
     });
   }
 
@@ -126,7 +148,8 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
         })
   }
 
-  deleteTopic(id: number) {
+  deleteTopic(event: any, id: number) {
+    event.stopPropagation();
     this.gapi_.deleteTopic(id)
         .then(() => {
           const index = this.topics.findIndex((topic) => topic.id === id);
@@ -137,7 +160,8 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
         });
   }
 
-  deleteMember(member: string) {
+  deleteMember(event: any, member: string) {
+    event.stopPropagation();
     this.gapi_.deleteMember(this.groupId, member)
         .then(() => {
           const index = this.members.findIndex((existingMember) => existingMember === member);
@@ -168,11 +192,13 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
         .then(() => this.changeDetectorRef_.detectChanges());
   }
 
-  selectTopic(topic: Topic) {
+  selectTopic(event: any, topic: Topic) {
+    event.stopPropagation();
     this.selectedTopic = topic;
   }
 
-  selectMember(member: string) {
+  selectMember(event: any, member: string) {
+    event.stopPropagation();
     this.selectedMember = member;
   }
 
@@ -194,5 +220,9 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     return 'Please confirm to submit response for:' 
         + '<br><ul><li>Topic: <b>' + (this.selectedTopic ? this.selectedTopic.topic : '') 
         + '</b></li><li>Member: <b>' + this.selectedMember + '</b></li></ul>';
+  }
+
+  goToVideoComment(blobkey: string) {
+    this._router.navigate(['/video-comment', blobkey]);
   }
 }

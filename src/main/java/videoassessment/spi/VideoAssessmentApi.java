@@ -123,6 +123,18 @@ public class VideoAssessmentApi {
   }
 
   @ApiMethod(
+      name = "getVideosByGroupId",
+      path = "getVideosByGroupId",
+      httpMethod = HttpMethod.POST)
+  public List<Video> getVideosByGroupId(
+      final User user,
+      @Named("groupId") final Long groupId,
+      @Named("limit") @DefaultValue(DEFAULT_QUERY_LIMIT) final int limit) {
+    final Filter groupIdFilter = new FilterPredicate("groupId", FilterOperator.EQUAL, groupId);
+    return ofy().load().type(Video.class).filter(groupIdFilter).limit(limit).list();
+  }
+
+  @ApiMethod(
       name = "getMySupportedVideos",
       path = "getMySupportedVideos",
       httpMethod = HttpMethod.POST)

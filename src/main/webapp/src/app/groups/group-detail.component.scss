@@ -1,8 +1,8 @@
 @import '../common/color';
 
-md-list.group-topics,
-md-list.group-members {
-  md-list-item {
+.group-topics,
+.group-members {
+  md-expansion-panel {
     display: block;
     
     &.mat-list-item {
@@ -20,11 +20,12 @@ md-list.group-members {
     }
 
     .item-content {
-      width: 100%;
+      padding-left: 0;
 
       .option {
         display: inline-block;
         line-height: 40px;
+        padding-left: 24px;
       }
     }
   }
@@ -36,5 +37,15 @@ md-list.group-members {
 
   .delete-button {
     background-color: $button-background-color;
+    vertical-align: top;
+  }
+
+  .video-item {
+    margin-bottom: 10px;
+  }
+
+  .video-title {
+    color: blue;
+    text-decoration: underline;
   }
 }
