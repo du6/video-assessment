@@ -34,7 +34,7 @@ public class SendEmail extends HttpServlet {
     String videoLink = request.getParameter("videoLink");
     Properties props = new Properties();
     Session session = Session.getDefaultInstance(props, null);
-    String body = "Hi, " + me + "invited you to review a recent upload:\n\n" + videoLink;
+    String body = "Hi, " + me + " invited you to review a recent upload:\n\n" + videoLink;
     try {
       Message message = new MimeMessage(session);
       InternetAddress from = new InternetAddress(
