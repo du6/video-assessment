@@ -9,8 +9,10 @@ import com.google.api.server.spi.response.UnauthorizedException;
 import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
-import com.google.common.collect.Iterables;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
 
@@ -196,6 +198,12 @@ public class VideoAssessmentApi {
     getVideoForOwnerById(videoId, user);
     Key<Invitation> key = factory().allocateId(Invitation.class);
     Invitation invitation = new Invitation(key.getId(), videoId, supporterEmail.toLowerCase());
+    final Queue queue = QueueFactory.getDefaultQueue();
+    queue.add(ofy().getTransaction(),
+        TaskOptions.Builder.withUrl("/tasks/send_email")
+            .param("email", supporterEmail)
+            .param("me", user.getEmail())
+            .param("videoLink", "http://talkmeup.net/dist/#/video-comment/" + videoId));
     return (Invitation) ApiUtils.createEntity(invitation, Invitation.class);
   }
 

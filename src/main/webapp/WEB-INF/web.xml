@@ -34,6 +34,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>SendEmail</servlet-name>
+        <servlet-class>main.java.videoassessment.servlet.SendEmail</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SendEmail</servlet-name>
+        <url-pattern>/tasks/send_email</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Serve</servlet-name>
         <servlet-class>main.java.videoassessment.servlet.Serve</servlet-class>
     </servlet>
