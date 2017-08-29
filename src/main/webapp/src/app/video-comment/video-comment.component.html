@@ -21,7 +21,7 @@
     <md-card-content>
       <md-spinner *ngIf="loadingTemplate || loadingAssessments"></md-spinner>
       <md-list *ngIf="!(loadingTemplate || loadingAssessments)" class="comment-list">
-        <h3>1. Rational</h3>
+        <h3>1. Presents an audience-centered argument</h3>
         <md-list-item *ngFor="let question of questions.slice(0, 5); let i = index">
           <div class="question-comment">
             <b>({{i + 1}})</b>
@@ -46,8 +46,8 @@
             </ul>
           </div>
         </md-list-item>
-        <md-divider></md-divider>
-        <h3>2. Intuitive</h3>
+        <md-divider class="template-divider"></md-divider>
+        <h3>2. Delivers with passion</h3>
         <md-list-item *ngFor="let question of questions.slice(5, 10); let i = index">
           <div class="question-comment">
             <b>({{i + 1}})</b>
@@ -72,8 +72,8 @@
             </ul>
           </div>
         </md-list-item>
-        <md-divider></md-divider>
-        <h3>3. Personal</h3>
+        <md-divider class="template-divider"></md-divider>
+        <h3>3. Has a commanding presence</h3>
         <md-list-item *ngFor="let question of questions.slice(10, 15); let i = index">
           <div class="question-comment">
             <b>({{i + 1}})</b>
@@ -93,6 +93,32 @@
             </div>
             <ul *ngIf="assessments.has(i + 10)">
               <li *ngFor="let assessment of assessments.get(i + 10)">
+                Received score: {{assessment.score}}
+              </li>
+            </ul>
+          </div>
+        </md-list-item>
+        <md-divider class="template-divider"></md-divider>
+        <h3>4. Engages the Audience</h3>
+        <md-list-item *ngFor="let question of questions.slice(15, 20); let i = index">
+          <div class="question-comment">
+            <b>({{i + 1}})</b>
+            <md-slider class="score-slider" 
+                       [min]="0" 
+                       [max]="10" 
+                       tickInterval="1" 
+                       #score 
+                       aria-label="set a score"
+                       invert
+                       [(ngModel)]="scores[i + 15]">
+            </md-slider>
+            {{score.value}}
+            <div class="critique-container">
+              <span class="critique">{{getPositive(question)}}</span>
+              <span class="critique">{{getNegative(question)}}</span>
+            </div>
+            <ul *ngIf="assessments.has(i + 15)">
+              <li *ngFor="let assessment of assessments.get(i + 15)">
                 Received score: {{assessment.score}}
               </li>
             </ul>
