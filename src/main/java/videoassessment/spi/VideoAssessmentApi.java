@@ -208,6 +208,20 @@ public class VideoAssessmentApi {
   }
 
   @ApiMethod(
+      name = "sendFeedback",
+      path = "sendFeedback",
+      httpMethod = HttpMethod.POST)
+  public void sendFeedback(
+      final User user,
+      @Named("feedback") final String feedback) {
+    final Queue queue = QueueFactory.getDefaultQueue();
+    queue.add(ofy().getTransaction(),
+        TaskOptions.Builder.withUrl("/tasks/send_feedback")
+            .param("from", user.getEmail())
+            .param("feedback", feedback));
+  }
+
+  @ApiMethod(
       name = "deleteSupporter",
       path = "deleteSupporter",
       httpMethod = HttpMethod.DELETE)

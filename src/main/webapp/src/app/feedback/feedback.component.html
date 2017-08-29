@@ -1,0 +1,13 @@
+<md-card class="feedback">
+    <md-card-title>Send Feedback</md-card-title>
+    <md-input-container class="feedback__content">
+      <textarea mdInput [(ngModel)]="feedback"></textarea>
+    </md-input-container>
+    <div class="action-buttons">
+      <button md-raised-button 
+          color="primary" 
+          (click)="send()" 
+          class="send-button" 
+          [disabled]="sending || feedback.trim().length == 0">Send</button>
+    </div>
+</md-card>

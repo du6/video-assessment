@@ -411,4 +411,17 @@ export class GapiService {
           });
     });
   }
+
+  sendFeedback(feedback: string) {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.sendFeedback({feedback: feedback})
+      .execute((resp) => {
+        if (resp.error) {
+            reject(resp.error);
+          } else {
+            resolve("OK");
+          }
+      });
+    });
+  }
 }

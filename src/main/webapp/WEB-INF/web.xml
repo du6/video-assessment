@@ -44,6 +44,16 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>SendFeedback</servlet-name>
+        <servlet-class>main.java.videoassessment.servlet.SendFeedback</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SendFeedback</servlet-name>
+        <url-pattern>/tasks/send_feedback</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>Serve</servlet-name>
         <servlet-class>main.java.videoassessment.servlet.Serve</servlet-class>
     </servlet>

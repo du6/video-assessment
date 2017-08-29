@@ -21,4 +21,8 @@ export class SidenavComponent {
   gotoGroups() {
     this._router.navigate(['/groups']);
   }
+
+  gotoFeedback() {
+    this._router.navigate(['/feedback']);
+  }
 }

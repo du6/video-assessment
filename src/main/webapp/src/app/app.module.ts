@@ -23,12 +23,14 @@ import { GroupsComponent } from './groups/groups.component';
 import { GroupListComponent } from './groups/group-list.component';
 import { GroupItemComponent } from './groups/group-item.component';
 import { GroupDetailComponent } from './groups/group-detail.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { GapiService } from './services/gapi.service';
 import { UploadService } from './services/upload.service';
 
 const routes: Routes = [
+  { path: 'feedback', component: FeedbackComponent, canActivate: [AuthGuard] },
   { path: 'groups', component: GroupsComponent, canActivate: [AuthGuard] },
   { path: 'supported', component: SupportedVideosComponent, canActivate: [AuthGuard] },
   { path: 'group/:groupId', component: GroupDetailComponent, canActivate: [AuthGuard] },
@@ -66,6 +68,7 @@ const routes: Routes = [
     GroupListComponent,
     GroupItemComponent,
     GroupDetailComponent,
+    FeedbackComponent,
   ],
   entryComponents: [UpdateSupportersDialog, CreateGroupDialog, ConfirmationDialog],
   bootstrap: [VideoAssessmentAppComponent],
