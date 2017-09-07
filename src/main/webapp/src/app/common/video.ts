@@ -3,5 +3,6 @@ export class Video {
   id: string;
   groupId: number;
   topicId: number;
+  templateId: number;
   createdBy: string;
 }

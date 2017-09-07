@@ -29,14 +29,18 @@ public class Video extends VideoAssessmentEntity {
   @Index
   private Long topicId;
 
+  @Index
+  private long templateId;
+
   private String title;
 
-  public Video(String id, String createdBy, String title, Long groupId, Long topicId) {
+  public Video(String id, String createdBy, String title, Long groupId, Long topicId, Long templateId) {
     this.id = id;
     this.createdBy = createdBy;
     this.title = title;
     this.groupId = groupId;
     this.topicId = topicId;
+    this.templateId = templateId;
     this.uploadedOn = DateTime.now();
   }
 
@@ -66,6 +70,10 @@ public class Video extends VideoAssessmentEntity {
 
   public String getTitle() {
     return title;
+  }
+
+  public long getTemplateId() {
+    return templateId;
   }
 
   private Video() {}

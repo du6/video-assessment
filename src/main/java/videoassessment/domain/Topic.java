@@ -23,11 +23,15 @@ public class Topic extends VideoAssessmentEntity {
   private String topic;
 
   @Index
+  private Long templateId;
+
+  @Index
   private DateTime createdOn;
 
-  public Topic (long id, long groupId, String topic) {
+  public Topic (long id, long groupId, long templateId, String topic) {
     this.id = id;
     this.groupId = groupId;
+    this.templateId = templateId;
     this.topic = topic;
     this.createdOn = DateTime.now();
   }
@@ -38,6 +42,10 @@ public class Topic extends VideoAssessmentEntity {
 
   public Long getGroupId() {
     return groupId;
+  }
+
+  public Long getTemplateId() {
+    return templateId;
   }
 
   public String getTopic() {

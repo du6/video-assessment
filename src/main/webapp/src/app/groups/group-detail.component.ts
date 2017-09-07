@@ -21,6 +21,7 @@ import { GapiService } from '../services/gapi.service';
 import { Group } from '../common/group';
 import { Topic } from '../common/topic';
 import { Video } from '../common/video';
+import { Template } from '../common/template';
 
 @Component({
   selector: 'video-assessment-group-detail',
@@ -70,9 +71,14 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
   videosByMember: Map<string, List<Video>> = new Map();
   loadingMembers: boolean = false;
   loadingTopics: boolean = false;
+  loadingTemplates: boolean = true;
   checkingOwnership: boolean = false;
   selectedTopic: Topic;
   selectedMember: string;
+  selectedTemplate: Template;
+  uploadTemplate: Template;
+  commentTemplate: Template;
+  templates: List<Template> = List<Template>();
 
   constructor(
       private _route: ActivatedRoute, 
@@ -82,6 +88,15 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
       private _router: Router) {}
 
   ngOnInit() {
+    this.loadingTemplates = true;
+    this.gapi_.loadTemplates().then(templates => {
+      this.templates = List<Template>(templates);
+      this.selectedTemplate = templates[0];
+      this.uploadTemplate = templates[0];
+      this.commentTemplate = templates[0];
+      this.loadingTemplates = false;
+    });
+
     this.sub = this._route.params.subscribe(params => {
       this.groupId = params['groupId'];
       this.gapi_.loadGroup(this.groupId).then((group: Group) => {
@@ -129,7 +144,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     if (name.length == 0) {
       return;
     }
-    this.gapi_.createTopic(this.groupId, name)
+    this.gapi_.createTopic(this.groupId, this.selectedTemplate.id, name)
         .then((topic: Topic) => {
           this.topics = this.topics.unshift(topic);
           this.changeDetectorRef_.detectChanges();
@@ -195,6 +210,8 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
   selectTopic(event: any, topic: Topic) {
     event.stopPropagation();
     this.selectedTopic = topic;
+    this.uploadTemplate = this.commentTemplate = 
+        this.templates.find(tempalte => tempalte.id == topic.templateId);
   }
 
   selectMember(event: any, member: string) {

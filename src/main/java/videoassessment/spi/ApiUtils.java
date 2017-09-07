@@ -18,8 +18,9 @@ import main.java.videoassessment.domain.VideoAssessmentEntity;
  * Util class to help building APIs.
  */
 public class ApiUtils {
-  public static final long TEMPLATE_ID = 1000L;
-  public static final ImmutableList<String> QUESTIONS = ImmutableList.<String>builder()
+  public static final long PRESENTATION_TEMPLATE_ID = 1000L;
+  public static final long JOB_INTERVIEW_TEMPLATE_ID = 1001L;
+  public static final ImmutableList<String> PRESENTATION_ASSESSMENTS = ImmutableList.<String>builder()
       .add("Explains issues properly based on the audience’s expertise<->Neglects the audience’s level of expertise and uses jargon and inappropriate language")
       .add("Shows a deep understanding of the audience’s concerns<->Neglects the audience’s viewpoints")
       .add("Focuses on satisfying the audience’s decision criteria<->Satisfies the speaker's decision criteria")
@@ -40,6 +41,29 @@ public class ApiUtils {
       .add("Asks rhetorical and non-rhetorical questions of the audience<->Does not interact with the audience")
       .add("Uses visuals effectively<->Confuses the audience with visuals")
       .add("Concludes with summaries and clear next steps for the audience<->The audience is left wondering what to do next")
+      .build();
+
+  public static final ImmutableList<String> JOB_INTERVIEW_ASSESSMENTS = ImmutableList.<String>builder()
+      .add("Be poised, smile appropriately, and offer a firm handshake")
+      .add("Wait to be asked to sit, then sit using good posture")
+      .add("Use open gestures; nod to confirm comprehension")
+      .add("Maintain eye contact with the recruiters – avoid reading")
+      .add("Dress appropriately for the industry and position")
+      .add("Maintain appropriate volume and breath support")
+      .add("Pronounce words clearly at a moderate pace and medium pitch")
+      .add("Avoid filler words and \"double clutching\"")
+      .add("Use pauses and vocal stress to emphasize key points")
+      .add("Vary your emotional tone")
+      .add("Introduce yourself")
+      .add("Show knowledge of the firm – its value, people, and current position")
+      .add("Explain how your skills satisfy the job’s requirements – connect the dots")
+      .add("Quantify the results and benefits you created in the past")
+      .add("Give direct, specific, and complete answers – avoid banalities")
+      .add("Tell your story – why you applied for the program and the interview")
+      .add("Do not correct the interviewers (e.g., “As I said”) or interrupt")
+      .add("Be diplomatic – avoid criticizing anyone, even yourself")
+      .add("Express your enthusiasm for the position")
+      .add("Exit with a sincere thank you and handshake")
       .build();
 
   private static final String BUCKET_NAME = "video-assessment.appspot.com";

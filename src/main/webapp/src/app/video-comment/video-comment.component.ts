@@ -1,4 +1,15 @@
-import { Component, Optional, Input, Output, EventEmitter, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { 
+    Component, 
+    Optional, 
+    Input, 
+    Output, 
+    EventEmitter, 
+    OnInit, 
+    OnDestroy, 
+    OnChanges, 
+    SimpleChange, 
+    SimpleChanges, 
+    ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { List } from 'immutable';
@@ -13,17 +24,18 @@ import { ConfirmationDialog } from '../confirmation/confirmation-dialog.componen
   templateUrl: 'video-comment.component.html',
   styleUrls: ['video-comment.component.scss'],
 })
-export class VideoCommentComponent implements OnInit, OnDestroy {
+export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
   @Input() groupId: number;
   @Input() topicId: number;
+  @Input() template: Template;
   @Input() member: string;
   @Input() confirmation: string;
   @Input() disableSubmit: boolean = false;
   @Output() responsesSubmitted: EventEmitter<string> = new EventEmitter<string>();
 
+  templateId: number;
   blobkey: string;
   sub: any;
-  templateId: number;
   questions: List<string> = List<string>();
   assessments: Map<number, List<Assessment>> = new Map();
   comments: string[] = [];
@@ -43,9 +55,19 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
     this.sub = this._route.params.subscribe(params => {
        this.blobkey = params['blobkey'];
     });
-    this.loadTemplate();
     if (!!this.blobkey) {
-      this.loadAssessments();      
+      this.loadAssessments();
+      this.gapi_.getVideoByKey(this.blobkey)
+          .then(video => {
+            this.templateId = video.templateId;
+            this.loadTemplate();
+          });      
+    } else {
+      this.templateId = this.template.id;
+      this.questions = List(this.template.questions);
+      this.comments = new Array(this.questions.size);
+      this.scores = new Array(this.questions.size);
+      this.clearResponse();
     }
   }
 
@@ -53,11 +75,22 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.template && changes.template.currentValue) {
+      const templateChange: SimpleChange = changes.template;
+      const newTemplate: Template = templateChange.currentValue;
+      this.templateId = newTemplate.id;
+      this.questions = List(newTemplate.questions);
+      this.comments = new Array(this.questions.size);
+      this.scores = new Array(this.questions.size);
+      this.clearResponse();
+    }
+  }
+
   private loadTemplate() {
     this.loadingTemplate = true;
-    this.gapi_.loadTemplate()
+    this.gapi_.loadTemplate(this.templateId)
         .then((template: Template) => {
-          this.templateId = template.id; 
           this.questions = List(template.questions);
           this.comments = new Array(this.questions.size);
           this.scores = new Array(this.questions.size);
@@ -89,7 +122,7 @@ export class VideoCommentComponent implements OnInit, OnDestroy {
 
   private clearResponse() {
     this.comments.fill('');
-    this.scores.fill(10);    
+    this.scores.fill(0);    
   }
 
   submit() {

@@ -23,6 +23,7 @@ import main.java.videoassessment.spi.ApiUtils;
 import main.java.videoassessment.spi.VideoAssessmentApi;
 
 import static main.java.videoassessment.service.OfyService.ofy;
+import static main.java.videoassessment.spi.ApiUtils.PRESENTATION_TEMPLATE_ID;
 
 public class Upload extends HttpServlet {
   private static final Logger LOG = Logger.getLogger(VideoAssessmentApi.class.getName());
@@ -42,8 +43,10 @@ public class Upload extends HttpServlet {
           + req.getParameter("email") + " title: " + req.getParameter("title"));
       String groupIdStr = req.getParameter("groupId");
       String topicIdStr = req.getParameter("topicId");
+      String templateIdStr = req.getParameter("templateId");
       long groupId = Strings.isNullOrEmpty(groupIdStr) ? -1 : Long.parseLong(groupIdStr);
       long topicId = Strings.isNullOrEmpty(topicIdStr) ? -1 : Long.parseLong(topicIdStr);
+      long templateId = Strings.isNullOrEmpty(templateIdStr) ? PRESENTATION_TEMPLATE_ID : Long.parseLong(templateIdStr);
       String email = req.getParameter("email").toLowerCase();
       if (topicId > 0) {
         final Query.Filter topicIdFilter =
@@ -63,7 +66,8 @@ public class Upload extends HttpServlet {
           email,
           req.getParameter("title"),
           groupId,
-          topicId);
+          topicId,
+          templateId);
       ApiUtils.createEntity(video, Video.class);
       updateResponses(groupId, topicId, video.getId(), req.getParameter("email").toLowerCase());
       res.setStatus(HttpServletResponse.SC_ACCEPTED);

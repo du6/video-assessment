@@ -49,3 +49,25 @@
     text-decoration: underline;
   }
 }
+
+.create-topic {
+  margin-bottom: 20px;
+}
+
+.topic-title {
+  width: 100%;
+}
+
+.template {
+  margin-bottom: 20px;
+
+  .template-label {
+    margin-right: 10px;
+    font-size: 16px;
+    vertical-align: bottom;
+  }
+
+  .select-template {
+    min-width: 200px;
+  }
+}

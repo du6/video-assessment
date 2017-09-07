@@ -14,4 +14,18 @@
   .warning {
     color: red;
   }
+
+  .template {
+    margin-bottom: 20px;
+
+    .template-label {
+      margin-right: 10px;
+      font-size: 16px;
+      vertical-align: bottom;
+    }
+
+    .select-template {
+      min-width: 200px;
+    }
+  }
 }

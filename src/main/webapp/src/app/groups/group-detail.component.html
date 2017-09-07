@@ -1,10 +1,19 @@
 <md-card>
     <md-card-title>Topics</md-card-title>
-    <div *ngIf="isOwner">
-      <md-input-container>
-        <input mdInput placeholder="New Topic" #newTopic>
-      </md-input-container>
-      <button md-raised-button color="primary" class="add-button" (click)="createTopic(newTopic.value); newTopic.value = '';">Create Topic</button>
+    <div *ngIf="isOwner" class="create-topic">
+      <md-spinner *ngIf="loadingTemplates"></md-spinner>
+      <div *ngIf="!loadingTemplates">
+        <md-input-container class="topic-title">
+          <input mdInput placeholder="New Topic" #newTopic>
+        </md-input-container>
+        <div class="template">
+          <span class="template-label">Select rubrics:</span>
+          <md-select class="select-template" [(ngModel)]="selectedTemplate">
+            <md-option *ngFor="let template of templates" [value]="template">{{ template.name }}</md-option>
+          </md-select>
+        </div>
+        <button md-raised-button color="primary" class="add-button" (click)="createTopic(newTopic.value); newTopic.value = '';">Create Topic</button>
+      </div>
     </div>
     <md-divider></md-divider>
     <md-card-content>
@@ -75,9 +84,11 @@
 <md-card *ngIf="isOwner">
   <md-card-title>Upload Video for Selected Topic and Member</md-card-title>
   <md-card-content>
-    <video-assessment-upload 
+    <video-assessment-upload
+        *ngIf="!loadingTemplates"
         [groupId]="groupId"
         [topicId]="selectedTopic ? selectedTopic.id : -1"
+        [template]="uploadTemplate"
         [member]="selectedMember"
         [confirmation]="getUploadVideoConfirmation()"
         [shouldDisableUpload]="!(selectedTopic && selectedMember)"
@@ -87,7 +98,9 @@
 </md-card>
 
 <video-assessment-video-comment
+    *ngIf="!loadingTemplates"
     [groupId]="groupId"
+    [template]="commentTemplate"
     [topicId]="selectedTopic ? selectedTopic.id : -1"
     [member]="selectedMember"
     [confirmation]="getSubmitResponsesConfirmation()"

@@ -96,9 +96,9 @@ export class GapiService {
             }));
   }
 
-  loadTemplate(): Promise<Template> {
+  loadTemplate(id: number): Promise<Template> {
     return new Promise((resolve, reject) => {
-      this.gapi_.client.videoAssessmentApi.getTemplate()
+      this.gapi_.client.videoAssessmentApi.getTemplate({id: id})
           .execute((resp) => {
             if (resp.error) {
                 reject(resp.error);
@@ -106,6 +106,19 @@ export class GapiService {
                 resolve(<Template> resp.result);
               }
           });
+    });
+  }
+
+  loadTemplates(): Promise<Template[]> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.getTemplates().execute((resp) => {
+        if (resp.error) {
+            reject(resp.error);
+          } else {
+            const templates : Template[] = <Template[]> resp.result.items;
+            resolve(templates);
+          }
+      });
     });
   }
 
@@ -373,9 +386,9 @@ export class GapiService {
     });
   }
 
-  createTopic(groupId: number, name: string): Promise<Topic> {
+  createTopic(groupId: number, templateId: number, name: string): Promise<Topic> {
     return new Promise((resolve, reject) => {
-      this.gapi_.client.videoAssessmentApi.createTopic({id: groupId, topic: name})
+      this.gapi_.client.videoAssessmentApi.createTopic({id: groupId, templateId: templateId, topic: name})
           .execute((resp) => {
             if (resp.error) {
                 reject(resp.error);

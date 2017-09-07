@@ -1,11 +1,13 @@
-import { Component, Input, Output, EventEmitter, Optional, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Optional, SimpleChange, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
+import { List } from 'immutable';
 
 import { AuthService } from '../services/auth.service';
 import { UploadService } from '../services/upload.service';
 import { GapiService } from '../services/gapi.service';
 import { ConfirmationDialog } from '../confirmation/confirmation-dialog.component';
 import { Video } from '../common/video';
+import { Template } from '../common/template';
 
 @Component({
   selector: 'video-assessment-upload',
@@ -15,16 +17,20 @@ import { Video } from '../common/video';
 export class UploadComponent {
   @Input() groupId: number;
   @Input() topicId: number;
+  @Input() template: Template;
   @Input() member: string;
   @Input() shouldDisableUpload: boolean;
   @Input() confirmation: string;
   @Output() videoUploaded: EventEmitter<Video> = new EventEmitter<Video>();
 
+  templates: List<Template> = List<Template>();
+  selectedTemplate: Template;
   isFileValid: boolean = false;
   isLargeFile: boolean = false;
   title: string;
   file: File;
   uploading: boolean = false;
+  loadingTemplates: boolean = true;
   progress: number = 0;
   private _uploadUrl: string;
 
@@ -35,6 +41,26 @@ export class UploadComponent {
     private _dialog: MdDialog,
     private snackBar_: MdSnackBar,
     @Optional() private dialogRef_: MdDialogRef<ConfirmationDialog>) {
+  }
+
+  ngOnInit() {
+    if (!this.template) {
+      this.loadingTemplates = true;
+      this.gapi_.loadTemplates().then(templates => {
+        this.templates = List<Template>(templates);
+        this.selectedTemplate = templates[0];
+        this.loadingTemplates = false;
+      });
+    } else {
+      this.selectedTemplate = this.template;
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.template && changes.template.currentValue) {
+      const templateChange: SimpleChange = changes.template;
+      this.selectedTemplate = templateChange.currentValue;
+    }
   }
 
   ngAfterViewInit() {
@@ -83,6 +109,7 @@ export class UploadComponent {
     if (!!this.topicId) {
       uploadFormData.append('topicId', this.topicId.toString());
     }
+    uploadFormData.append('templateId', this.selectedTemplate.id.toString());
     this._upload.uploadVideo(this._uploadUrl, uploadFormData)
         .then(
           (blobKey) => {

@@ -3,6 +3,13 @@
     <input mdInput name="title" placeholder="video name" [(ngModel)]="title">
   </md-input-container>
   <input name="file" type="file" accept=".mp4" (change)="onFileChange($event)">
+  <div *ngIf="!template" class="template">
+    <md-spinner *ngIf="loadingTemplates"></md-spinner>
+    <span class="template-label" *ngIf="!loadingTemplates">Select rubrics:</span>
+    <md-select class="select-template" *ngIf="!loadingTemplates" [(ngModel)]="selectedTemplate" name="selectedTemplate">
+      <md-option *ngFor="let template of templates" [value]="template">{{ template.name }}</md-option>
+    </md-select>
+  </div>
   <div>
     <button type="submit"
             class="upload-button"

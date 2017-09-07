@@ -40,7 +40,7 @@ import main.java.videoassessment.form.ResponseForm;
 
 import static main.java.videoassessment.service.OfyService.factory;
 import static main.java.videoassessment.service.OfyService.ofy;
-import static main.java.videoassessment.spi.ApiUtils.TEMPLATE_ID;
+import static main.java.videoassessment.spi.ApiUtils.PRESENTATION_TEMPLATE_ID;
 
 /**
  * Defines mind tree APIs.
@@ -98,8 +98,7 @@ public class VideoAssessmentApi {
   public Video getVideoByKey(
       final User user,
       @Named("video") final String videoId) throws UnauthorizedException {
-    Video video = getVideoForOwnerById(videoId, user);
-    return video;
+    return ofy().load().type(Video.class).id(videoId).now();
   }
 
   private Video getVideoForOwnerById(String videoId, User owner) throws UnauthorizedException {
@@ -303,14 +302,11 @@ public class VideoAssessmentApi {
       final User user,
       @Named("video") final String videoId,
       @Named("limit") @DefaultValue(DEFAULT_QUERY_LIMIT) final int limit) {
-    final Filter templateFilter =
-        new FilterPredicate("templateId", FilterOperator.EQUAL, TEMPLATE_ID);
     final Filter videoFilter =
         new FilterPredicate("videoId", FilterOperator.EQUAL, videoId);
 
     Query<Response> query = ofy().load().type(Response.class)
         .limit(limit)
-        .filter(templateFilter)
         .filter(videoFilter);
 
     Video video = ofy().load().type(Video.class).id(videoId).now();
@@ -334,8 +330,21 @@ public class VideoAssessmentApi {
       path = "getTemplate",
       httpMethod = HttpMethod.POST
   )
-  public Template getTemplate() {
-    return ofy().load().type(Template.class).id(TEMPLATE_ID).now();
+  public Template getTemplate(@Named("id") final Long id) {
+    long templateId = id;
+    if (id == null || id < 0) {
+      templateId = PRESENTATION_TEMPLATE_ID;
+    }
+    return ofy().load().type(Template.class).id(templateId).now();
+  }
+
+  @ApiMethod(
+      name = "getTemplates",
+      path = "getTemplates",
+      httpMethod = HttpMethod.POST
+  )
+  public List<Template> getTemplates() {
+    return ofy().load().type(Template.class).order("name").list();
   }
 
   @ApiMethod(
@@ -548,10 +557,11 @@ public class VideoAssessmentApi {
   public Topic createTopic(
       final User user,
       @Named("id") final Long groupId,
+      @Named("templateId") final Long templateId,
       @Named("topic") final String name) throws UnauthorizedException {
     getOwnedGroupById(groupId, user);
     Key<Topic> key = factory().allocateId(Topic.class);
-    Topic topic = new Topic(key.getId(), groupId, name);
+    Topic topic = new Topic(key.getId(), groupId, templateId, name);
     return (Topic) ApiUtils.createEntity(topic, Topic.class);
   }
 
