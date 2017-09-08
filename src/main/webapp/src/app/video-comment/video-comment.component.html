@@ -25,19 +25,17 @@
         <h3 *ngIf="templateId == 1001" >1. Create a dynamic stage presence</h3>
         <md-list-item *ngFor="let question of questions.slice(0, 5); let i = index">
           <div class="question-comment">
-            <b>({{i + 1}})</b>
-            <md-slider class="score-slider" 
-                       [min]="0" 
-                       [max]="10" 
-                       tickInterval="1" 
-                       #score 
-                       aria-label="set a score"
-                       [(ngModel)]="scores[i]">
-            </md-slider>
-            {{score.value == 0 ? 'n.a.' : score.value}}
-            <div class="critique-container">
-              <span class="critique">{{ getNegative(question) || 'Negative'}}</span>
-              <span class="critique">{{getPositive(question)}}</span>
+            <div>({{i + 1}}) {{getPositive(question)}}</div>
+            <div>
+              <md-slider class="score-slider" 
+                        [min]="0" 
+                        [max]="10" 
+                        [step]="1" 
+                        #score 
+                        aria-label="set a score"
+                        [(ngModel)]="scores[i]">
+              </md-slider>
+              {{score.value == 0 ? 'irrelevant' : score.value}}
             </div>
             <ul *ngIf="assessments.has(i)">
               <li *ngFor="let assessment of assessments.get(i)">
@@ -51,19 +49,17 @@
         <h3 *ngIf="templateId == 1001">2. Emphasize enthusiasm and sincerity</h3>
         <md-list-item *ngFor="let question of questions.slice(5, 10); let i = index">
           <div class="question-comment">
-            <b>({{i + 1}})</b>
-            <md-slider class="score-slider" 
-                       [min]="0" 
-                       [max]="10" 
-                       tickInterval="1" 
-                       #score 
-                       aria-label="set a score"
-                       [(ngModel)]="scores[i + 5]">
-            </md-slider>
-            {{score.value == 0 ? 'n.a.' : score.value}}
-            <div class="critique-container">
-              <span class="critique">{{ getNegative(question) || 'Negative'}}</span>
-              <span class="critique">{{getPositive(question)}}</span>
+            <div>({{i + 1}}) {{getPositive(question)}}</div>
+            <div>
+              <md-slider class="score-slider" 
+                        [min]="0" 
+                        [max]="10" 
+                        [step]="1" 
+                        #score 
+                        aria-label="set a score"
+                        [(ngModel)]="scores[i + 5]">
+              </md-slider>
+              {{score.value == 0 ? 'irrelevant' : score.value}}
             </div>
             <ul *ngIf="assessments.has(i + 5)">
               <li *ngFor="let assessment of assessments.get(i + 5)">
@@ -77,19 +73,17 @@
         <h3 *ngIf="templateId == 1001">3. Help the recruiters remember you</h3>
         <md-list-item *ngFor="let question of questions.slice(10, 15); let i = index">
           <div class="question-comment">
-            <b>({{i + 1}})</b>
-            <md-slider class="score-slider" 
-                       [min]="0" 
-                       [max]="10" 
-                       tickInterval="1" 
-                       #score 
-                       aria-label="set a score"
-                       [(ngModel)]="scores[i + 10]">
-            </md-slider>
-            {{score.value == 0 ? 'n.a.' : score.value}}
-            <div class="critique-container">
-              <span class="critique">{{ getNegative(question) || 'Negative'}}</span>
-              <span class="critique">{{getPositive(question)}}</span>
+            <div>
+              <div>({{i + 1}}) {{getPositive(question)}}</div>
+              <md-slider class="score-slider" 
+                        [min]="0" 
+                        [max]="10" 
+                        [step]="1" 
+                        #score 
+                        aria-label="set a score"
+                        [(ngModel)]="scores[i + 10]">
+              </md-slider>
+              {{score.value == 0 ? 'irrelevant' : score.value}}
             </div>
             <ul *ngIf="assessments.has(i + 10)">
               <li *ngFor="let assessment of assessments.get(i + 10)">
@@ -103,19 +97,17 @@
         <h3 *ngIf="templateId == 1001">4. Further influence the recruiters</h3>
         <md-list-item *ngFor="let question of questions.slice(15, 20); let i = index">
           <div class="question-comment">
-            <b>({{i + 1}})</b>
-            <md-slider class="score-slider" 
-                       [min]="0" 
-                       [max]="10" 
-                       tickInterval="1" 
-                       #score 
-                       aria-label="set a score"
-                       [(ngModel)]="scores[i + 15]">
-            </md-slider>
-            {{score.value == 0 ? 'n.a.' : score.value}}
-            <div class="critique-container">
-              <span class="critique">{{ getNegative(question) || 'Negative'}}</span>
-              <span class="critique">{{getPositive(question)}}</span>
+            <div>({{i + 1}}) {{getPositive(question)}}</div>
+            <div>
+              <md-slider class="score-slider" 
+                        [min]="0" 
+                        [max]="10" 
+                        [step]="1" 
+                        #score 
+                        aria-label="set a score"
+                        [(ngModel)]="scores[i + 15]">
+              </md-slider>
+              {{score.value == 0 ? 'irrelevant' : score.value}}
             </div>
             <ul *ngIf="assessments.has(i + 15)">
               <li *ngFor="let assessment of assessments.get(i + 15)">

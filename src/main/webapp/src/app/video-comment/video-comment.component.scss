@@ -10,6 +10,7 @@
 
   .comment {
     display: block;
+    width: 100%;
   }
 
   md-list.comment-list {
@@ -31,7 +32,6 @@
       .question-comment {
         display: block;
         height: 100%;
-        padding-top: 16px;
         width: 100%;
       }
 
@@ -50,7 +50,7 @@
       }
 
       .score-slider {
-        max-width: 400px;
+        max-width: 200px;
         width: 70%;
       }
     }
