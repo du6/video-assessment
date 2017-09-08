@@ -34,7 +34,7 @@
                        aria-label="set a score"
                        [(ngModel)]="scores[i]">
             </md-slider>
-            {{score.value}}
+            {{score.value == 0 ? 'n.a.' : score.value}}
             <div class="critique-container">
               <span class="critique">{{ getNegative(question) || 'Negative'}}</span>
               <span class="critique">{{getPositive(question)}}</span>
@@ -60,7 +60,7 @@
                        aria-label="set a score"
                        [(ngModel)]="scores[i + 5]">
             </md-slider>
-            {{score.value}}
+            {{score.value == 0 ? 'n.a.' : score.value}}
             <div class="critique-container">
               <span class="critique">{{ getNegative(question) || 'Negative'}}</span>
               <span class="critique">{{getPositive(question)}}</span>
@@ -86,7 +86,7 @@
                        aria-label="set a score"
                        [(ngModel)]="scores[i + 10]">
             </md-slider>
-            {{score.value}}
+            {{score.value == 0 ? 'n.a.' : score.value}}
             <div class="critique-container">
               <span class="critique">{{ getNegative(question) || 'Negative'}}</span>
               <span class="critique">{{getPositive(question)}}</span>
@@ -112,7 +112,7 @@
                        aria-label="set a score"
                        [(ngModel)]="scores[i + 15]">
             </md-slider>
-            {{score.value}}
+            {{score.value == 0 ? 'n.a.' : score.value}}
             <div class="critique-container">
               <span class="critique">{{ getNegative(question) || 'Negative'}}</span>
               <span class="critique">{{getPositive(question)}}</span>
