@@ -576,4 +576,29 @@ public class VideoAssessmentApi {
     getOwnedGroupById(topic.getGroupId(), user);
     ofy().delete().entity(topic);
   }
+
+  @ApiMethod(
+      name = "setName",
+      path = "setName",
+      httpMethod = HttpMethod.POST)
+  public AppEngineUser setName(
+      final User user,
+      @Named("name") final String name) {
+    AppEngineUser profile =
+        ofy().load().type(AppEngineUser.class).id(user.getEmail().toLowerCase()).now();
+    profile.setName(name);
+    ofy().save().entity(profile);
+    return profile;
+  }
+
+  @ApiMethod(
+      name = "getProfilesByEmails",
+      path = "getProfilesByEmails",
+      httpMethod = HttpMethod.POST)
+  public List<AppEngineUser> getProfilesByEmails(
+      final User user,
+      @Named("emails") final List<String> emails) {
+    Map<String, AppEngineUser> emailToProfile = ofy().load().type(AppEngineUser.class).ids(emails);
+    return new ArrayList<>(emailToProfile.values());
+  }
 }

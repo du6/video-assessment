@@ -1,0 +1,12 @@
+<md-card class="profile">
+  <md-card-title>Profile</md-card-title>
+  <md-spinner *ngIf="loadingProfile"></md-spinner>
+  <div *ngIf="!loadingProfile">
+    <div>Email: {{email}}</div>
+    Name:
+    <md-input-container>
+      <input mdInput type="text" [(ngModel)]="name">
+    </md-input-container>
+    <button md-raised-button color="primary" class="save-button" (click)="setName(name)">Update Name</button>
+  </div>
+</md-card>

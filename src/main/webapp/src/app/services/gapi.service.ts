@@ -9,6 +9,7 @@ import { Topic } from '../common/topic';
 import { Template } from '../common/template';
 import { Assessment } from '../common/assessment';
 import { Invitation } from '../common/invitation';
+import { Profile } from '../common/profile';
 
 // Google's login API namespace
 declare var gapi: { client: { videoAssessmentApi: any } };
@@ -47,6 +48,33 @@ export class GapiService {
               }
             }));
   }
+
+  getProfile(): Promise<Profile> {
+    return new Promise((resolve, reject) => 
+        this.gapi_.client.videoAssessmentApi.getUser()
+            .execute((resp) => {
+              if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Profile> resp.result);
+              } else {
+                reject('user does not exist');
+              }
+            }));
+  }
+
+  setName(name: string): Promise<Profile> {
+    return new Promise((resolve, reject) => 
+        this.gapi_.client.videoAssessmentApi.setName({name: name})
+            .execute((resp) => {
+              if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Profile> resp.result);
+              }
+            }));
+  }
+
 
   getUploadUrl(): Promise<string> {
     return new Promise((resolve, reject) => 

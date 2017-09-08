@@ -25,4 +25,8 @@ export class SidenavComponent {
   gotoFeedback() {
     this._router.navigate(['/feedback']);
   }
+
+  gotoProfile() {
+    this._router.navigate(['/profile']);
+  }
 }

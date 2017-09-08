@@ -24,6 +24,7 @@ import { GroupListComponent } from './groups/group-list.component';
 import { GroupItemComponent } from './groups/group-item.component';
 import { GroupDetailComponent } from './groups/group-detail.component';
 import { FeedbackComponent } from './feedback/feedback.component';
+import { ProfileComponent } from './profile/profile.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { GapiService } from './services/gapi.service';
@@ -36,6 +37,7 @@ const routes: Routes = [
   { path: 'group/:groupId', component: GroupDetailComponent, canActivate: [AuthGuard] },
   { path: 'video-comment/:blobkey', component: VideoCommentComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: '', component: LoginComponent },
 ];
@@ -69,6 +71,7 @@ const routes: Routes = [
     GroupItemComponent,
     GroupDetailComponent,
     FeedbackComponent,
+    ProfileComponent,
   ],
   entryComponents: [UpdateSupportersDialog, CreateGroupDialog, ConfirmationDialog],
   bootstrap: [VideoAssessmentAppComponent],
