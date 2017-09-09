@@ -63,6 +63,18 @@ export class GapiService {
             }));
   }
 
+  getProfilesByEmails(emails: string[]): Promise<Profile[]> {
+    return new Promise((resolve,reject) => 
+        this.gapi_.client.videoAssessmentApi.getProfilesByEmails({emails: emails})
+            .execute((resp) => {
+              if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Profile[]> resp.result.items);
+              }
+            }));
+  }
+
   setName(name: string): Promise<Profile> {
     return new Promise((resolve, reject) => 
         this.gapi_.client.videoAssessmentApi.setName({name: name})
@@ -74,7 +86,6 @@ export class GapiService {
               }
             }));
   }
-
 
   getUploadUrl(): Promise<string> {
     return new Promise((resolve, reject) => 

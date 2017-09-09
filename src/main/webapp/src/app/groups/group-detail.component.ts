@@ -22,6 +22,7 @@ import { Group } from '../common/group';
 import { Topic } from '../common/topic';
 import { Video } from '../common/video';
 import { Template } from '../common/template';
+import { Profile } from '../common/profile';
 
 @Component({
   selector: 'video-assessment-group-detail',
@@ -66,6 +67,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
   group: Group;
   groupId: number;
   members: List<string> = List<string>();
+  profiles: List<Profile> = List<Profile>();
   topics: List<Topic> = List<Topic>();
   videosByTopicId: Map<number, List<Video>> = new Map();
   videosByMember: Map<string, List<Video>> = new Map();
@@ -159,7 +161,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     this.gapi_.addMember(this.groupId, member)
         .then(() => {
           this.members = this.members.unshift(member);
-          this.changeDetectorRef_.detectChanges();
+          this.updateProfiles();
         })
   }
 
@@ -182,9 +184,16 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
           const index = this.members.findIndex((existingMember) => existingMember === member);
           if (index >= 0) {
             this.members = this.members.delete(index);
-            this.changeDetectorRef_.detectChanges();
           }
+          this.updateProfiles();
         });
+  }
+
+  private updateProfiles() {
+    this.gapi_.getProfilesByEmails(this.members.toArray()).then(profiles => {
+      this.profiles = List<Profile>(profiles);
+      this.changeDetectorRef_.detectChanges();
+    });
   }
 
   private loadTopics(groupId: number) {
@@ -202,8 +211,11 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
     this.gapi_.loadMembers(groupId)
         .then((members: string[]) => {
           this.members = List<string>(members);
+          this.gapi_.getProfilesByEmails(members).then(profiles => {
+            this.profiles = List<Profile>(profiles);
+            this.loadingMembers = false;
+          });
         }, () => this.loadingMembers = false)
-        .then(() => this.loadingMembers = false)
         .then(() => this.changeDetectorRef_.detectChanges());
   }
 
