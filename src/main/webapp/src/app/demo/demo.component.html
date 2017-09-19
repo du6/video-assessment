@@ -1,0 +1,15 @@
+<md-card class="demo">
+  <md-card-title>
+    Demo
+  </md-card-title>
+  <md-card-content>
+    <ack-webcam [(ref)]="webcam" [options]="options" (onSuccess)="onCamSuccess($event)" (onError)="onCamError($event)"></ack-webcam>
+    <div>
+      <md-input-container class="record-time">
+        <input mdInput placeholder="Record Time (s)" [(ngModel)]="totalCount">
+      </md-input-container>
+      <button class="record-button" md-raised-button color="primary" (click)="startRecord()" [disabled]="isRecording">Start Recording</button>
+      <span *ngIf="isRecording">{{count}} s</span>
+    </div>
+  </md-card-content>
+</md-card>
