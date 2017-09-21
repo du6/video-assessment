@@ -13,7 +13,7 @@ export class DemoComponent {
   public isRecording = false;
   public webcam;
   public options = {
-    audio: true,
+    audio: false,
     video: true,
     width: 640,
     height: 480,
