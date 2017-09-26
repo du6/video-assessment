@@ -13,28 +13,42 @@ export class DemoComponent {
   public isRecording = false;
   public webcam;
   public options = {
-    audio: false,
+    audio: true,
     video: true,
     width: 640,
     height: 480,
     fallbackSrc: 'jscam_canvas_only.swf',
   };
+  private chunks: any = [];
+  private mediaRecorder: any;
 
   constructor() {
   }
   
   onCamError(err){}
   
-  onCamSuccess(event: any){
+  onCamSuccess(stream: any){    
+    this.mediaRecorder = new MediaRecorder(stream);
+    this.mediaRecorder.onstop = e => {
+      const blob = new Blob(this.chunks, { 'type': 'audio/ogg; codecs=opus' });
+      const filename = "audio.ogg";
+      var file = new File([blob], filename);
+      FileSaver.saveAs(file, filename)
+      this.chunks.length = 0;
+    };
+
+    this.mediaRecorder.ondataavailable = e => this.chunks.push(e.data);
   }
 
   startRecord() {
     this.isRecording = true;
     this.delayCaptureImage();
+    this.mediaRecorder.start();
   }
 
   private delayCaptureImage() {
     if (this.count == this.totalCount) {
+      this.mediaRecorder.stop();
       setTimeout(() => {
         this.count = 0;
         this.isRecording = false;
@@ -60,7 +74,7 @@ export class DemoComponent {
       }
       var blob = new Blob([ab]);
       const filename = 'capture_' + this.count + '.png';
-      var file = new File([blob, blob], filename);
+      var file = new File([blob], filename);
       FileSaver.saveAs(file, filename)
     })
     .catch( e => console.error(e) );

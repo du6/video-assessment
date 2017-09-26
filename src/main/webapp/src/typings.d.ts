@@ -3,3 +3,4 @@
 
 declare var System: any;
 declare var vis: any;
+declare var MediaRecorder: any;
