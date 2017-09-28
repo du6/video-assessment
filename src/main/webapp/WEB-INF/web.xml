@@ -29,6 +29,16 @@
     </servlet>
 
     <servlet-mapping>
+        <servlet-name>ScoreUpload</servlet-name>
+        <url-pattern>/scoreupload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ScoreUpload</servlet-name>
+        <servlet-class>main.java.videoassessment.servlet.ScoreUpload</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
         <servlet-name>Upload</servlet-name>
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>

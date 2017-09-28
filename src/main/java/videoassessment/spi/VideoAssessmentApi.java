@@ -31,6 +31,7 @@ import main.java.videoassessment.domain.Group;
 import main.java.videoassessment.domain.Invitation;
 import main.java.videoassessment.domain.Membership;
 import main.java.videoassessment.domain.Response;
+import main.java.videoassessment.domain.Score;
 import main.java.videoassessment.domain.Template;
 import main.java.videoassessment.domain.Topic;
 import main.java.videoassessment.domain.UploadUrl;
@@ -345,6 +346,15 @@ public class VideoAssessmentApi {
   )
   public List<Template> getTemplates() {
     return ofy().load().type(Template.class).order("name").list();
+  }
+
+  @ApiMethod(
+      name = "getScore",
+      path = "getScore",
+      httpMethod = HttpMethod.POST
+  )
+  public Score getScore() {
+    return ofy().load().type(Score.class).id(10000L).now();
   }
 
   @ApiMethod(
