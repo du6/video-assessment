@@ -1,6 +1,9 @@
 <md-card class="demo">
   <md-card-title>
-    Demo
+      Score: 
+      <span *ngIf="scoreLoading == 0" class="unknown">Unknown</span>
+      <span *ngIf="scoreLoading == 1" class="computing">Computing...</span>
+      <span *ngIf="scoreLoading == 2" class="score">{{score}}</span>
   </md-card-title>
   <md-card-content>
     <ack-webcam [(ref)]="webcam" [options]="options" (onSuccess)="onCamSuccess($event)" (onError)="onCamError($event)"></ack-webcam>

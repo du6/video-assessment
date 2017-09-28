@@ -2,12 +2,16 @@ import { Component } from '@angular/core';
 
 import * as FileSaver from 'file-saver';
 
+import { GapiService } from '../services/gapi.service';
+
 @Component({
   selector: 'video-assessment-demo',
   templateUrl: 'demo.component.html',
   styleUrls: ['demo.component.scss'],
 })
 export class DemoComponent {
+  public score: number = 0;
+  public scoreLoading: number = 0;
   public totalCount = 10;
   public count = 0;
   public isRecording = false;
@@ -22,7 +26,7 @@ export class DemoComponent {
   private chunks: any = [];
   private mediaRecorder: any;
 
-  constructor() {
+  constructor(private gapi_: GapiService,) {
   }
   
   onCamError(err){}
@@ -47,12 +51,20 @@ export class DemoComponent {
   }
 
   private delayCaptureImage() {
+    this.scoreLoading = 0;
     if (this.count == this.totalCount) {
       this.mediaRecorder.stop();
       setTimeout(() => {
         this.count = 0;
         this.isRecording = false;
+        this.scoreLoading = 1;
       }, 100);
+      setTimeout(() => {
+        this.gapi_.getScore().then(score => {
+          this.score = score;
+          this.scoreLoading = 2;
+        });
+      }, 5000);
     } else {
       setTimeout(() => {
         ++this.count;
