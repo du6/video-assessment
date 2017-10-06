@@ -40,16 +40,28 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
   assessments: Map<number, List<Assessment>> = new Map();
   comments: string[] = [];
   scores: number[] = [];
-  loadingTemplate: boolean = false;
-  loadingAssessments: boolean = false;
+  loadingTemplate: boolean = true;
+  loadingAssessments: boolean = true;
   submitting: boolean = false;
+  sections: Map<string, List<string>> = new Map();
 
   constructor(
       private _route: ActivatedRoute, 
       private gapi_: GapiService, 
       private changeDetectorRef_: ChangeDetectorRef,
       private _dialog: MdDialog,
-      @Optional() private dialogRef_: MdDialogRef<ConfirmationDialog>) {}
+      @Optional() private dialogRef_: MdDialogRef<ConfirmationDialog>) {
+        this.sections.set("1000", List([
+          'Presents an audience-centered argument', 
+          'Delivers with passion', 
+          'Has a commanding presence', 
+          'Engages the Audience']));
+        this.sections.set("1001", List([
+          'Create a dynamic stage presence', 
+          'Emphasize enthusiasm and sincerity', 
+          'Help the recruiters remember you', 
+          'Further influence the recruiters']));
+      }
 
   ngOnInit() {
     this.sub = this._route.params.subscribe(params => {
@@ -68,6 +80,8 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
       this.comments = new Array(this.questions.size);
       this.scores = new Array(this.questions.size);
       this.clearResponse();
+      this.loadingTemplate = false;
+      this.loadingAssessments = false;
     }
   }
 
@@ -165,5 +179,9 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
 
   getNegative(critique: string) {
     return critique.split('<->')[1];
+  }
+
+  getSectionTitle(section : number) {
+    return section + 1 + ". " + this.sections.get(this.templateId.toString()).get(section);
   }
 }
