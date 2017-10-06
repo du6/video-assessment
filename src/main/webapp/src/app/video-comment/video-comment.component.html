@@ -37,11 +37,7 @@
                 </md-slider>
                 {{score.value == 0 ? 'irrelevant' : score.value}}
               </div>
-              <ul *ngIf="assessments.has(i + section * 5)">
-                <li *ngFor="let assessment of assessments.get(i + section * 5)">
-                  Received score: {{assessment.score}}
-                </li>
-              </ul>
+              <div class="assessments-drawer" id="assessments-drawer-{{i + section * 5}}"></div>
             </div>
           </md-list-item>
         <md-divider *ngIf="section != 3" class="template-divider"></md-divider>

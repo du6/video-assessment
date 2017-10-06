@@ -111,7 +111,8 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
           this.clearResponse();
         }, () => this.loadingTemplate = false)
         .then(() => this.loadingTemplate = false)
-        .then(() => this.changeDetectorRef_.detectChanges());
+        .then(() => this.changeDetectorRef_.detectChanges())
+        .then(() => this.drawAssessments());
   }
 
   private loadAssessments() {
@@ -171,6 +172,41 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
           this.responsesSubmitted.emit("OK");
         }, () => this.submitting = false)
         .then(() => this.changeDetectorRef_.detectChanges());
+  }
+
+  drawAssessments() {
+    this.assessments.forEach((assessmentList, questionId) => {
+      const container = document.getElementById('assessments-drawer-' + questionId);
+      let scoreCount = new Map();
+      assessmentList.forEach(assessment => {
+        const score = assessment.score;
+        scoreCount.set(score, scoreCount.has(score) ? scoreCount.get(score) + 1 : 1);
+      });
+      const items = [];
+      scoreCount.forEach((value, key) => items.push({x: key, y: value}));
+      const dataset = new vis.DataSet(items);
+      const options = {
+        width:  '100%',
+        height: '200px',
+        style: 'bar',
+        zoomable: false,
+        showCurrentTime: false,
+        start: 0,
+        end: 11,
+        min: 0,
+        max: 11,
+        showMajorLabels: false,
+        dataAxis: {
+          left: {
+            format: function(value){
+                // don't show non-integer values on data axis
+                return Math.round(value) === value ? value : "";
+            }
+          }
+        }
+      };
+      const graph2d = new vis.Graph2d(container, dataset, options);
+    });
   }
 
   getPositive(critique: string) {
