@@ -1,0 +1,12 @@
+<div *ngFor="let templateId of [1000, 1001]">
+  <md-spinner *ngIf="loadingPerformance"></md-spinner>
+  <md-expansion-panel class="topic-panel" *ngIf="!loadingPerformance && templateIds.has(templateId)">
+      <md-expansion-panel-header>
+        <h3 class="title">{{templateTitles.get(templateId)}}</h3>
+      </md-expansion-panel-header>
+      <div *ngFor="let question of templateQuestions.get(templateId); let i = index">
+        <h4>{{i + 1}}. {{question}}</h4>
+        <div class="assessments-drawer" id="assessments-drawer-{{templateId}}-{{i}}"></div>
+      </div>
+  </md-expansion-panel>
+</div>

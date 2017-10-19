@@ -13,6 +13,7 @@ import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
+import com.google.common.base.Strings;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
 
@@ -323,6 +324,44 @@ public class VideoAssessmentApi {
     final Filter createrFilter =
         new FilterPredicate("createdBy", FilterOperator.EQUAL, user.getEmail().toLowerCase());
     return query.filter(createrFilter).list();
+  }
+
+  @ApiMethod(
+      name = "getResponsesForUser",
+      path = "getResponsesForUser",
+      httpMethod = HttpMethod.POST
+  )
+  public List<Response> getResponsesForUser(
+      final User user,
+      @Named("email") @Nullable final String userEmail,
+      @Named("limit") @DefaultValue(DEFAULT_QUERY_LIMIT) final int limit) {
+    String email = Strings.isNullOrEmpty(userEmail) ? user.getEmail() : userEmail;
+    final Filter emailFilter =
+        new FilterPredicate("forUser", FilterOperator.EQUAL, email.toLowerCase());
+
+    return ofy().load().type(Response.class)
+        .limit(limit)
+        .filter(emailFilter)
+        .list();
+  }
+
+  @ApiMethod(
+      name = "getVideosForUser",
+      path = "getVideosForUser",
+      httpMethod = HttpMethod.POST
+  )
+  public List<Video> getVideosForUser(
+      final User user,
+      @Named("email") @Nullable final String userEmail,
+      @Named("limit") @DefaultValue(DEFAULT_QUERY_LIMIT) final int limit) {
+    String email = Strings.isNullOrEmpty(userEmail) ? user.getEmail() : userEmail;
+    final Filter emailFilter =
+        new FilterPredicate("createdBy", FilterOperator.EQUAL, email.toLowerCase());
+
+    return ofy().load().type(Video.class)
+        .limit(limit)
+        .filter(emailFilter)
+        .list();
   }
 
   @ApiMethod(

@@ -25,6 +25,7 @@ import { GroupItemComponent } from './groups/group-item.component';
 import { GroupDetailComponent } from './groups/group-detail.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { ProfileComponent } from './profile/profile.component';
+import { PerformanceComponent } from './performance/performance.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { GapiService } from './services/gapi.service';
@@ -72,6 +73,7 @@ const routes: Routes = [
     GroupDetailComponent,
     FeedbackComponent,
     ProfileComponent,
+    PerformanceComponent,
   ],
   entryComponents: [UpdateSupportersDialog, CreateGroupDialog, ConfirmationDialog],
   bootstrap: [VideoAssessmentAppComponent],

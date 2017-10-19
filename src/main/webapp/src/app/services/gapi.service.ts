@@ -231,6 +231,30 @@ export class GapiService {
     });
   }
 
+  loadMyAssessments(): Promise<Assessment[]> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.getResponsesForUser().execute((resp) => {
+        if (resp.error) {
+            reject(resp.error);
+          } else {
+            resolve(<Assessment[]> resp.result.items);
+          }
+      });
+    });
+  }
+
+  loadVideosForUser(): Promise<Video[]> {
+    return new Promise((resolve, reject) => {
+      this.gapi_.client.videoAssessmentApi.getVideosForUser().execute((resp) => {
+        if (resp.error) {
+            reject(resp.error);
+          } else {
+            resolve(<Video[]> resp.result.items);
+          }
+      });
+    });
+  }
+
   deleteVideoByKey(videoKey: string): Promise<string> {
     return new Promise((resolve, reject) => {
       this.gapi_.client.videoAssessmentApi.deleteVideo({video: videoKey})

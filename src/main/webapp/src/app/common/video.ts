@@ -5,4 +5,5 @@ export class Video {
   topicId: number;
   templateId: number;
   createdBy: string;
+  uploadedOn: string;
 }
