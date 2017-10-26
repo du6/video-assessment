@@ -3,9 +3,8 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { List } from 'immutable';
 
 import { GapiService } from '../services/gapi.service';
-import { Assessment } from '../common/assessment';
+import { Profile } from '../common/profile';
 import { Template } from '../common/template';
-import { Video } from '../common/video';
 
 @Component({
   selector: 'video-assessment-performance',
@@ -14,12 +13,9 @@ import { Video } from '../common/video';
 })
 export class PerformanceComponent {
   loadingPerformance: boolean = true;
-  templateTitles: Map<number, string> = new Map([[1000, 'Presentation'], [1001, 'Job Interview']]);
-  templateQuestions: Map<number, List<String>> = new Map();
-  assessments: List<Assessment> = List<Assessment>();
-  videos: List<Video> = List<Video>();
-  scores: Map<number, Map<number, Object[]>> = new Map();
-  templateIds: Set<number> = new Set();
+  profiles: List<Profile> = List<Profile>();
+  questions: List<string> = List<string>();
+  topics = ['Job Interview', 'Training Presentation', 'Recruiting Talk', 'Inspirational Talk', 'Strategy Case'];
 
   constructor(private gapi_: GapiService, 
     private changeDetectorRef_: ChangeDetectorRef) {
@@ -27,73 +23,57 @@ export class PerformanceComponent {
 
   ngOnInit() {
     const presentationPromise = this.loadTemplate(1000);
-    const jobInterviewPromise = this.loadTemplate(1001);
-    const assessmentPromise = this.gapi_.loadMyAssessments().then(assessments => {
-      this.assessments = List(assessments);
-    });
-    const videoPromise = this.gapi_.loadMyVideos().then(videos => {
-      this.videos = List(videos);
-    });
-    Promise.all([presentationPromise, jobInterviewPromise, assessmentPromise, videoPromise])
+    const profilePromise = this.loadProfiles();
+  
+    Promise.all([presentationPromise, profilePromise])
         .then(() => {
           this.loadingPerformance = false; 
-          this.videos.forEach(video => {
-            const templateId = Number.parseInt(video.templateId.toString());
-            this.templateIds.add(templateId);            
-            const videoId = video.id;
-            for (let questionId = 0; questionId < this.templateQuestions.get(templateId).size; ++questionId) {
-              const score = this.getScore(videoId, questionId);
-              if (score <= 0) {
-                continue;
-              }
-              const date = video.uploadedOn;
-              this.scores.get(templateId).get(questionId).push({x: date, y: score});
-            }
-          });
         })
         .then(() => this.changeDetectorRef_.detectChanges())
         .then(() => this.drawAssessments());
   }
 
   private drawAssessments() {
-    this.scores.forEach((questionScores, templateId) => {
-      if (!this.templateIds.has(templateId)) {
-        return;
+    const scores = [
+      [6.2, 5.3, 6.6, 8.1, 8.5, 9.1], [7.3, 5.1, 5.6, 7.3, 8.4, 8.1], [6.2, 4.3, 5.5, 7.7, 6.2, 8.2], 
+      [6.4, 5.4, 6.5, 7.1, 5.8, 7.9], [5.6, 4.5, 6.6, 8.1, 6.8, 6.9], [5.6, 5.5, 6.6, 7.8, 8.2, 8.9], 
+      [7.6, 5.5, 5.6, 6.8, 7.8, 7.9], [6.6, 5.5, 6.3, 8.1, 6.8, 8.9], [6.1, 5.5, 5.6, 7.8, 7.8, 6.9], 
+      [8.6, 6.5, 5.6, 7.8, 8.8, 9.3], [6.5, 5.6, 6.5, 7.8, 6.8, 7.9], [7.6, 4.5, 6.6, 8.1, 8.2, 8.8], 
+      [7.7, 7.5, 7.6, 8.8, 6.8, 7.9], [8.1, 5.2, 6.0, 8.1, 8.3, 7.9], [6.0, 5.2, 6.5, 8.4, 8.5, 9.1], 
+      [7.4, 5.4, 6.4, 6.8, 7.8, 8.9], [6.1, 5.6, 6.6, 8.4, 6.8, 7.9], [8.6, 6.5, 6.6, 8.9, 7.8, 8.5], 
+      [6.7, 7.5, 5.6, 5.8, 7.8, 7.9], [6.3, 5.4, 6.6, 8.0, 8.3, 8.9],
+    ];
+    const dates = ['2017-9-7', '2017-9-14', '2017-9-21', '2017-9-28', '2017-10-3', '2017-10-10'];
+
+    for (let questionId = 0; questionId < 20; ++questionId) {
+      const scoresByDates = scores[questionId];
+      const container = document.getElementById('assessments-drawer-' + questionId);
+      const options = {
+        width:  '100%',
+        height: '200px',
+        zoomable: false,
+      };
+      let data = [];
+      for (let i = 0; i < 6; ++i) {
+        data.push({x: dates[i], y: scoresByDates[i]});
       }
-      questionScores.forEach((scores, questionId) => {
-        const container = document.getElementById('assessments-drawer-' + templateId + '-' + questionId);
-        const dataset = new vis.DataSet(scores);
-        const options = {
-          width:  '100%',
-          height: '200px',
-          zoomable: false,
-        };
-        const graph2d = new vis.Graph2d(container, dataset, options);
-      })
-    });
+      const dataset = new vis.DataSet(data);      
+      const graph2d = new vis.Graph2d(container, dataset, options);
+    };
   }
 
   private loadTemplate(templateId: number) {
-    this.gapi_.loadTemplate(templateId).then(
+    return this.gapi_.loadTemplate(templateId).then(
       (template: Template) => {
-        this.templateQuestions.set(templateId, List(template.questions));
-        let questionMap = new Map();
-        for (let questionId = 0; questionId < this.templateQuestions.get(templateId).size; ++questionId) {
-          questionMap.set(questionId, []);
-        }
-        this.scores.set(templateId, questionMap);
+        this.questions = List(template.questions);
       }
     );
   }
 
-  private getScore(videoId: string, questionId: number) {
-    const assessments = this.assessments
-        .filter(assessment => assessment.videoId == videoId && 
-            Number.parseInt(assessment.questionId.toString()) == questionId);
-    if (assessments.size == 0) {
-      return -1;
-    }
-    let total = assessments.reduce((sum, assessment) => sum + assessment.score, 0);
-    return total / assessments.size;
+  private loadProfiles() {
+    return this.gapi_.getAllProfiles().then(profiles => {
+      profiles = profiles.filter(profile => profile.name && profile.name.length > 0);
+      this.profiles = List(profiles);
+    })
   }
 }

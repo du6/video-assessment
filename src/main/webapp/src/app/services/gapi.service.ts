@@ -63,6 +63,18 @@ export class GapiService {
             }));
   }
 
+  getAllProfiles(): Promise<Profile[]> {
+    return new Promise((resolve, reject) => 
+        this.gapi_.client.videoAssessmentApi.getAllUsers()
+            .execute((resp) => {
+              if (resp.error) {
+                reject(resp.error);
+              } else if (resp.result) {
+                resolve(<Profile[]> resp.result.items);
+              }
+            }));
+  }
+
   getProfilesByEmails(emails: string[]): Promise<Profile[]> {
     return new Promise((resolve,reject) => 
         this.gapi_.client.videoAssessmentApi.getProfilesByEmails({emails: emails})

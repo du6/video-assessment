@@ -1,12 +1,35 @@
-<div *ngFor="let templateId of [1000, 1001]">
+<md-card class="performance">
+  <md-card-title>Summary for the Presentation Class</md-card-title>
   <md-spinner *ngIf="loadingPerformance"></md-spinner>
-  <md-expansion-panel class="topic-panel" *ngIf="!loadingPerformance && templateIds.has(templateId)">
+  <div *ngIf="!loadingPerformance">
+    <md-expansion-panel class="students-panel">
+        <md-expansion-panel-header>
+          <h3>Number of students: {{profiles.size}}</h3>
+        </md-expansion-panel-header>
+        <md-list>
+          <md-list-item *ngFor="let profile of profiles">
+            {{profile.name}} ({{profile.email}})
+          </md-list-item>
+        </md-list>
+    </md-expansion-panel>
+    <md-expansion-panel class="students-panel">
       <md-expansion-panel-header>
-        <h3 class="title">{{templateTitles.get(templateId)}}</h3>
+        <h3>Number of cases: {{topics.length}}</h3>
       </md-expansion-panel-header>
-      <div *ngFor="let question of templateQuestions.get(templateId); let i = index">
-        <h4>{{i + 1}}. {{question}}</h4>
-        <div class="assessments-drawer" id="assessments-drawer-{{templateId}}-{{i}}"></div>
-      </div>
-  </md-expansion-panel>
-</div>
+      <md-list>
+        <md-list-item *ngFor="let topic of topics">
+          {{topic}}
+        </md-list-item>
+      </md-list>
+    </md-expansion-panel>
+    <md-expansion-panel class="score-panel">
+        <md-expansion-panel-header>
+          <h3>Score Average</h3>
+        </md-expansion-panel-header>
+        <div *ngFor="let question of questions; let i = index">
+          <h4>{{i + 1}}. {{question}}</h4>
+          <div class="assessments-drawer" id="assessments-drawer-{{i}}"></div>
+        </div>
+    </md-expansion-panel>
+  </div>
+</md-card>

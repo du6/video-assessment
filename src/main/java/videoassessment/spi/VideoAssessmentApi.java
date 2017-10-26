@@ -640,4 +640,12 @@ public class VideoAssessmentApi {
     Map<String, AppEngineUser> emailToProfile = ofy().load().type(AppEngineUser.class).ids(emails);
     return new ArrayList<>(emailToProfile.values());
   }
+
+  @ApiMethod(
+      name = "getAllUsers",
+      path = "getAllUsers",
+      httpMethod = HttpMethod.POST)
+  public List<AppEngineUser> getAllUsers() {
+    return ofy().load().type(AppEngineUser.class).list();
+  }
 }
