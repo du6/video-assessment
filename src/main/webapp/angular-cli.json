@@ -20,11 +20,13 @@
       "styles": [
         "styles.css",
         "material2-app-theme.scss",
-        "../node_modules/video.js/dist/video-js.css"
+        "../node_modules/video.js/dist/video-js.css",
+        "../node_modules/vis/dist/vis.css"
       ],
       "scripts": [
         "../node_modules/video.js/dist/video.js",
-        "../node_modules/hammerjs/hammer.min.js"
+        "../node_modules/hammerjs/hammer.min.js",
+        "../node_modules/vis/dist/vis.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

@@ -40,16 +40,28 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
   assessments: Map<number, List<Assessment>> = new Map();
   comments: string[] = [];
   scores: number[] = [];
-  loadingTemplate: boolean = false;
-  loadingAssessments: boolean = false;
+  loadingTemplate: boolean = true;
+  loadingAssessments: boolean = true;
   submitting: boolean = false;
+  sections: Map<string, List<string>> = new Map();
 
   constructor(
       private _route: ActivatedRoute, 
       private gapi_: GapiService, 
       private changeDetectorRef_: ChangeDetectorRef,
       private _dialog: MdDialog,
-      @Optional() private dialogRef_: MdDialogRef<ConfirmationDialog>) {}
+      @Optional() private dialogRef_: MdDialogRef<ConfirmationDialog>) {
+        this.sections.set("1000", List([
+          'Presents an audience-centered argument', 
+          'Delivers with passion', 
+          'Has a commanding presence', 
+          'Engages the Audience']));
+        this.sections.set("1001", List([
+          'Create a dynamic stage presence', 
+          'Emphasize enthusiasm and sincerity', 
+          'Help the recruiters remember you', 
+          'Further influence the recruiters']));
+      }
 
   ngOnInit() {
     this.sub = this._route.params.subscribe(params => {
@@ -68,6 +80,8 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
       this.comments = new Array(this.questions.size);
       this.scores = new Array(this.questions.size);
       this.clearResponse();
+      this.loadingTemplate = false;
+      this.loadingAssessments = false;
     }
   }
 
@@ -97,7 +111,8 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
           this.clearResponse();
         }, () => this.loadingTemplate = false)
         .then(() => this.loadingTemplate = false)
-        .then(() => this.changeDetectorRef_.detectChanges());
+        .then(() => this.changeDetectorRef_.detectChanges())
+        .then(() => this.drawAssessments());
   }
 
   private loadAssessments() {
@@ -159,11 +174,50 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
         .then(() => this.changeDetectorRef_.detectChanges());
   }
 
+  drawAssessments() {
+    this.assessments.forEach((assessmentList, questionId) => {
+      const container = document.getElementById('assessments-drawer-' + questionId);
+      let scoreCount = new Map();
+      assessmentList.forEach(assessment => {
+        const score = assessment.score;
+        scoreCount.set(score, scoreCount.has(score) ? scoreCount.get(score) + 1 : 1);
+      });
+      const items = [];
+      scoreCount.forEach((value, key) => items.push({x: key, y: value}));
+      const dataset = new vis.DataSet(items);
+      const options = {
+        width:  '100%',
+        height: '200px',
+        style: 'bar',
+        zoomable: false,
+        showCurrentTime: false,
+        start: 0,
+        end: 11,
+        min: 0,
+        max: 11,
+        showMajorLabels: false,
+        dataAxis: {
+          left: {
+            format: function(value){
+                // don't show non-integer values on data axis
+                return Math.round(value) === value ? value : "";
+            }
+          }
+        }
+      };
+      const graph2d = new vis.Graph2d(container, dataset, options);
+    });
+  }
+
   getPositive(critique: string) {
     return critique.split('<->')[0];
   }
 
   getNegative(critique: string) {
     return critique.split('<->')[1];
+  }
+
+  getSectionTitle(section : number) {
+    return section + 1 + ". " + this.sections.get(this.templateId.toString()).get(section);
   }
 }
