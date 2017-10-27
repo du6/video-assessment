@@ -6,6 +6,7 @@ import { Routes, RouterModule }   from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { CookieService } from 'angular2-cookie/services/cookies.service';
+import { WebCamComponent } from 'ack-angular-webcam';
 
 import { VideoAssessmentAppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -26,6 +27,7 @@ import { GroupDetailComponent } from './groups/group-detail.component';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PerformanceComponent } from './performance/performance.component';
+import { DemoComponent } from './demo/demo.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { GapiService } from './services/gapi.service';
@@ -39,6 +41,7 @@ const routes: Routes = [
   { path: 'video-comment/:blobkey', component: VideoCommentComponent, canActivate: [AuthGuard] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'demo', component: DemoComponent },
   { path: 'login', component: LoginComponent },
   { path: 'performance', component: PerformanceComponent },
   { path: '', component: LoginComponent },
@@ -56,6 +59,7 @@ const routes: Routes = [
   ],
   providers: [AuthService, AuthGuard, GapiService, UploadService, CookieService],
   declarations: [
+    WebCamComponent,
     VideoAssessmentAppComponent, 
     LoginComponent,
     HomeComponent,
@@ -75,6 +79,7 @@ const routes: Routes = [
     FeedbackComponent,
     ProfileComponent,
     PerformanceComponent,
+    DemoComponent,
   ],
   entryComponents: [UpdateSupportersDialog, CreateGroupDialog, ConfirmationDialog],
   bootstrap: [VideoAssessmentAppComponent],

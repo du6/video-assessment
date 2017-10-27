@@ -10,6 +10,7 @@ import main.java.videoassessment.domain.Group;
 import main.java.videoassessment.domain.Invitation;
 import main.java.videoassessment.domain.Membership;
 import main.java.videoassessment.domain.Response;
+import main.java.videoassessment.domain.Score;
 import main.java.videoassessment.domain.Template;
 import main.java.videoassessment.domain.Topic;
 import main.java.videoassessment.domain.Video;
@@ -32,6 +33,7 @@ public class OfyService {
         factory().register(Group.class);
         factory().register(Topic.class);
         factory().register(Membership.class);
+        factory().register(Score.class);
     }
 
     /**

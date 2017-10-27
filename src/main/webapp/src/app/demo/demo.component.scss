@@ -1,0 +1,27 @@
+.demo {
+  .record-button {
+    margin-right: 20px;
+  }
+
+  .record-time {
+    width: 100px;
+  }
+
+  .loading-score {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+  }
+
+  .unknown {
+    color: yellow;
+  }
+
+  .computing {
+    color: red;
+  }
+
+  .score {
+    color: green;
+  }
+}
