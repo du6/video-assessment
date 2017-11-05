@@ -216,6 +216,7 @@ export class GroupDetailComponent implements OnInit, OnDestroy {
             this.loadingMembers = false;
           });
         }, () => this.loadingMembers = false)
+        .then(() => this.loadingMembers = false)
         .then(() => this.changeDetectorRef_.detectChanges());
   }
 
