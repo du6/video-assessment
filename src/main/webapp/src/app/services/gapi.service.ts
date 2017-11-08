@@ -82,7 +82,8 @@ export class GapiService {
               if (resp.error) {
                 reject(resp.error);
               } else if (resp.result) {
-                const emailToProfile = new Map(resp.result.items.map(item => [item.email, item]));
+                const emailToProfile = 
+                    new Map((resp.result.items || []).map(item => [item.email, item]));
                 resolve(<Profile[]> emails.map(email => {
                   if (emailToProfile.has(email)) {
                     return emailToProfile.get(email);

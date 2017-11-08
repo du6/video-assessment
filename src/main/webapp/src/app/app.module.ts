@@ -32,6 +32,8 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { GapiService } from './services/gapi.service';
 import { UploadService } from './services/upload.service';
+import { ReportComponent } from
+'./report/report.component'
 
 const routes: Routes = [
   { path: 'feedback', component: FeedbackComponent, canActivate: [AuthGuard] },
@@ -45,6 +47,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'performance', component: PerformanceComponent },
   { path: '', component: LoginComponent },
+  { path: 'report', component: ReportComponent}
 ];
 
 @NgModule({
@@ -80,6 +83,7 @@ const routes: Routes = [
     ProfileComponent,
     PerformanceComponent,
     DemoComponent,
+    ReportComponent
   ],
   entryComponents: [UpdateSupportersDialog, CreateGroupDialog, ConfirmationDialog],
   bootstrap: [VideoAssessmentAppComponent],
