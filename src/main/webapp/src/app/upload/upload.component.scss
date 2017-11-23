@@ -15,7 +15,7 @@
     color: red;
   }
 
-  .template {
+  .template-select {
     margin-bottom: 20px;
 
     .template-label {
@@ -27,5 +27,17 @@
     .select-template {
       min-width: 200px;
     }
+  }
+
+  .initialize-cam {
+    color: red;
+  }
+
+  .upload-ready {
+    color: green;
+  }
+
+  .record-action {
+    margin-bottom: 10px;
   }
 }

@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, Optional, SimpleChange, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { MdDialog, MdDialogRef, MdSnackBar } from '@angular/material';
 import { List } from 'immutable';
+import * as FileSaver from 'file-saver';
 
 import { AuthService } from '../services/auth.service';
 import { UploadService } from '../services/upload.service';
@@ -34,6 +35,20 @@ export class UploadComponent {
   progress: number = 0;
   private _uploadUrl: string;
 
+  public camReady = false;
+  public isLive = true;
+  public isRecording = false;
+  public webcam;
+  public options = {
+    audio: true,
+    video: true,
+    width: 640,
+    height: 480,
+    fallbackSrc: 'jscam_canvas_only.swf',
+  };
+  private chunks: any = [];
+  private mediaRecorder: any;
+
   constructor(private gapi_: GapiService, 
     private _upload: UploadService, 
     private _auth: AuthService,
@@ -63,8 +78,8 @@ export class UploadComponent {
     }
   }
 
-  ngAfterViewInit() {
-    this.gapi_.getUploadUrl().then(url => this._uploadUrl = url);
+  getUploadUrl() {
+    return this.gapi_.getUploadUrl().then(url => this._uploadUrl = url);
   }
 
   onFileChange(event: EventTarget) {
@@ -110,21 +125,22 @@ export class UploadComponent {
       uploadFormData.append('topicId', this.topicId.toString());
     }
     uploadFormData.append('templateId', this.selectedTemplate.id.toString());
-    this._upload.uploadVideo(this._uploadUrl, uploadFormData)
-        .then(
-          (blobKey) => {
-            this.uploading = false;
-            let video = new Video();
-            video.title = this.title;
-            video.id = blobKey;
-            this.videoUploaded.emit(video);
-            this.title = '';
-          }
-        )
-        .catch(error => {
-          this.uploading = false;
-          this.snackBar_.open('Error uploading video!', 'Dismiss', {duration: 2000})
-        });
+    this.getUploadUrl()
+        .then(() => this._upload.uploadVideo(this._uploadUrl, uploadFormData)
+            .then(
+              (blobKey) => {
+                this.uploading = false;
+                let video = new Video();
+                video.title = this.title;
+                video.id = blobKey;
+                this.videoUploaded.emit(video);
+                this.title = '';
+              }
+            )
+            .catch(error => {
+              this.uploading = false;
+              this.snackBar_.open('Error uploading video!', 'Dismiss', {duration: 2000})
+            }));
 
     this._upload.progressObservable.subscribe(progress => {
       this.progress = progress;
@@ -132,5 +148,43 @@ export class UploadComponent {
     });
 
     this.changeDetectorRef_.detectChanges();    
+  }
+
+  onCamError(err){}
+  
+  onCamSuccess(stream: any){    
+    this.mediaRecorder = new MediaRecorder(stream);
+    
+    this.mediaRecorder.onstop = e => {
+      const blob = new Blob(this.chunks, { 'type': 'audio/ogg; codecs=opus' });
+      this.file = new File([blob], this.title || "video.ogg");
+      this.title = this.file.name;
+      this.chunks.length = 0;      
+      this.isRecording = false;
+      this.isFileValid = true;
+      this.changeDetectorRef_.detectChanges();
+    };
+
+    this.mediaRecorder.ondataavailable = e => this.chunks.push(e.data);
+
+    setTimeout(() => {
+      //TODO: investigate why cam is not ready immediately.
+      this.camReady = true;
+      this.changeDetectorRef_.detectChanges();    
+    }, 20000);
+  }
+
+  startRecord() {
+    this.isRecording = true;
+    this.mediaRecorder.start();
+    this.isFileValid = false;
+  }
+
+  stopRecord() {
+    this.mediaRecorder.stop();
+  }
+
+  readyToUpload() {
+    return !this.uploading && !this.isRecording && this.isFileValid && !this.shouldDisableUpload;
   }
 }

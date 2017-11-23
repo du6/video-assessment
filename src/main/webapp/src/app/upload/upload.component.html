@@ -2,8 +2,23 @@
   <md-input-container>
     <input mdInput name="title" placeholder="video name" [(ngModel)]="title">
   </md-input-container>
-  <input name="file" type="file" accept=".mp4" (change)="onFileChange($event)">
-  <div *ngIf="!template" class="template">
+  <md-radio-group [(ngModel)]="isLive" [ngModelOptions]="{standalone: true}">
+    <md-radio-button [value]=true>Live Record</md-radio-button>
+    <md-radio-button [value]=false>From Disk</md-radio-button>
+  </md-radio-group>
+  <div *ngIf="!isLive">
+    <input name="file" type="file" accept=".mp4" (change)="onFileChange($event)">
+  </div>
+  <div *ngIf="isLive">
+    <ack-webcam [(ref)]="webcam" [options]="options" (onSuccess)="onCamSuccess($event)" (onError)="onCamError($event)"></ack-webcam>
+    <div class="record-action">
+      <button [disabled]="!camReady || uploading" md-raised-button *ngIf="!isRecording" color="primary" (click)="startRecord()">Start Recording</button>
+      <button [disabled]="!camReady || uploading" md-raised-button *ngIf="isRecording" color="primary" (click)="stopRecord()">Stop Recording</button>
+      <span *ngIf="!camReady" class="initialize-cam">Initializing Webcam...</span>      
+      <span *ngIf="readyToUpload()" class="upload-ready">Live video ready to upload.</span>      
+    </div>
+  </div>
+  <div *ngIf="!template" class="template-select">
     <md-spinner *ngIf="loadingTemplates"></md-spinner>
     <span class="template-label" *ngIf="!loadingTemplates">Select video type:</span>
     <md-select class="select-template" *ngIf="!loadingTemplates" [(ngModel)]="selectedTemplate" name="selectedTemplate">
@@ -16,7 +31,7 @@
             md-raised-button
             color="primary"
             (click)="submit($event)"
-            [disabled]="uploading || !isFileValid || shouldDisableUpload">Upload</button>
+            [disabled]="!readyToUpload()">Upload</button>
     <span class="warning" *ngIf="isLargeFile"> Please upload only mp4 file with size less than 50M </span>
     <md-progress-bar *ngIf="uploading" class="upload-progress-bar" mode="determinate" [value]="progress">
     </md-progress-bar>
