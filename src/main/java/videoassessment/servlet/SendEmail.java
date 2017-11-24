@@ -34,7 +34,8 @@ public class SendEmail extends HttpServlet {
     String videoLink = request.getParameter("videoLink");
     Properties props = new Properties();
     Session session = Session.getDefaultInstance(props, null);
-    String body = "Hi, " + me + " invited you to review a recent upload:\n\n" + videoLink;
+    String body = "Hi,\n" + me + " invited you to review a recent upload: <a href=\"" + videoLink +
+        "\" target=\"_blank\">click to open</a>\n\n";
     try {
       Message message = new MimeMessage(session);
       InternetAddress from = new InternetAddress(
@@ -43,7 +44,7 @@ public class SendEmail extends HttpServlet {
       message.setFrom(from);
       message.addRecipient(Message.RecipientType.TO, new InternetAddress(email, ""));
       message.setSubject("You Are Invited to Review a Video!");
-      message.setText(body);
+      message.setContent(body, "text/html; charset=utf-8");
       Transport.send(message);
     } catch (MessagingException e) {
       LOG.log(Level.WARNING, String.format("Failed to send an mail to %s", email), e);

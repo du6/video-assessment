@@ -29,6 +29,11 @@
     </servlet>
 
     <servlet-mapping>
+        <servlet-name>Upload</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
         <servlet-name>ScoreUpload</servlet-name>
         <url-pattern>/scoreupload</url-pattern>
     </servlet-mapping>
@@ -37,11 +42,6 @@
         <servlet-name>ScoreUpload</servlet-name>
         <servlet-class>main.java.videoassessment.servlet.ScoreUpload</servlet-class>
     </servlet>
-
-    <servlet-mapping>
-        <servlet-name>Upload</servlet-name>
-        <url-pattern>/upload</url-pattern>
-    </servlet-mapping>
 
     <servlet>
         <servlet-name>SendEmail</servlet-name>
@@ -80,6 +80,15 @@
     <filter-mapping>
         <filter-name>ObjectifyFilter</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>Mcginnis</filter-name>
+        <filter-class>main.java.videoassessment.servlet.Mcginnis</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Mcginnis</filter-name>
+        <url-pattern>/mcginnis</url-pattern>
     </filter-mapping>
 
     <security-constraint>

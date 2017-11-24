@@ -21,6 +21,7 @@ export class UploadComponent {
   @Input() template: Template;
   @Input() member: string;
   @Input() shouldDisableUpload: boolean;
+  @Input() isMcginnis: boolean;
   @Input() confirmation: string;
   @Output() videoUploaded: EventEmitter<Video> = new EventEmitter<Video>();
 

@@ -1,0 +1,41 @@
+<md-card class="flex-card">
+  <md-card-title>Upload a Video</md-card-title>
+  <md-card-content>
+    <video-assessment-upload 
+        [template]="uploadTemplate"
+        [isMcginnis]="true"
+        (videoUploaded)="onVideoUploaded($event)">
+    </video-assessment-upload>
+  </md-card-content>
+</md-card>
+
+<md-card class="flex-card">
+  <md-expansion-panel [expanded]="true">
+    <md-expansion-panel-header><h3>My Videos</h3></md-expansion-panel-header>
+    <md-divider></md-divider>
+    <md-card-content>
+      <md-spinner *ngIf="loading"></md-spinner>
+      <video-assessment-video-list 
+          *ngIf="!loading" 
+          [videos]="videos" 
+          (videoDeleted)="onVideoDeleted($event)"
+          [canManageSupporters]="true"
+          [canDeleteVideo]="true">
+      </video-assessment-video-list>
+    </md-card-content>
+  </md-expansion-panel>
+
+  <md-expansion-panel class="review-panel" [expanded]="true">
+    <md-expansion-panel-header><h3>For My Review</h3></md-expansion-panel-header>
+    <md-divider></md-divider>
+    <md-card-content>
+      <md-spinner *ngIf="loadingReview"></md-spinner>
+      <video-assessment-video-list 
+          *ngIf="!loadingReview" 
+          [videos]="reviewVideos"
+          [canManageSupporters]="false"
+          [canDeleteVideo]="false">
+      </video-assessment-video-list>
+    </md-card-content>
+  </md-expansion-panel>
+</md-card>

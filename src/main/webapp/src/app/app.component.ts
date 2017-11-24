@@ -10,6 +10,7 @@ import { AuthService } from './services/auth.service';
 })
 export class VideoAssessmentAppComponent {
   title: string = "Talk Me Up";
+  isMcginnis = false;
 
   constructor(private router_: Router, 
     private auth_: AuthService, 
@@ -17,6 +18,7 @@ export class VideoAssessmentAppComponent {
       router_.events
           .filter(event => event instanceof NavigationEnd)
           .subscribe((event: any) => {
+            this.isMcginnis = false;
             const url = event.url;
             if (url == '/home') {
               this.title = "My Vidoes"
@@ -24,6 +26,8 @@ export class VideoAssessmentAppComponent {
               this.title = "For My Review";
             } else if (url == '/groups') {
               this.title = "My Groups";
+            } else if (url == '/mcginnis') {
+              this.isMcginnis = true;
             }
           });
   }

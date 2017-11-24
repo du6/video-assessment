@@ -9,7 +9,8 @@
     <button md-button (click)="sidenav.close()" *ngIf="sidenav.opened">
       <i class="material-icons">keyboard_arrow_left</i>
     </button>
-    <span>{{title}}</span>
+    <span *ngIf="!isMcginnis">{{title}}</span>
+    <img *ngIf="isMcginnis" class="mcginnis-logo" src="assets/images/mcginnis_logo.jpg">
     <span class="fill-in-space"></span>
     <button md-button *ngIf="isSignedIn()" (click)="signOut()">Sign Out</button>
   </md-toolbar>
