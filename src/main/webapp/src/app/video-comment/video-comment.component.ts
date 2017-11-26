@@ -111,8 +111,7 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
           this.clearResponse();
         }, () => this.loadingTemplate = false)
         .then(() => this.loadingTemplate = false)
-        .then(() => this.changeDetectorRef_.detectChanges())
-        .then(() => this.drawAssessments());
+        .then(() => this.changeDetectorRef_.detectChanges());
   }
 
   private loadAssessments() {

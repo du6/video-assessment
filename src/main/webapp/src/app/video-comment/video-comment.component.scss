@@ -9,8 +9,9 @@
   }
 
   .comment {
-    display: block;
-    width: 100%;
+    display: inline-block;
+    width: calc(100% - 300px);
+    margin-left: 40px;
   }
 
   md-list.comment-list {
@@ -62,5 +63,21 @@
 
   .assessments-drawer {
     margin-bottom: 10px;
+  }
+
+  .score-table {
+    width: 100%;
+    
+    & , th, td {
+        border: 1px solid grey;
+    }
+
+    .score-column {
+      width: 60px;
+    }
+
+    .content-cell {
+      text-align: center;
+    }
   }
 }

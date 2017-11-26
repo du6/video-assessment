@@ -8,16 +8,7 @@
   </md-card>
 
   <md-card>
-    <md-card-title>Summary／Suggestions</md-card-title>
-    <md-input-container class="comment">
-      <textarea mdInput [(ngModel)]="comments[0]"></textarea>
-    </md-input-container>
-    <ul *ngIf="assessments.has(0)">
-      <li *ngFor="let assessment of assessments.get(0)">
-        {{assessment.comment}}
-      </li>
-    </ul>
-    <md-divider></md-divider>
+    <md-card-title>Suggestions</md-card-title>
     <md-card-content>
       <md-spinner *ngIf="loadingTemplate || loadingAssessments"></md-spinner>
       <div *ngIf="!(loadingTemplate || loadingAssessments)">
@@ -35,9 +26,21 @@
                           aria-label="set a score"
                           [(ngModel)]="scores[i + section * 5]">
                 </md-slider>
-                {{score.value == 0 ? 'irrelevant' : score.value}}
+                {{score.value == 0 ? 'N/A' : score.value}}
+                <md-input-container class="comment">
+                  <input mdInput [(ngModel)]="comments[i + section * 5]" placeholder="comment" rows="1">
+                </md-input-container>
               </div>
-              <div class="assessments-drawer" id="assessments-drawer-{{i + section * 5}}"></div>
+              <table class="score-table" *ngIf="assessments.has(i + section * 5)">
+                <tr>
+                  <th class="score-column">Score</th>
+                  <th>Comment</th> 
+                </tr>
+                <tr *ngFor="let assessment of assessments.get(i + section * 5)">
+                  <td class="content-cell">{{assessment.score}}</td>
+                  <td class="content-cell">{{assessment.comment || 'N/A'}}</td> 
+                </tr>
+              </table>
             </div>
           </md-list-item>
         <md-divider *ngIf="section != 3" class="template-divider"></md-divider>
