@@ -10,10 +10,10 @@
     <input name="file" type="file" accept=".mp4" (change)="onFileChange($event)">
   </div>
   <div *ngIf="isLive">
-    <ack-webcam [(ref)]="webcam" [options]="options" (onSuccess)="onCamSuccess($event)" (onError)="onCamError($event)"></ack-webcam>
+    <ack-webcam class="webcam" [(ref)]="webcam" [options]="options" (onSuccess)="onCamSuccess($event)" (onError)="onCamError($event)"></ack-webcam>
     <div class="record-action">
-      <button [disabled]="!camReady || uploading" md-raised-button *ngIf="!isRecording" color="primary" (click)="startRecord()">Start Recording</button>
-      <button [disabled]="!camReady || uploading" md-raised-button *ngIf="isRecording" color="primary" (click)="stopRecord()">Stop Recording</button>
+      <button class="action-button" [disabled]="!camReady || uploading" md-raised-button *ngIf="!isRecording" color="primary" (click)="startRecord()">Start Recording</button>
+      <button class="action-button" [disabled]="!camReady || uploading" md-raised-button *ngIf="isRecording" color="primary" (click)="stopRecord()">Stop Recording</button>
       <span *ngIf="!camReady" class="initialize-cam">Initializing Webcam...</span>      
       <span *ngIf="readyToUpload()" class="upload-ready">Live video ready to upload.</span>      
     </div>

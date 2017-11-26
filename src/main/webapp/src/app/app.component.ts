@@ -37,6 +37,6 @@ export class VideoAssessmentAppComponent {
   }
 
   signOut() {
-    this.auth_.signOut().then(() => this.zone_.run(() => this.router_.navigate(['/login'])));
+    this.auth_.signOut().then(() => this.zone_.run(() => this.router_.navigate(['/login'], { queryParams: { redirect: window.location.href } })));
   }
 }

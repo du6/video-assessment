@@ -43,8 +43,6 @@ export class UploadComponent {
   public options = {
     audio: true,
     video: true,
-    width: 640,
-    height: 480,
     fallbackSrc: 'jscam_canvas_only.swf',
   };
   private chunks: any = [];
