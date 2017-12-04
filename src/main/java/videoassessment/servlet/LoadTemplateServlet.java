@@ -31,7 +31,7 @@ public class LoadTemplateServlet extends HttpServlet {
               new Template(JOB_INTERVIEW_TEMPLATE_ID, "Job Interview", JOB_INTERVIEW_ASSESSMENTS);
           ApiUtils.createEntity(template, Template.class);
           template =
-              new Template(INVESTOR_TEMPLATE_ID, "Investor", INVESTOR_ASSESSMENTS);
+              new Template(INVESTOR_TEMPLATE_ID, "Pitch", INVESTOR_ASSESSMENTS);
           ApiUtils.createEntity(template, Template.class);
         } catch (Exception e) {
           throw new RuntimeException(e);
