@@ -86,7 +86,8 @@ public class ApiUtils {
       .add("Do not correct the interviewers (e.g., “As I said”) or interrupt")
       .add("Be diplomatic - avoid criticizing anyone, even yourself")
       .add("Express your enthusiasm to the investors")
-      .add("Exit with a sincere thank you");
+      .add("Exit with a sincere thank you")
+      .build();
 
   private static final String BUCKET_NAME = "video-assessment.appspot.com";
 
