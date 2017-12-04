@@ -61,6 +61,11 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
           'Emphasize enthusiasm and sincerity', 
           'Help the recruiters remember you', 
           'Further influence the recruiters']));
+        this.sections.set("1002", List([
+            'Create a dynamic stage presence',
+            'Emphasize enthusiasm and sincerity',
+            'Help the investors remember you',
+            'Further influence the investors']));
       }
 
   ngOnInit() {
