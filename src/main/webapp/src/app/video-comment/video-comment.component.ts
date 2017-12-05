@@ -34,7 +34,7 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
   @Output() responsesSubmitted: EventEmitter<string> = new EventEmitter<string>();
 
   templateId: number;
-  blobkey: string;
+  blobkey: string;     
   sub: any;
   questions: List<string> = List<string>();
   assessments: Map<number, List<Assessment>> = new Map();
@@ -71,6 +71,7 @@ export class VideoCommentComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     this.sub = this._route.params.subscribe(params => {
        this.blobkey = params['blobkey'];
+              
     });
     if (!!this.blobkey) {
       this.loadAssessments();
