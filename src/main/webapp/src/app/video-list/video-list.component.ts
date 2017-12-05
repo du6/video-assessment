@@ -57,7 +57,7 @@ export class VideoListComponent {
   @Input() videos: List<Video>;
   @Input() canManageSupporters: boolean;
   @Input() canDeleteVideo: boolean;
-  @Input() isMcginnis: boolean = false;
+  
   @Output() videoDeleted: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private _router: Router) {
