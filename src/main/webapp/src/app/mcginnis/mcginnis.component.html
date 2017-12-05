@@ -20,7 +20,8 @@
           [videos]="videos" 
           (videoDeleted)="onVideoDeleted($event)"
           [canManageSupporters]="true"
-          [canDeleteVideo]="true">
+          [canDeleteVideo]="true"
+                                   [isMcginnis]="true">
       </video-assessment-video-list>
     </md-card-content>
   </md-expansion-panel>
@@ -34,7 +35,8 @@
           *ngIf="!loadingReview" 
           [videos]="reviewVideos"
           [canManageSupporters]="false"
-          [canDeleteVideo]="false">
+          [canDeleteVideo]="false"
+                                   [isMcginnis]="true">
       </video-assessment-video-list>
     </md-card-content>
   </md-expansion-panel>
