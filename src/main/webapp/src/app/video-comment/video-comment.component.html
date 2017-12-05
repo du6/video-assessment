@@ -11,10 +11,50 @@
     <md-card-title>Suggestions</md-card-title>
     <md-card-content>
       <md-spinner *ngIf="loadingTemplate || loadingAssessments"></md-spinner>
+       
       <div *ngIf="!(loadingTemplate || loadingAssessments)">
         <md-list class="comment-list" *ngFor="let section of [0, 1, 2, 3]">
-          <h3>{{getSectionTitle(section)}}</h3>
-          <md-list-item *ngFor="let question of questions.slice(5 * section, 5 * section + 5); let i = index">
+            
+            
+          <div *ngIf="(templateId == 1002) && (section == 0 || section == 3)">
+            
+            <h3>{{getSectionTitle(section)}}</h3>
+            <md-list-item *ngFor="let question of questions.slice(5 * section, 5 * section + 5); let i = index">
+            <div *ngIf="!(i == 1)" class="question-comment">
+              <div *ngIf="i == 0">({{i + 1}}) {{getPositive(question)}}</div>
+              <div *ngIf="i == 2 || i == 3 || i == 4">({{i}}) {{getPositive(question)}}</div>
+              <div>
+                <md-slider class="score-slider" 
+                          [min]="0" 
+                          [max]="10" 
+                          [step]="1" 
+                          #score 
+                          aria-label="set a score"
+                          [(ngModel)]="scores[i + section * 5]">
+                </md-slider>
+                {{score.value == 0 ? 'N/A' : score.value}}
+                <md-input-container class="comment">
+                  <input mdInput [(ngModel)]="comments[i + section * 5]" placeholder="comment" rows="1">
+                </md-input-container>
+              </div>
+              <table class="score-table" *ngIf="assessments.has(i + section * 5)">
+                <tr>
+                  <th class="score-column">Score</th>
+                  <th>Comment</th> 
+                </tr>
+                <tr *ngFor="let assessment of assessments.get(i + section * 5)">
+                  <td class="content-cell">{{assessment.score}}</td>
+                  <td class="content-cell">{{assessment.comment || 'N/A'}}</td> 
+                </tr>
+              </table>
+            </div>
+          </md-list-item> 
+          </div>
+            
+            
+          <div *ngIf="!((templateId == 1002) && (section == 0 || section == 3))">
+            <h3>{{getSectionTitle(section)}}</h3>
+            <md-list-item *ngFor="let question of questions.slice(5 * section, 5 * section + 5); let i = index">
             <div class="question-comment">
               <div>({{i + 1}}) {{getPositive(question)}}</div>
               <div>
@@ -43,6 +83,10 @@
               </table>
             </div>
           </md-list-item>
+          </div>
+            
+            
+          
         <md-divider *ngIf="section != 3" class="template-divider"></md-divider>
         </md-list>
       </div>
