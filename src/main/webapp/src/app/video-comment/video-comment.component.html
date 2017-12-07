@@ -87,9 +87,14 @@
             
             
           
-        <md-divider *ngIf="section != 3" class="template-divider"></md-divider>
+        <md-divider  class="template-divider"></md-divider>
         </md-list>
       </div>
+        
+      <md-input-container class="suggestion" >
+        <textarea rows = "6" mdInput placeholder="Additonal Suggestions" ></textarea>
+      </md-input-container>
+        
       <div class="action-buttons">
         <button md-raised-button
                 class="submit"
