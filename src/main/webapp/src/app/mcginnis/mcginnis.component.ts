@@ -30,7 +30,7 @@ export class McginnisComponent implements OnInit {
     this.loadVideos();
     this.loadReviewVideos();
     this.gapi_.loadTemplates().then(templates => {
-      this.uploadTemplate = templates[2];
+      this.uploadTemplate = templates.find(template => template.id == 1002);
     });
   }
 
