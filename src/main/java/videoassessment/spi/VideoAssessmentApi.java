@@ -202,6 +202,7 @@ public class VideoAssessmentApi {
     final Queue queue = QueueFactory.getDefaultQueue();
     queue.add(ofy().getTransaction(),
         TaskOptions.Builder.withUrl("/tasks/send_email")
+            .param("type", "request")
             .param("email", supporterEmail)
             .param("me", user.getEmail())
             .param("videoLink", "http://talkmeup.net/dist/#/video-comment/" + videoId));
@@ -293,6 +294,18 @@ public class VideoAssessmentApi {
       responseList.add(response);
     }
     ofy().save().entities(responseList);
+    if (form.getVideoId() != null) {
+      String videoId = form.getVideoId();
+      Video video = ofy().load().type(Video.class).id(videoId).now();
+      String owner = video.getCreatedBy();
+      final Queue queue = QueueFactory.getDefaultQueue();
+      queue.add(ofy().getTransaction(),
+          TaskOptions.Builder.withUrl("/tasks/send_email")
+              .param("type", "feedback")
+              .param("email", owner)
+              .param("me", user.getEmail())
+              .param("videoLink", "http://talkmeup.net/dist/#/video-comment/" + videoId));
+    }
   }
 
   @ApiMethod(

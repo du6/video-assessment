@@ -26,16 +26,21 @@ public class SendEmail extends HttpServlet {
   private static final Logger LOG = Logger.getLogger(
       SendEmail.class.getName());
 
+  String makeLink(String link, String text) {
+    return "<a href=\"" + link + "\" target=\"_blank\">" + text + "</a>";
+  }
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     String me = request.getParameter("me");
     String email = request.getParameter("email");
     String videoLink = request.getParameter("videoLink");
+    String type = request.getParameter("type");
     Properties props = new Properties();
     Session session = Session.getDefaultInstance(props, null);
-    String body = "Hi,\n" + me + " invited you to review a recent upload: <a href=\"" + videoLink +
-        "\" target=\"_blank\">click to open</a>\n\n";
+    String body = (type.equals("request") ? ("Hi,\n" + me + " invited you to review a recent upload: " +
+        makeLink(videoLink, "click to open")) :
+        ("You’ve got feedback on your " + makeLink(videoLink, "video"))) + "\n\n";
     try {
       Message message = new MimeMessage(session);
       InternetAddress from = new InternetAddress(
@@ -43,7 +48,7 @@ public class SendEmail extends HttpServlet {
               SystemProperty.applicationId.get()), "Talk Me Up");
       message.setFrom(from);
       message.addRecipient(Message.RecipientType.TO, new InternetAddress(email, ""));
-      message.setSubject("You Are Invited to Review a Video!");
+      message.setSubject(type.equals("request") ? "You Are Invited to Review a Video!" : "You Got Feedback!");
       message.setContent(body, "text/html; charset=utf-8");
       Transport.send(message);
     } catch (MessagingException e) {

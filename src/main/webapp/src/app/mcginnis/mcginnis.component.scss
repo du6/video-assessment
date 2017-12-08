@@ -4,6 +4,16 @@
   width: calc(50% - 90px);
 }
 
+.footer {
+  background-color: #673ab7;
+  color: white;
+  margin: 0;
+
+  a {
+    color: white;
+  }
+}
+
 .review-panel {
   margin-top: 20px;
 }

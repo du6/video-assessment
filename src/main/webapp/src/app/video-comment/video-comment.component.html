@@ -14,10 +14,7 @@
        
       <div *ngIf="!(loadingTemplate || loadingAssessments)">
         <md-list class="comment-list" *ngFor="let section of [0, 1, 2, 3]">
-            
-            
           <div *ngIf="(templateId == 1002) && (section == 0 || section == 3)">
-            
             <h3>{{getSectionTitle(section)}}</h3>
             <md-list-item *ngFor="let question of questions.slice(5 * section, 5 * section + 5); let i = index">
             <div *ngIf="!(i == 1)" class="question-comment">
@@ -51,7 +48,6 @@
           </md-list-item> 
           </div>
             
-            
           <div *ngIf="!((templateId == 1002) && (section == 0 || section == 3))">
             <h3>{{getSectionTitle(section)}}</h3>
             <md-list-item *ngFor="let question of questions.slice(5 * section, 5 * section + 5); let i = index">
@@ -84,8 +80,6 @@
             </div>
           </md-list-item>
           </div>
-            
-            
           
         <md-divider *ngIf="section != 3" class="template-divider"></md-divider>
         </md-list>

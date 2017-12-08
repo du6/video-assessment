@@ -15,7 +15,7 @@ import { UpdateSupportersDialog } from '../supporters/update-supporters-dialog.c
 export class McginnisComponent implements OnInit {
   loading: boolean;
   loadingReview: boolean;
-  videos: List<Video> = List<Video>();
+  videos: List<Video> = List<Video>(); 
   reviewVideos: List<Video> = List<Video>();
   uploadTemplate: Template;
   private _dialogRef: MdDialogRef<any>;
